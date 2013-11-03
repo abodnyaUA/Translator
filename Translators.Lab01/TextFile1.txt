@@ -1,0 +1,5 @@
+﻿@interface Test1
+int a,b
+@implementation
+output(a)
+@end
