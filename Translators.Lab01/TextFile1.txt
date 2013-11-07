@@ -2,6 +2,6 @@
 int a,b,d,e,f,g,h,t,r,y,u,i,o,p
 @implementation
 
--a+b+d+e+f-h-g
+a^f
 
 @end

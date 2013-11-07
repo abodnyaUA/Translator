@@ -338,12 +338,8 @@ namespace Translators.Lab01
 //        }
 		public void AnalyzeExpression(ref int lexemsIterator)
 		{
-			
-			for (int i=0; i< lexemsDict.Count; i++)
-			{
-				Console.WriteLine("Analyze Expression. Dict string: "+i+". "+lexemsDict[i]);
-			}
-			HashSet<int> exprSet = new HashSet<int>(){ 
+			HashSet<int> expressionSet = new HashSet<int>()
+			{ 
 				lexemsDict.Count-2, //const 
 				lexemsDict.Count-1, //id
 				16, //(
@@ -354,10 +350,6 @@ namespace Translators.Lab01
 				29, // *
 				30 // ^ 
 			};
-			foreach (int setInt in exprSet)
-			{
-				Console.WriteLine("Analyze Expression. Matching string: "+lexemsDict[setInt]);
-			}
 
 			Console.WriteLine("!Current lexem: "+lexems[lexemsIterator].command);
 			if (lexems[lexemsIterator].command == "-") 
@@ -387,7 +379,7 @@ namespace Translators.Lab01
 			}
 			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
 
-			while (exprSet.Contains(lexems[lexemsIterator].key))
+			while (expressionSet.Contains(lexems[lexemsIterator].key))
 			{
 				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
 				{
@@ -395,15 +387,19 @@ namespace Translators.Lab01
 					lexemsIterator++;
 					if (isTerm(ref lexemsIterator))
 					{
-						Console.WriteLine("Next term accepted: "+lexems[lexemsIterator].command);
+						Console.WriteLine("Next term accepted: "+lexems[lexemsIterator].command+"\n");
 						lexemsIterator++;
 					}
 					else
 					{
 						Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-						                                ". Simbol "+lexems[lexemsIterator].command+" is invalid");
+						                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
 						throw error;
 					}
+				}
+				else
+				{
+					Console.WriteLine("+-Current lexem: "+lexems[lexemsIterator].command);
 				}
 			}
 		}
@@ -420,6 +416,52 @@ namespace Translators.Lab01
 				lexemsIterator = oldIterator;
 				return false;
 			}
+
+			HashSet<int> termSet = new HashSet<int>()
+			{ 
+				lexemsDict.Count-2, //const 
+				lexemsDict.Count-1, //id
+				16, //(
+				17, //)
+				28, // /
+				29, // *
+				30 // ^ 
+			};
+			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			if (lexems[lexemsIterator+1].command == "*" || lexems[lexemsIterator+1].command == "/")
+			{
+				Console.WriteLine("I see you Use */ after that. So I will inc iterator for you");
+				lexemsIterator++;
+				while (termSet.Contains(lexems[lexemsIterator].key))
+				{
+					if (lexems[lexemsIterator].command == "*" || lexems[lexemsIterator].command == "/")
+					{
+						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						lexemsIterator++;
+						if (isMultiplier(ref lexemsIterator))
+						{
+							Console.WriteLine("Next multiplier accepted: "+lexems[lexemsIterator].command);
+							lexemsIterator++;
+						}
+						else
+						{
+							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							throw error;
+						}
+					}
+					else
+					{
+						Console.WriteLine("*/Current lexem: "+lexems[lexemsIterator].command);
+					}
+				}
+				lexemsIterator--;
+			}
+			else
+			{
+				Console.WriteLine("You don't use /* ? :'(. I will cry all night");
+			}
 			return true;
 		}
 		public bool isMultiplier(ref int lexemsIterator)
@@ -435,6 +477,52 @@ namespace Translators.Lab01
 				lexemsIterator = oldIterator;
 				return false;
 			}
+
+			
+			HashSet<int> multSet = new HashSet<int>()
+			{ 
+				lexemsDict.Count-2, //const 
+				lexemsDict.Count-1, //id
+				16, //(
+				17, //)
+				30 // ^ 
+			};
+			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			if (lexems[lexemsIterator+1].command == "^")
+			{
+				Console.WriteLine("I see you Use ^ after that. So I will inc iterator for you");
+				lexemsIterator++;
+				while (multSet.Contains(lexems[lexemsIterator].key))
+				{
+					if (lexems[lexemsIterator].command == "^")
+					{
+						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						lexemsIterator++;
+						if (isExprResponce(ref lexemsIterator))
+						{
+							Console.WriteLine("Next expressionResponse accepted: "+lexems[lexemsIterator].command);
+							lexemsIterator++;
+						}
+						else
+						{
+							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							throw error;
+						}
+					}
+					else
+					{
+						Console.WriteLine("^Current lexem: "+lexems[lexemsIterator].command);
+					}
+				}
+				lexemsIterator--;
+			}
+			else
+			{
+				Console.WriteLine("You don't use ^ ? >.<. I will never speak with you");
+			}
+
 			return true;
 		}
 		public bool isExprResponce(ref int lexemsIterator)
