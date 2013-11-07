@@ -1,5 +1,7 @@
 ﻿@interface Test1
-int a,b
+int a,b,d,e,f,g,h,t,r,y,u,i,o,p
 @implementation
-output(a)
+
+-a+b+d+e+f-h-g
+
 @end

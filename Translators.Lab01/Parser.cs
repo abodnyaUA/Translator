@@ -58,7 +58,9 @@ namespace Translators.Lab01
             result.Add('{');
             result.Add('}');
             result.Add('(');
-            result.Add(')');
+			result.Add(')');
+			result.Add('[');
+			result.Add(']');
             result.Add(' ');
             return result;
         }
@@ -91,15 +93,30 @@ namespace Translators.Lab01
                             int number = 0;
                             if (result[i][0] == ' ') Console.WriteLine("@@:" + result[i]);
                             result.RemoveAt(i);
+							int size = 0;
+							foreach (string part in parts)
+								size++;
+
                             foreach (string part in parts)
                             {
                                 if (part == "") continue;
-                                existSeparator = true;
+								existSeparator = true;
                                 Console.WriteLine("Insert part: " + part);
                                 result.Insert(i + number, part);
                                 result.Insert(i + number + 1, sepString);
                                 number += 2;
                             }
+
+							// -a
+							if (size > 1)
+							{
+								if (parts[0] == "" && parts[1] != "")
+								{
+									result.RemoveAt(i + number - 1);
+									result.Insert(i + number - 2,sepString);
+								}
+							}
+							// ???
                             if (number > 2) result.RemoveAt(i + number - 1);
                             i += number;
                         }

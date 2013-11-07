@@ -68,7 +68,9 @@ namespace Translators.Lab01
             dict.Add("^");
             dict.Add(",");
             dict.Add("&&");
-            dict.Add("||");
+			dict.Add("||");
+			dict.Add("[");
+			dict.Add("]");
             dict.Add("var");
             dict.Add("const");
             return dict;
@@ -140,7 +142,7 @@ namespace Translators.Lab01
                 foreach (string lexem in parsedList[i])
                 {
 
-                    Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "└" : lexem));
+                    Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
                     for (int j = 0; j < 18 - lexem.Length; j++) Console.Write(" ");
                     // Try find lexem in Lexem's Table
                     int find = -1;
