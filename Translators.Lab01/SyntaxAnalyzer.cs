@@ -315,27 +315,6 @@ namespace Translators.Lab01
             return true;
         }
         
-//        private bool AnalyzeLogicalExpression(ref int lexemsIterator)
-//        {
-//            List<List<Lexem>> logicalLexems = new List<List<Lexem>>();
-//			HashSet<int> exprSet = new HashSet<int>() 
-//			{ 
-//				33,
-//				34,
-//				26,
-//				17,
-//				18
-//			};
-//			logicalLexems.Add (new List<Lexem> ());
-//			int pos = 0;
-//            while (lexems[lexemsIterator + 1].key != 6)
-//            {
-//                logicalLexems[0].Add(lexems[lexemsIterator]);
-//                lexemsIterator++;
-//            }
-//            
-//            return true;
-//        }
 		public void AnalyzeExpression(ref int lexemsIterator)
 		{
 			HashSet<int> expressionSet = new HashSet<int>()
@@ -379,6 +358,7 @@ namespace Translators.Lab01
 			}
 			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
 
+
 			while (expressionSet.Contains(lexems[lexemsIterator].key))
 			{
 				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
@@ -400,6 +380,7 @@ namespace Translators.Lab01
 				else
 				{
 					Console.WriteLine("+-Current lexem: "+lexems[lexemsIterator].command);
+					break;
 				}
 			}
 		}
@@ -513,6 +494,12 @@ namespace Translators.Lab01
 					}
 					else
 					{
+						if (lexems[lexemsIterator].command == ")")
+						{
+							#warning BADCODE
+							Console.WriteLine("I now it's bad hack and I promise, I will write good code. But now promise me");
+							break;
+						}
 						Console.WriteLine("^Current lexem: "+lexems[lexemsIterator].command);
 					}
 				}
@@ -525,20 +512,44 @@ namespace Translators.Lab01
 
 			return true;
 		}
+
+		int openScobesCount;
 		public bool isExprResponce(ref int lexemsIterator)
 		{
 			int oldIterator = lexemsIterator;
 			while (lexems[lexemsIterator].command == " " || lexems[lexemsIterator].command == "") lexemsIterator++;
 			if (lexems[lexemsIterator].key == lexemsDict.Count-2)
 			{
-				Console.WriteLine("Founded exprResponce is ID");
+				Console.WriteLine("Founded exprResponce is ID: "+lexems[lexemsIterator].command);
 			}
 			else if (lexems[lexemsIterator].key == lexemsDict.Count-1)
 			{
-				Console.WriteLine("Founded exprResponce is CONST");
+				Console.WriteLine("Founded exprResponce is CONST: "+lexems[lexemsIterator].command);
+			}
+			else if (lexems[lexemsIterator].command == "(")
+			{
+				Console.WriteLine("!!!!!!!!!!!I see you want play game. Open scobes!!!!!!");
+				openScobesCount++;
+				lexemsIterator++;
+				AnalyzeExpression(ref lexemsIterator);
+				Console.WriteLine("===== I here again. And lexem is "+lexems[lexemsIterator].command);
+//				if (lexems[lexemsIterator].command == ")")
+//				{
+//					Console.WriteLine("Close it manually");
+//					lexemsIterator++;
+//				}
+				Console.WriteLine("!!!!!!!!!!!I see you finish playing game. Close scobes!!!!!!");
+				openScobesCount--;
+			}
+			else if (lexems[lexemsIterator].command == ")")
+			{
+				//lexemsIterator++;
+				Console.WriteLine("!!!!!!!!!!!I see you finish playing game. Close scobes!!!!!!");
+				openScobesCount--;
 			}
 			else
 			{
+				Console.WriteLine("HEY! What is wrong with you?! I see here: "+lexems[lexemsIterator].command);
 				lexemsIterator = oldIterator;
 				return false;
 			}

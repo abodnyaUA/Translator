@@ -1,7 +1,7 @@
 ﻿@interface Test1
-int a,b,d,e,f,g,h,t,r,y,u,i,o,p
+int a,b,c,d,e,f,g,h,t,r,y,u,i,o,p,s
 @implementation
 
-a^f
+a^b+(5+c+d)+d+s+e+(d+e)+4+(f+s)
 
 @end
