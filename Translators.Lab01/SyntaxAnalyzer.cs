@@ -231,8 +231,7 @@ namespace Translators.Lab01
 		public void AnalyzeOperator(ref int lexemsIterator)
 		{
 			Console.WriteLine("Current lexem: "+lexems[lexemsIterator].command);
-			AnalyzeExpression(ref lexemsIterator);
-			return;
+
 			if (lexems[lexemsIterator].key == 4) //input
 			{
 				AnalyzeIO(ref lexemsIterator);
@@ -249,6 +248,7 @@ namespace Translators.Lab01
 			}
 			else if (lexems[lexemsIterator].key == lexemsDict.Count-2) //setter
 			{
+				AnalyzeSetter(ref lexemsIterator);
 			}
 			else
 			{
@@ -314,9 +314,28 @@ namespace Translators.Lab01
             lexemsIterator++;
             return true;
         }
+
+		public void AnalyzeSetter(ref int lexemsIterator)
+		{
+			lexemsIterator++;
+
+			if (lexems[lexemsIterator].command == "=") //id
+			{
+				Console.WriteLine("'=' accepted");
+				lexemsIterator++;
+			}
+			else
+			{
+				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+				                                ". Invalid setter. Missed '='");
+				throw error;
+			}
+			AnalyzeExpression(ref lexemsIterator);
+		}
         
 		public void AnalyzeExpression(ref int lexemsIterator)
 		{
+			Console.WriteLine("Start analyze expression");
 			HashSet<int> expressionSet = new HashSet<int>()
 			{ 
 				lexemsDict.Count-2, //const 
@@ -361,9 +380,11 @@ namespace Translators.Lab01
 
 			while (expressionSet.Contains(lexems[lexemsIterator].key))
 			{
+				Console.WriteLine("Continue analyze expression");
 				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
 				{
 					Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+					Console.WriteLine("After operator lexem is "+lexems[lexemsIterator+1].command);
 					lexemsIterator++;
 					if (isTerm(ref lexemsIterator))
 					{
@@ -435,6 +456,7 @@ namespace Translators.Lab01
 					else
 					{
 						Console.WriteLine("*/Current lexem: "+lexems[lexemsIterator].command);
+						break;
 					}
 				}
 				lexemsIterator--;
@@ -500,6 +522,7 @@ namespace Translators.Lab01
 							Console.WriteLine("I now it's bad hack and I promise, I will write good code. But now promise me");
 							break;
 						}
+
 						Console.WriteLine("^Current lexem: "+lexems[lexemsIterator].command);
 					}
 				}
@@ -538,7 +561,9 @@ namespace Translators.Lab01
 //					Console.WriteLine("Close it manually");
 //					lexemsIterator++;
 //				}
-				Console.WriteLine("!!!!!!!!!!!I see you finish playing game. Close scobes!!!!!!");
+				Console.WriteLine("===========I see you finish playing game. Close scobes!!!!!!");
+				//lexemsIterator++;
+				Console.WriteLine("===========Next lexem is "+lexems[lexemsIterator].command);
 				openScobesCount--;
 			}
 			else if (lexems[lexemsIterator].command == ")")
