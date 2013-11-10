@@ -198,7 +198,8 @@ namespace Translators.Lab01
                             }
                             else
                             {
-                                Console.WriteLine(dict.Count + "\t\t" + (wasDeclaratedIndex+1));
+								Console.WriteLine(dict.Count + "\t\t" + (wasDeclaratedIndex+1));
+								this.Lexems.Add(new Lexem(i, value, dict.Count-1));
                             }
                         }
                         // No? Okay, May be ID
