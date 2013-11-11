@@ -61,7 +61,10 @@ namespace Translators.Lab01
 			result.Add(')');
 			result.Add('[');
 			result.Add(']');
-            result.Add(' ');
+			result.Add(' ');
+			result.Add('&');
+			result.Add('|');
+			result.Add('!');
             return result;
         }
 
@@ -75,12 +78,14 @@ namespace Translators.Lab01
             foreach (char separator in separators)
             {
                 bool existSeparator = false;
+				List <string> parsedForSeparator = new List<string>();
                 do
                 {
                     Console.WriteLine("=========== Separator: " + separator);
                     existSeparator = false;
                     string sepString = "";
                     sepString += separator;
+					if (separator == '|' || separator == '&') sepString += separator;
 
                     for (int i = 0; i < result.Count; i++)
                     {
@@ -90,40 +95,44 @@ namespace Translators.Lab01
                         if (sepString == result[i]) continue;
                         else
                         {
-                            int number = 0;
-                            if (result[i][0] == ' ') Console.WriteLine("@@:" + result[i]);
-                            result.RemoveAt(i);
+							int number = 0;
+							if (result[i][0] == ' ') Console.WriteLine("@@:" + result[i]);
+							result.RemoveAt(i);
 							int size = 0;
 							foreach (string part in parts)
 								size++;
 
-                            foreach (string part in parts)
-                            {
-                                if (part == "") continue;
+							foreach (string part in parts)
+							{
+								if (part == "") continue;
 								existSeparator = true;
-                                Console.WriteLine("Insert part: " + part);
-                                result.Insert(i + number, part);
-                                result.Insert(i + number + 1, sepString);
-                                number += 2;
-                            }
+								Console.WriteLine("Insert part: " + part);
+								result.Insert(i + number, part);
+								Console.WriteLine("Insert part: " + sepString);
+								result.Insert(i + number + 1, sepString);
+								number += 2;
+							}
 
 							// -a
 							if (size > 1)
 							{
 								if (parts[0] == "" && parts[1] != "")
 								{
+									Console.WriteLine("Remove part: " + result[i + number - 1]);
 									result.RemoveAt(i + number - 1);
+									Console.WriteLine("Insert part: " + sepString);
 									result.Insert(i + number - 2,sepString);
 								}
 							}
 							// ???
-                            if (number > 2) result.RemoveAt(i + number - 1);
-                            i += number;
+							if (number > 2) result.RemoveAt(i + number - 1);
+							i += number;
                         }
                     }
                     Console.WriteLine("/////////// Separator: " + separator);
                     //Console.ReadKey();
                 } while (existSeparator);
+
             }
 
             // Merge >= <= == !=
@@ -131,6 +140,7 @@ namespace Translators.Lab01
             {
                 if ((result[i][0] == '>' || result[i][0] == '<' || result[i][0] == '!' || result[i][0] == '=') && i < result.Count - 1)
                 {
+					Console.WriteLine(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
                     // Check back
                     if (i > 0)
                     {
@@ -138,8 +148,9 @@ namespace Translators.Lab01
                             continue;
                     }
                     if (result[i + 1][0] == '=')
-                    {
-                        result[i] += result[i + 1];
+					{
+						Console.WriteLine("::::::::::::::::::::::::::::::::::");
+                        result[i] += '=';
                         result.RemoveAt(i + 1);
                         continue;
                     }

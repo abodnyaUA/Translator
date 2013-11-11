@@ -54,8 +54,8 @@ namespace Translators.Lab01
             dict.Add("(");
             dict.Add(")");
             dict.Add("=");
-            dict.Add("==");
-            dict.Add("!=");
+			dict.Add("equ");
+			dict.Add("!=");
             dict.Add(">");
             dict.Add("<");
             dict.Add(">=");
@@ -67,8 +67,8 @@ namespace Translators.Lab01
             dict.Add("*");
             dict.Add("^");
             dict.Add(",");
-            dict.Add("&&");
-			dict.Add("||");
+            dict.Add("and");
+			dict.Add("or");
 			dict.Add("[");
 			dict.Add("]");
             dict.Add("var");
@@ -141,7 +141,7 @@ namespace Translators.Lab01
                 // Lexems in line cycle
                 foreach (string lexem in parsedList[i])
                 {
-
+					if (lexem == "") continue;
                     Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
                     for (int j = 0; j < 18 - lexem.Length; j++) Console.Write(" ");
                     // Try find lexem in Lexem's Table

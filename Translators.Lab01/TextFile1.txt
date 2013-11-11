@@ -1,7 +1,26 @@
 ﻿@interface Test1
-int a,b,c,d,e,f,g,h,t,r,y,u,i,o,p,s
+	int a,b,c,d,e,f,g,h,t,r,y,u,i,o,p,s
 @implementation
+	b = 6-6*89+(a-b+c^d+h+(y-u)+(8+6)+6)
 
-b = a^4 + (b + ((c+e)-(5*8)) - (45+t-i/o + p^s) - 5)+5
+	if 6 equ 5 or 6 >= 6
+	{
+		for a = 7+45 to 45-78 step 2+1
+		{
+			input(d)
+			output(a)
+		}
+		next
+		input(a)
+	}
+	else
+		input(b)
+	endif
 
+	for t = 4*1 to 8 step 1
+	{
+		input(d)
+		output(a)
+	}
+	next
 @end

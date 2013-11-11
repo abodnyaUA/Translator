@@ -201,32 +201,36 @@ namespace Translators.Lab01
         }
 		public bool AnalyzeImplementation(ref int lexemsIterator)
         {
-            if (lexems[lexemsIterator].key == 2) //empty implementation
-            {
-                return true;
-            }
-            do
-            {
-				
+			AnalyzeOperatorsBlock(ref lexemsIterator,2);
+            return true;
+        }
+
+		public void AnalyzeOperatorsBlock(ref int lexemsIterator, int endLexemKey)
+		{
+			if (lexems[lexemsIterator].key == 2) //empty implementation
+			{
+				return;
+			}
+			do
+			{
+
 				Console.WriteLine("Previous lexem: "+lexems[lexemsIterator-1].command);
 				Console.WriteLine("Current lexem: "+lexems[lexemsIterator].command);
 				AnalyzeOperator(ref lexemsIterator);
-                //Finishing
-                if (lexems[lexemsIterator].key == 6) // ENTER
-                {
-                    lexemsIterator++;
-                }
-                else
-                {
-                    Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                        ". Missed ENTER. Find operator: "+lexems[lexemsIterator].command);
-                    throw error;
-                }
-            }
-            while (lexems[lexemsIterator].key != 2);
-            //lexemsIterator++;
-            return true;
-        }
+				//Finishing
+				if (lexems[lexemsIterator].key == 6) // ENTER
+				{
+					lexemsIterator++;
+				}
+				else
+				{
+					Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+					                                ". Missed ENTER. Find operator: "+lexems[lexemsIterator].command);
+					throw error;
+				}
+			}
+			while (lexems[lexemsIterator].key != endLexemKey);
+		}
 
 		public void AnalyzeOperator(ref int lexemsIterator)
 		{
@@ -242,9 +246,11 @@ namespace Translators.Lab01
 			}
 			else if (lexems[lexemsIterator].key == 7) //for
 			{
+				AnalyzeCycle(ref lexemsIterator);
 			}
 			else if (lexems[lexemsIterator].key == 11) //if
 			{
+				AnalyzeCondition(ref lexemsIterator);
 			}
 			else if (lexems[lexemsIterator].key == lexemsDict.Count-2) //setter
 			{
@@ -332,22 +338,111 @@ namespace Translators.Lab01
 			}
 			AnalyzeExpression(ref lexemsIterator);
 		}
+
+		public void AnalyzeCondition(ref int lexemsIterator)
+		{
+			lexemsIterator++;
+
+			AnalyzeLogicalExpression(ref lexemsIterator,6);
+			Console.WriteLine("ACCEPT LOGICAL EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			lexemsIterator++;
+			AnalyzeAction(ref lexemsIterator);
+			Console.WriteLine("ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			lexemsIterator++;
+
+			if (lexems[lexemsIterator].command == "else")
+			{
+				Console.WriteLine("Passed ELSE");
+				lexemsIterator += 2;
+			}
+			else
+			{
+				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+				                                ". Missed 'else'");
+				throw error;
+			}
+			AnalyzeAction(ref lexemsIterator);
+			Console.WriteLine("ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			lexemsIterator++;
+			
+			if (lexems[lexemsIterator].command == "endif")
+			{
+				Console.WriteLine("Passed ENDIF");
+				lexemsIterator++;
+			}
+			else
+			{
+				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+				                                ". Missed 'endif'");
+				throw error;
+			}
+		}
+
+		public void AnalyzeCycle(ref int lexemsIterator)
+		{
+			lexemsIterator++;
+			AnalyzeSetter(ref lexemsIterator);
+			Console.WriteLine("SETTER PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			if (lexems[lexemsIterator].command == "to")
+			{
+				Console.WriteLine("'to' PASSED");
+				lexemsIterator++;
+			}
+			AnalyzeExpression(ref lexemsIterator);
+			
+			Console.WriteLine("EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			if (lexems[lexemsIterator].command == "step")
+			{
+				Console.WriteLine("'step' PASSED");
+				lexemsIterator++;
+			}
+			AnalyzeExpression(ref lexemsIterator);
+			Console.WriteLine("EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			lexemsIterator++;
+			AnalyzeAction(ref lexemsIterator);
+			Console.WriteLine("ACTION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			lexemsIterator++;
+			if (lexems[lexemsIterator].command == "next")
+			{
+				Console.WriteLine("'next' PASSED");
+				lexemsIterator++;
+			}
+			//
+		}
+
+		public void AnalyzeAction(ref int lexemsIterator)
+		{
+			if (lexems[lexemsIterator].command == "{")
+			{
+				lexemsIterator += 2; // {\n
+
+				AnalyzeOperatorsBlock(ref lexemsIterator,15);
+
+				if (lexems[lexemsIterator].command == "}")
+				{
+					lexemsIterator++; // }\n
+				}
+				else
+				{
+					Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+					                                ". Missed '}'");
+					throw error;
+				}
+			}
+			else
+			{
+				AnalyzeOperator(ref lexemsIterator);
+			}
+		}
         
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="lexemsIterator">Lexems iterator.</param>
 		public void AnalyzeExpression(ref int lexemsIterator)
 		{
 			Console.WriteLine("Start analyze expression");
-			HashSet<int> expressionSet = new HashSet<int>()
-			{ 
-				lexemsDict.Count-2, //const 
-				lexemsDict.Count-1, //id
-				16, //(
-				17, //)
-				26, //+
-				27, //-
-				28, // /
-				29, // *
-				30 // ^ 
-			};
 
 			Console.WriteLine("!Current lexem: "+lexems[lexemsIterator].command);
 			if (lexems[lexemsIterator].command == "-") 
@@ -378,7 +473,7 @@ namespace Translators.Lab01
 			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
 
 
-			while (expressionSet.Contains(lexems[lexemsIterator].key))
+			while (true)
 			{
 				Console.WriteLine("Continue analyze expression");
 				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
@@ -419,23 +514,13 @@ namespace Translators.Lab01
 				return false;
 			}
 
-			HashSet<int> termSet = new HashSet<int>()
-			{ 
-				lexemsDict.Count-2, //const 
-				lexemsDict.Count-1, //id
-				16, //(
-				17, //)
-				28, // /
-				29, // *
-				30 // ^ 
-			};
 			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
 			                  ". And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "*" || lexems[lexemsIterator+1].command == "/")
 			{
 				Console.WriteLine("I see you Use */ after that. So I will inc iterator for you");
 				lexemsIterator++;
-				while (termSet.Contains(lexems[lexemsIterator].key))
+				while (true)
 				{
 					if (lexems[lexemsIterator].command == "*" || lexems[lexemsIterator].command == "/")
 					{
@@ -481,22 +566,13 @@ namespace Translators.Lab01
 				return false;
 			}
 
-			
-			HashSet<int> multSet = new HashSet<int>()
-			{ 
-				lexemsDict.Count-2, //const 
-				lexemsDict.Count-1, //id
-				16, //(
-				17, //)
-				30 // ^ 
-			};
 			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
 			                  ". And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "^")
 			{
 				Console.WriteLine("I see you Use ^ after that. So I will inc iterator for you");
 				lexemsIterator++;
-				while (multSet.Contains(lexems[lexemsIterator].key))
+				while (true)
 				{
 					if (lexems[lexemsIterator].command == "^")
 					{
@@ -516,14 +592,8 @@ namespace Translators.Lab01
 					}
 					else
 					{
-						if (lexems[lexemsIterator].command == ")")
-						{
-							#warning BADCODE
-							Console.WriteLine("I now it's bad hack and I promise, I will write good code. But now promise me");
-							break;
-						}
-
 						Console.WriteLine("^Current lexem: "+lexems[lexemsIterator].command);
+						break;
 					}
 				}
 				lexemsIterator--;
@@ -536,7 +606,6 @@ namespace Translators.Lab01
 			return true;
 		}
 
-		int openScobesCount;
 		public bool isExprResponce(ref int lexemsIterator)
 		{
 			int oldIterator = lexemsIterator;
@@ -552,25 +621,10 @@ namespace Translators.Lab01
 			else if (lexems[lexemsIterator].command == "(")
 			{
 				Console.WriteLine("!!!!!!!!!!!I see you want play game. Open scobes!!!!!!");
-				openScobesCount++;
 				lexemsIterator++;
 				AnalyzeExpression(ref lexemsIterator);
 				Console.WriteLine("===== I here again. And lexem is "+lexems[lexemsIterator].command);
-//				if (lexems[lexemsIterator].command == ")")
-//				{
-//					Console.WriteLine("Close it manually");
-//					lexemsIterator++;
-//				}
 				Console.WriteLine("===========I see you finish playing game. Close scobes!!!!!!");
-				//lexemsIterator++;
-				Console.WriteLine("===========Next lexem is "+lexems[lexemsIterator].command);
-				openScobesCount--;
-			}
-			else if (lexems[lexemsIterator].command == ")")
-			{
-				//lexemsIterator++;
-				Console.WriteLine("!!!!!!!!!!!I see you finish playing game. Close scobes!!!!!!");
-				openScobesCount--;
 			}
 			else
 			{
@@ -580,5 +634,161 @@ namespace Translators.Lab01
 			}
 			return true;
 		}
-    }
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		public void AnalyzeLogicalExpression(ref int lexemsIterator, int endLexemKey)
+		{
+			Console.WriteLine("Start analyze logical expression");
+
+			Console.WriteLine("!Current lexem: "+lexems[lexemsIterator].command);
+			if (isLogicalExpressionLevel1(ref lexemsIterator, endLexemKey)) 
+			{
+				Console.WriteLine("Logical expression starts normally: "+lexems[lexemsIterator].command);
+//				if (lexems[lexemsIterator].key != endLexemKey)
+//					lexemsIterator ++;
+			} 
+			else
+			{
+				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+				                                ". Invalid logical expression");
+				throw error;
+			}
+			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
+
+            //if (lexems[lexemsIterator].command == "or")
+			while (true)
+			{
+				Console.WriteLine("Continue analyze expression");
+				if (lexems[lexemsIterator].command == "or")
+				{
+					Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+					Console.WriteLine("After operator lexem is "+lexems[lexemsIterator+1].command);
+					lexemsIterator++;
+					if (isLogicalExpressionLevel1(ref lexemsIterator, endLexemKey))
+					{
+						Console.WriteLine("Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].command+"\n");
+						#warning BADCODE
+						if (lexems[lexemsIterator].command == "or")
+						{
+							lexemsIterator++;
+						}
+					}
+					else
+					{
+						Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+						                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+						throw error;
+					}
+				}
+				else
+				{
+					Console.WriteLine("||Current lexem: "+lexems[lexemsIterator].command);
+					break;
+				}
+			}
+		}
+
+		public bool isLogicalExpressionLevel1(ref int lexemsIterator, int endLexemKey)
+		{
+			int oldIterator = lexemsIterator;
+			if (isLogicalExpressionLevel2(ref lexemsIterator, endLexemKey))
+			{
+				Console.WriteLine("First LogicalExpressionLevel1 is LogicalExpressionLevel2. All OK");
+			}
+			else
+			{
+				Console.WriteLine("First LogicalExpressionLevel1 isn't LogicalExpressionLevel2. All BAD");
+				lexemsIterator = oldIterator;
+				return false;
+			}
+
+			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			if (lexems[lexemsIterator].command == "and")
+			{
+				Console.WriteLine("I see you Use && after that. So I will inc iterator for you");
+				//lexemsIterator++;
+				while (true)
+				{
+					if (lexems[lexemsIterator].command == "and")
+					{
+						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						lexemsIterator++;
+						if (isLogicalExpressionLevel2(ref lexemsIterator, endLexemKey))
+						{
+							Console.WriteLine("Next LogicalExpressionLevel2 accepted: "+lexems[lexemsIterator].command);
+							lexemsIterator++;
+						}
+						else
+						{
+							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							throw error;
+						}
+					}
+					else
+					{
+						Console.WriteLine("&&Current lexem: "+lexems[lexemsIterator].command);
+						break;
+					}
+				}
+				lexemsIterator--;
+			}
+			else
+			{
+				Console.WriteLine("You don't use && ? :'(. I will cry all night");
+			}
+			return true;
+		}
+
+		
+		public bool isLogicalExpressionLevel2(ref int lexemsIterator, int endLexemKey)
+		{
+			if (lexems[lexemsIterator].command == "!" && lexems[lexemsIterator+1].command == "[")
+			{
+				Console.WriteLine("You want to use '!' ? Ok.");
+				lexemsIterator++;
+			}
+
+			if (lexems[lexemsIterator].command == "[")
+			{
+				Console.WriteLine("[[[[[[[[[[[I see you want play game. Open scobes!!!!!!");
+				lexemsIterator++;
+				AnalyzeLogicalExpression(ref lexemsIterator, endLexemKey);
+				Console.WriteLine("[[[[[[[[[[[I here again. And lexem is "+lexems[lexemsIterator].command);
+				Console.WriteLine("[[[[[[[[[[[I see you finish playing game. Close scobes!!!!!!");
+				//lexemsIterator++;
+			}
+			else
+			{
+				return isNormalRelation(ref lexemsIterator, endLexemKey);
+			}
+
+			return true;
+		}
+
+		public bool isNormalRelation(ref int lexemsIterator, int endLexemKey)
+		{
+			HashSet<string> connotials = new HashSet<string>()
+			{
+				">", ">=", "<=", "<", "equ", "!="
+			};
+
+			AnalyzeExpression(ref lexemsIterator);
+			Console.WriteLine("....... 1.After analyze expression next lexem is: "+lexems[lexemsIterator].command);
+			if (connotials.Contains(lexems[lexemsIterator].command)) 
+			{
+				Console.WriteLine("Match connotial: "+lexems[lexemsIterator].command);
+				lexemsIterator++;
+			}
+			else
+			{
+				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
+				                                ". Invalid Connotial "+lexems[lexemsIterator].command);
+				throw error;
+			}
+			AnalyzeExpression(ref lexemsIterator);
+			Console.WriteLine("....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].command);
+			return true;
+		}
+	}
 }
