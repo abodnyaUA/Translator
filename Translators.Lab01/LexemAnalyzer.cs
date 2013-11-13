@@ -91,7 +91,7 @@ namespace Translators.Lab01
         {
             if (value == "@interface")
             {
-                if (ImplementationWasDeclarated || EndWasDeclarated)
+                if (ImplementationWasDeclarated || EndWasDeclarated || InterfaceWasDeclarated)
                 {
                     Console.WriteLine();
                     Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @interface");
@@ -102,7 +102,7 @@ namespace Translators.Lab01
             }
             if (value == "@implementation")
             {
-                if (!InterfaceWasDeclarated || EndWasDeclarated)
+                if (!InterfaceWasDeclarated || EndWasDeclarated || ImplementationWasDeclarated)
                 {
                     Console.WriteLine();
                     Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @implementation");
@@ -113,7 +113,7 @@ namespace Translators.Lab01
             }
             if (value == "@end")
             {
-                if (!InterfaceWasDeclarated || !ImplementationWasDeclarated)
+                if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
                     Console.WriteLine();
                     Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @end");

@@ -743,7 +743,7 @@ namespace Translators.Lab01
 		
 		public bool isLogicalExpressionLevel2(ref int lexemsIterator, int endLexemKey)
 		{
-			if (lexems[lexemsIterator].command == "!" && lexems[lexemsIterator+1].command == "[")
+			if (lexems[lexemsIterator].command == "!")
 			{
 				Console.WriteLine("You want to use '!' ? Ok.");
 				lexemsIterator++;
