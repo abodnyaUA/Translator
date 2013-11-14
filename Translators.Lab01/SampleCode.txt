@@ -7,12 +7,12 @@
 // Body
 @implementation
 	input(a) 
-	if a>=3 && a<10
+	if a>=3 and a<=10
 		a = a + 5
 	else
 		output(a)
 	endif
-	for bcb = 1*2 to 5 step 1
+	for bcb = 1^75 to 5 step 1
 	{
 		a = a * bcb
 	}

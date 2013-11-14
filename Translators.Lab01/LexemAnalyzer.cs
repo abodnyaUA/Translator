@@ -94,7 +94,7 @@ namespace Translators.Lab01
                 if (ImplementationWasDeclarated || EndWasDeclarated || InterfaceWasDeclarated)
                 {
                     Console.WriteLine();
-                    Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @interface");
+                    LexemException error = new LexemException(line,"Invalide declaration @interface");
                     throw error;
                 }
                 else
@@ -105,7 +105,7 @@ namespace Translators.Lab01
                 if (!InterfaceWasDeclarated || EndWasDeclarated || ImplementationWasDeclarated)
                 {
                     Console.WriteLine();
-                    Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @implementation");
+                    LexemException error = new LexemException(line,"Invalide declaration @implementation");
                     throw error;
                 }
                 else
@@ -116,7 +116,7 @@ namespace Translators.Lab01
                 if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
                     Console.WriteLine();
-                    Exception error = new Exception("Error! Line: " + line + ". Invalide declaration @end");
+                    LexemException error = new LexemException(line,"Invalide declaration @end");
                     throw error;
                 }
                 else
@@ -125,7 +125,7 @@ namespace Translators.Lab01
             if (value == "int" && ImplementationWasDeclarated)
             {
                 Console.WriteLine();
-                Exception error = new Exception("Error! Line: " + line + ". Variables can be declarated only in @interface section");
+                LexemException error = new LexemException(line,"Variables can be declarated only in @interface section");
                 throw error;
             }
         }
@@ -209,7 +209,7 @@ namespace Translators.Lab01
                                           (value[0] >= 'A' && value[0] <= 'Z')))
                             {
                                 Console.WriteLine();
-                                Exception error1 = new Exception("Error! Line: " + (i + 1) + ". Invalid simbol '" + value[0]+"'");
+                                LexemException error1 = new LexemException((i+1),"Invalid simbol '" + value[0]+"'");
                                 throw error1;
                             }
                             for (int c = 1; c < value.Length; c++)
@@ -219,7 +219,7 @@ namespace Translators.Lab01
                                        (value[c] >= '0' && value[c] <= '9')))
                                 {
                                     Console.WriteLine();
-                                    Exception error1 = new Exception("Error! Line: " + (i + 1) + ". Invalid simbol '"+value[c]+"'");
+                                    LexemException error1 = new LexemException((i+1),"Invalid simbol '"+value[c]+"'");
                                     throw error1;
                                 }
                             }
@@ -239,7 +239,7 @@ namespace Translators.Lab01
                                 if (wasDeclaratedIndex != -1)
                                 {
                                     Console.WriteLine();
-                                    Exception error = new Exception("Error! Line: " + (i + 1) + ". Variable " + value + " has declarated");
+                                    LexemException error = new LexemException((i+1),"Variable " + value + " has declarated");
                                     throw error;
                                 }
                                 else
@@ -268,7 +268,7 @@ namespace Translators.Lab01
                                 if (wasDeclaratedIndex == -1)
                                 {
                                     Console.WriteLine();
-                                    Exception error2 = new Exception("Error! Line: " + (i+1) + ". Variable " + value + " hasn't declarated");
+                                    LexemException error2 = new LexemException((i+1),"Variable " + value + " hasn't declarated");
                                     throw error2;
                                 }
                                 // Fuuuh. I've find it.

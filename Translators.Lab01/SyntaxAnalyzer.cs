@@ -40,8 +40,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Application should start with '@interface'");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                          "Application should start with '@interface'");
                 throw error;
             }
             
@@ -53,8 +53,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Invalid @interface name: "+lexems[lexemsIterator].command + " ("+lexems[lexemsIterator].key+")");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				 "Invalid @interface name: "+lexems[lexemsIterator].command + " ("+lexems[lexemsIterator].key+")");
                 throw error;
             }
 
@@ -66,8 +66,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Not found ENTER after @interface name");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "Not found ENTER after @interface name");
                 throw error;
             }
                 
@@ -79,8 +79,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Invalid declarations");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "Invalid declarations");
                 throw error;
             }
 
@@ -92,8 +92,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Not found '@implementation' word");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "Not found '@implementation' word");
                 throw error;
             }
 
@@ -105,8 +105,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Not found ENTER after @implementation");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "Not found ENTER after @implementation");
                 throw error;
             }
 
@@ -117,8 +117,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". Invalide by parsing implementation");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "Invalide by parsing implementation");
                 throw error;
             }
             
@@ -129,8 +129,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber + 
-                    ". Invalide declaration @end");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber, 
+                    "Invalide declaration @end");
                 throw error;
             }       
         }
@@ -150,8 +150,8 @@ namespace Translators.Lab01
                 }
                 else
                 {
-                    Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                        ". Invalid declaration construction. Need to set type");
+                    LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                        "Invalid declaration construction. Need to set type");
                     throw error;
                 }
 
@@ -163,8 +163,8 @@ namespace Translators.Lab01
                 }
                 else
                 {
-                    Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                        ". Empty declaration");
+                    LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                        "Empty declaration");
                     throw error;
                 }
 
@@ -178,8 +178,8 @@ namespace Translators.Lab01
                     }
                     else
                     {
-                        Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                            ". Invalid declaration");
+                        LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                            "Invalid declaration");
                         throw error;
                     }
                 }
@@ -191,8 +191,8 @@ namespace Translators.Lab01
                 }
                 else
                 {
-                    Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                        ". Missed ENTER");
+                    LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                        "Missed ENTER");
                     throw error;
                 }
             } while (lexems[lexemsIterator].key != 1); /* @implementation */
@@ -224,8 +224,8 @@ namespace Translators.Lab01
 				}
 				else
 				{
-					Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-					                                ". Missed ENTER. Find operator: "+lexems[lexemsIterator].command);
+					LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+					                                "Missed ENTER. Find operator: "+lexems[lexemsIterator].command);
 					throw error;
 				}
 			}
@@ -258,8 +258,8 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Invalid operator");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Invalid operator");
 				throw error;
 			}
 		}
@@ -281,8 +281,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                    ". IO functions must start with '('");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                    "IO functions must start with '('");
                 throw error;
             }
             
@@ -294,8 +294,8 @@ namespace Translators.Lab01
             }
             else
             {
-                Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". IO functions can't be used wiyhout arguments");
+                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "IO functions can't be used wiyhout arguments");
                 throw error;
             }
 
@@ -309,8 +309,8 @@ namespace Translators.Lab01
                 }
                 else
                 {
-                    Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-                        ". Invalid using the variables in function 'input'");
+                    LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                        "Invalid using the variables in function 'input'");
                     throw error;
                 }
             }
@@ -332,8 +332,8 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Invalid setter. Missed '='");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Invalid setter. Missed '='");
 				throw error;
 			}
 			AnalyzeExpression(ref lexemsIterator);
@@ -357,8 +357,8 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Missed 'else'");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Missed 'else'");
 				throw error;
 			}
 			AnalyzeAction(ref lexemsIterator);
@@ -372,8 +372,8 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Missed 'endif'");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Missed 'endif'");
 				throw error;
 			}
 		}
@@ -424,8 +424,8 @@ namespace Translators.Lab01
 				}
 				else
 				{
-					Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-					                                ". Missed '}'");
+					LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+					                                "Missed '}'");
 					throw error;
 				}
 			}
@@ -466,8 +466,8 @@ namespace Translators.Lab01
 			} 
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Invalid expression");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Invalid expression");
 				throw error;
 			}
 			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
@@ -488,8 +488,8 @@ namespace Translators.Lab01
 					}
 					else
 					{
-						Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-						                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+						LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+						                                "Symbol "+lexems[lexemsIterator].command+" is invalid");
 						throw error;
 					}
 				}
@@ -515,7 +515,7 @@ namespace Translators.Lab01
 			}
 
 			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "*" || lexems[lexemsIterator+1].command == "/")
 			{
 				Console.WriteLine("I see you Use */ after that. So I will inc iterator for you");
@@ -533,8 +533,8 @@ namespace Translators.Lab01
 						}
 						else
 						{
-							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+							                                "Symbol "+lexems[lexemsIterator].command+" is invalid");
 							throw error;
 						}
 					}
@@ -567,7 +567,7 @@ namespace Translators.Lab01
 			}
 
 			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "^")
 			{
 				Console.WriteLine("I see you Use ^ after that. So I will inc iterator for you");
@@ -585,8 +585,8 @@ namespace Translators.Lab01
 						}
 						else
 						{
-							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+							                                "Symbol "+lexems[lexemsIterator].command+" is invalid");
 							throw error;
 						}
 					}
@@ -648,8 +648,8 @@ namespace Translators.Lab01
 			} 
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Invalid logical expression");
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Invalid logical expression");
 				throw error;
 			}
 			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
@@ -666,16 +666,12 @@ namespace Translators.Lab01
 					if (isLogicalExpressionLevel1(ref lexemsIterator, endLexemKey))
 					{
 						Console.WriteLine("Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].command+"\n");
-						#warning BADCODE
-						if (lexems[lexemsIterator].command == "or")
-						{
-							lexemsIterator++;
-						}
+
 					}
 					else
 					{
-						Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-						                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+						LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+						                                "Symbol "+lexems[lexemsIterator].command+" is invalid");
 						throw error;
 					}
 				}
@@ -702,7 +698,7 @@ namespace Translators.Lab01
 			}
 
 			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  ". And after that I see "+lexems[lexemsIterator+1].command);
+			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator].command == "and")
 			{
 				Console.WriteLine("I see you Use && after that. So I will inc iterator for you");
@@ -720,8 +716,8 @@ namespace Translators.Lab01
 						}
 						else
 						{
-							Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-							                                ". Symbol "+lexems[lexemsIterator].command+" is invalid");
+							LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+							                                "Symbol "+lexems[lexemsIterator].command+" is invalid");
 							throw error;
 						}
 					}
@@ -743,7 +739,7 @@ namespace Translators.Lab01
 		
 		public bool isLogicalExpressionLevel2(ref int lexemsIterator, int endLexemKey)
 		{
-			if (lexems[lexemsIterator].command == "!")
+			while (lexems[lexemsIterator].command == "!")
 			{
 				Console.WriteLine("You want to use '!' ? Ok.");
 				lexemsIterator++;
@@ -756,7 +752,7 @@ namespace Translators.Lab01
 				AnalyzeLogicalExpression(ref lexemsIterator, endLexemKey);
 				Console.WriteLine("[[[[[[[[[[[I here again. And lexem is "+lexems[lexemsIterator].command);
 				Console.WriteLine("[[[[[[[[[[[I see you finish playing game. Close scobes!!!!!!");
-				//lexemsIterator++;
+				lexemsIterator++;
 			}
 			else
 			{
@@ -782,8 +778,8 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Exception error = new Exception("Error! Line: " + lexems[lexemsIterator].lineNumber +
-				                                ". Invalid Connotial "+lexems[lexemsIterator].command);
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				                                "Invalid Connotial "+lexems[lexemsIterator].command);
 				throw error;
 			}
 			AnalyzeExpression(ref lexemsIterator);

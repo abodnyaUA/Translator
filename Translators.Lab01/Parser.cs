@@ -34,7 +34,8 @@ namespace Translators.Lab01
                     {
                         packet = packet.Substring(0, i);
                     }
-                }
+				}
+				realLines.Add(packet);
                 list = list + packet + "\n";
             }
             sr.Close();
@@ -68,111 +69,68 @@ namespace Translators.Lab01
             return result;
         }
 
-        public List<string> Split(string source, List<char> separators)
-        {
-
-            source = source.Replace("\t", "");
-
-            List<string> result = new List<string>();
-            result.Add(source);
-            foreach (char separator in separators)
-            {
-                bool existSeparator = false;
-				List <string> parsedForSeparator = new List<string>();
-                do
-                {
-                    Console.WriteLine("=========== Separator: " + separator);
-                    existSeparator = false;
-                    string sepString = "";
-                    sepString += separator;
-					if (separator == '|' || separator == '&') sepString += separator;
-
-                    for (int i = 0; i < result.Count; i++)
-                    {
-                        Console.WriteLine("!!Parse string "+result[i]);
-                        string[] parts = result[i].Split(separator);
-                        if (parts[0] == result[i]) continue;
-                        if (sepString == result[i]) continue;
-                        else
-                        {
-							int number = 0;
-							if (result[i][0] == ' ') Console.WriteLine("@@:" + result[i]);
-							result.RemoveAt(i);
-							int size = 0;
-							foreach (string part in parts)
-								size++;
-
-							foreach (string part in parts)
-							{
-								if (part == "") continue;
-								existSeparator = true;
-								Console.WriteLine("Insert part: " + part);
-								result.Insert(i + number, part);
-								Console.WriteLine("Insert part: " + sepString);
-								result.Insert(i + number + 1, sepString);
-								number += 2;
-							}
-
-							// -a
-							if (size > 1)
-							{
-								if (parts[0] == "" && parts[1] != "")
-								{
-									Console.WriteLine("Remove part: " + result[i + number - 1]);
-									result.RemoveAt(i + number - 1);
-									Console.WriteLine("Insert part: " + sepString);
-									result.Insert(i + number - 2,sepString);
-								}
-							}
-							// ???
-							if (number > 2) result.RemoveAt(i + number - 1);
-							i += number;
-                        }
-                    }
-                    Console.WriteLine("/////////// Separator: " + separator);
-                    //Console.ReadKey();
-                } while (existSeparator);
-
-            }
-
-            // Merge >= <= == !=
-            for (int i = 0; i < result.Count; i++)
-            {
-                if ((result[i][0] == '>' || result[i][0] == '<' || result[i][0] == '!' || result[i][0] == '=') && i < result.Count - 1)
-                {
-					Console.WriteLine(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
-                    // Check back
-                    if (i > 0)
-                    {
-                        if (result[i - 1][0] == '>' || result[i - 1][0] == '<' || result[i - 1][0] == '!' || result[i - 1][0] == '=')
-                            continue;
-                    }
-                    if (result[i + 1][0] == '=')
+		public List<string> SplitBySpace(string source, List<char>separators)
+		{
+			source = source.Replace('\t',' ');
+			HashSet<char> separtatorsSet = new HashSet<char>();
+			foreach (char ch in separators) 
+			{
+				separtatorsSet.Add(ch);
+			}
+			
+			Console.WriteLine("Before: "+source);
+			for (int i=0; i<source.Length; i++)
+			{
+				char ch = source[i];
+				char nextCh = '\0';
+				char prevCh = '\0';
+				if (i < source.Length-1) nextCh = source[i+1]; 
+				if (i > 0) prevCh = source[i-1]; 
+				//Console.WriteLine("char = "+ch);
+				if (separtatorsSet.Contains(ch))
+				{
+					//Console.WriteLine("is separator");
+					if (i > 0)
 					{
-						Console.WriteLine("::::::::::::::::::::::::::::::::::");
-                        result[i] += '=';
-                        result.RemoveAt(i + 1);
-                        continue;
-                    }
-                }
-            }
+						if (source[i-1] != ' ' && 
+						    !( /**/ (prevCh == '!' || prevCh == '>' || prevCh == '<') && ch == '=') /**/) 
+						{
+							source = source.Insert(i," ");
+							i++;
+						}
+					}
+					if (i < source.Length-1)
+					{
+						if (source[i+1] != ' ' && 
+						    !( /**/ (ch == '!' || ch == '>' || ch == '<') && nextCh == '=') /**/)
+						{
+							source = source.Insert(i+1," ");
+							i++;
+						}
+					}
+				}
+			}
+			Console.WriteLine("After: "+source);
 
+			List<string> lexems = new List<string>() { new string ('\0',1) };
+			string[] lexemsArray = source.Split(' ');
 
-            // Remove empty cases
-            for (int i = 0; i < result.Count; i++)
-            {
-                if (result[i] == " ")
-                {
-                    result.RemoveAt(i);
-                }
-                else
-                {
-                    Console.WriteLine(result[i]);
-                }
-            }
+			for (int i=0;i<lexemsArray.Length;i++)
+			{
+				string lexem = lexemsArray[i];
+				if (lexem != "" && !(lexems.Last() == "\n" && lexem =="\n")) 
+				{
+					lexems.Add(lexem);
+				}
+			}
+			lexems.RemoveAt(0);
+			if (lexems[0] == "\n") lexems.RemoveAt(0);
+			if (lexems.Last() == "\n") lexems.RemoveAt(lexems.Count-1);
 
-            return result;
-        }
+			return lexems;
+		}
+
+		private List<string> realLines = new List<string>();
 
         public List<List<string>> LexemsListWithLines(List<string> source)
         {
@@ -201,7 +159,7 @@ namespace Translators.Lab01
         {
             string sourceCode = ReadFile(path);
             List<char> separators = Separators();
-            List<string> parsedWords = Split(sourceCode,separators);
+			List<string> parsedWords = SplitBySpace(sourceCode,separators);
             List< List<string> > parsedWordsByLines = LexemsListWithLines(parsedWords);
             for (int i = 0; i < parsedWordsByLines.Count; i++)
             {

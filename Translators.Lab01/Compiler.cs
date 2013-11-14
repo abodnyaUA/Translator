@@ -18,6 +18,7 @@ namespace Translators.Lab01
         }
         private Compiler()
         {
+//			
         }
 
         public void CompileFile(string path)
@@ -33,9 +34,9 @@ namespace Translators.Lab01
                 Console.WriteLine("======== Syntax Analyzer ========");
                 SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
             }
-            catch (Exception error)
+            catch (LexemException error)
             {
-                Console.WriteLine(error.Message);
+                Console.WriteLine(error.UserInfo);
             }
         }
     }
