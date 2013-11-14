@@ -93,7 +93,6 @@ namespace Translators.Lab01
             {
                 if (ImplementationWasDeclarated || EndWasDeclarated || InterfaceWasDeclarated)
                 {
-                    Console.WriteLine();
                     LexemException error = new LexemException(line,"Invalide declaration @interface");
                     throw error;
                 }
@@ -104,7 +103,6 @@ namespace Translators.Lab01
             {
                 if (!InterfaceWasDeclarated || EndWasDeclarated || ImplementationWasDeclarated)
                 {
-                    Console.WriteLine();
                     LexemException error = new LexemException(line,"Invalide declaration @implementation");
                     throw error;
                 }
@@ -115,7 +113,6 @@ namespace Translators.Lab01
             {
                 if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
-                    Console.WriteLine();
                     LexemException error = new LexemException(line,"Invalide declaration @end");
                     throw error;
                 }
@@ -124,7 +121,6 @@ namespace Translators.Lab01
             }
             if (value == "int" && ImplementationWasDeclarated)
             {
-                Console.WriteLine();
                 LexemException error = new LexemException(line,"Variables can be declarated only in @interface section");
                 throw error;
             }
@@ -133,7 +129,7 @@ namespace Translators.Lab01
         // Parse doubleArray //
         public void AnalyzeWithDoubleList(List<List<string>> parsedList)
         {
-            Console.WriteLine("Line  Command         Key\tID\tConst");
+			Out.Log(Out.State.LogInfo,"Line  Command         Key\tID\tConst");
             // line cycle
             for (int i = 0; i < parsedList.Count; i++)
             {
@@ -177,7 +173,7 @@ namespace Translators.Lab01
                     //It's table's lexem
                     if (find != -1)
                     {
-                        Console.WriteLine((find + 1));
+						Out.Log(Out.State.LogInfo,""+(find + 1));
                         this.Lexems.Add(new Lexem(i,value,find));
                     }
                     // No? Don't worry. May be it's ID or CONST
@@ -210,11 +206,11 @@ namespace Translators.Lab01
                             {
                                 CONSTs.Add(value);
                                 this.Lexems.Add(new Lexem(i, value, dict.Count-1));
-                                Console.WriteLine(dict.Count + "\t\t" + CONSTs.Count);
+                                Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
                             }
                             else
                             {
-								Console.WriteLine(dict.Count + "\t\t" + (wasDeclaratedIndex+1));
+								Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
 								this.Lexems.Add(new Lexem(i, value, dict.Count-1));
                             }
                         }
@@ -224,7 +220,7 @@ namespace Translators.Lab01
                             if (!((value[0] >= 'a' && value[0] <= 'z') ||
                                           (value[0] >= 'A' && value[0] <= 'Z')))
                             {
-                                Console.WriteLine();
+								Out.Log(Out.State.LogInfo,"");
                                 LexemException error1 = new LexemException((i+1),"Invalid simbol '" + value[0]+"'");
                                 throw error1;
                             }
@@ -234,7 +230,7 @@ namespace Translators.Lab01
                                        (value[c] >= 'A' && value[c] <= 'Z') ||
                                        (value[c] >= '0' && value[c] <= '9')))
                                 {
-                                    Console.WriteLine();
+									Out.Log(Out.State.LogInfo,"");
                                     LexemException error1 = new LexemException((i+1),"Invalid simbol '"+value[c]+"'");
                                     throw error1;
                                 }
@@ -254,7 +250,7 @@ namespace Translators.Lab01
                                 // It hasn't declarated.
                                 if (wasDeclaratedIndex != -1)
                                 {
-                                    Console.WriteLine();
+									Out.Log(Out.State.LogInfo,"");
                                     LexemException error = new LexemException((i+1),"Variable " + value + " has declarated");
                                     throw error;
                                 }
@@ -264,7 +260,7 @@ namespace Translators.Lab01
                                     
                                     IDs.Add(value);
                                     this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
-                                    Console.WriteLine(dict.Count - 1 + "\t" + IDs.Count);
+									Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
                                 }
                             }
                             // No? It was declarated?
@@ -283,7 +279,7 @@ namespace Translators.Lab01
                                 // It hasn't declarated.
                                 if (wasDeclaratedIndex == -1)
                                 {
-                                    Console.WriteLine();
+									Out.Log(Out.State.LogInfo,"");
                                     LexemException error2 = new LexemException((i+1),"Variable " + value + " hasn't declarated");
                                     throw error2;
                                 }
@@ -291,7 +287,7 @@ namespace Translators.Lab01
                                 else
                                 {
                                     this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
-                                    Console.WriteLine(dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
+									Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
                                 }
                             }
                         }
@@ -305,27 +301,27 @@ namespace Translators.Lab01
 
         public void outputTables()
         {
-            Console.WriteLine("IDs:");
-            Console.WriteLine("Num  ID");
+			Out.Log(Out.State.LogInfo,"IDs:");
+			Out.Log(Out.State.LogInfo,"Num  ID");
             for (int i=0;i<IDs.Count;i++)
             {
                 // Start new line
                 Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + IDs[i]);
                 for (int j = 0; j < 18 - IDs[i].Length; j++) Console.Write(" ");
-                Console.WriteLine();
+				Out.Log(Out.State.LogInfo,"");
             }
 
-            Console.WriteLine();
-            Console.WriteLine("CONSTs:");
-            Console.WriteLine("Num  CONST");
+			Out.Log(Out.State.LogInfo,"");
+			Out.Log(Out.State.LogInfo,"CONSTs:");
+			Out.Log(Out.State.LogInfo,"Num  CONST");
             for (int i = 0; i < CONSTs.Count; i++)
             {
                 // Start new line
                 Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + CONSTs[i]);
                 for (int j = 0; j < 18 - CONSTs[i].Length; j++) Console.Write(" ");
-                Console.WriteLine();
+				Out.Log(Out.State.LogInfo,"");
             }
-            Console.WriteLine();
+			Out.Log(Out.State.LogInfo,"");
         }
 
     }

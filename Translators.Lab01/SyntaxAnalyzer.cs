@@ -19,6 +19,19 @@ namespace Translators.Lab01
         {
         }
 
+		private void Check(ref int lexemIterator, int key, string success, string failure)
+		{
+			if (lexems[lexemIterator].key == key)
+			{
+				Out.Log(Out.State.LogVerbose,success);
+				lexemIterator++;
+			}
+			else
+			{
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,failure);
+				throw error;
+			}
+		}
 
 		public List<Lexem> lexems;
 		public List<string> IDs;
@@ -35,7 +48,7 @@ namespace Translators.Lab01
             /* @interface */
             if (lexems[lexemsIterator].key == 0)
             {
-                Console.WriteLine("'Interface' accept");
+                Out.Log(Out.State.LogVerbose,"'Interface' accept");
                 lexemsIterator++;
             }
             else
@@ -48,7 +61,7 @@ namespace Translators.Lab01
             /* ID */
             if (lexems[lexemsIterator].key == lexemsDict.Count-2)
             {
-                Console.WriteLine("Name "+lexems[lexemsIterator].command+" accept");
+				Out.Log(Out.State.LogVerbose,"Name "+lexems[lexemsIterator].command+" accept");
                 lexemsIterator++;
             }
             else
@@ -61,7 +74,7 @@ namespace Translators.Lab01
             /* ENTER */
             if (lexems[lexemsIterator].key == 6)
             {
-                Console.WriteLine("ENTER accepted");
+				Out.Log(Out.State.LogVerbose,"ENTER accepted");
                 lexemsIterator++;
             }
             else
@@ -74,8 +87,7 @@ namespace Translators.Lab01
             /* PARSE Interface */
             if (AnalyzeInterface(ref lexemsIterator))
             {
-                Console.WriteLine("Definitions [Interface block] accept");
-                //lexemsIterator++;
+				Out.Log(Out.State.LogVerbose,"Definitions [Interface block] accept");
             }
             else
             {
@@ -87,7 +99,7 @@ namespace Translators.Lab01
             /* @implementation */
             if (lexems[lexemsIterator].key == 1)
             {
-                Console.WriteLine("'Implementation' accept");
+				Out.Log(Out.State.LogVerbose,"'Implementation' accept");
                 lexemsIterator++;
             }
             else
@@ -100,7 +112,7 @@ namespace Translators.Lab01
             /* ENTER */
             if (lexems[lexemsIterator].key == 6)
             {
-                Console.WriteLine("ENTER accepted");
+				Out.Log(Out.State.LogVerbose,"ENTER accepted");
                 lexemsIterator++;
             }
             else
@@ -113,7 +125,7 @@ namespace Translators.Lab01
             /* Parse Implementation */
             if (AnalyzeImplementation(ref lexemsIterator))
             {
-                Console.WriteLine("Operators [Implementation block] accept");
+				Out.Log(Out.State.LogInfo,"Operators [Implementation block] accept");
             }
             else
             {
@@ -125,7 +137,7 @@ namespace Translators.Lab01
             /* @end */
             if (lexems[lexemsIterator].key == 2)
             {
-                Console.WriteLine("End accept. Success syntax analyze.");
+				Out.Log(Out.State.LogInfo,"End accept. Success syntax analyze.");
             }
             else
             {
@@ -145,7 +157,7 @@ namespace Translators.Lab01
                 /* Type int */
                 if (lexems[lexemsIterator].key == 3)
                 {
-                    Console.WriteLine("Confirm type int");
+					Out.Log(Out.State.LogVerbose,"Confirm type int");
                     lexemsIterator++;
                 }
                 else
@@ -158,7 +170,7 @@ namespace Translators.Lab01
                 /* ID */
 				if (lexems[lexemsIterator].key == lexemsDict.Count-2)
                 {
-                    Console.WriteLine("Confirm ID "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogInfo,"Confirm ID "+lexems[lexemsIterator].command);
                     lexemsIterator++;
                 }
                 else
@@ -173,7 +185,7 @@ namespace Translators.Lab01
                 {
 					if (lexems[lexemsIterator].key == 31 && lexems[lexemsIterator + 1].key == lexemsDict.Count-2) //,id
                     {
-                        Console.WriteLine("Confirm ID " + lexems[lexemsIterator+1].command);
+						Out.Log(Out.State.LogInfo,"Confirm ID " + lexems[lexemsIterator+1].command);
                         lexemsIterator += 2;
                     }
                     else
@@ -196,7 +208,6 @@ namespace Translators.Lab01
                     throw error;
                 }
             } while (lexems[lexemsIterator].key != 1); /* @implementation */
-            //lexemsIterator++;
             return true;
         }
 		public bool AnalyzeImplementation(ref int lexemsIterator)
@@ -214,8 +225,8 @@ namespace Translators.Lab01
 			do
 			{
 
-				Console.WriteLine("Previous lexem: "+lexems[lexemsIterator-1].command);
-				Console.WriteLine("Current lexem: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogDebug,"Previous lexem: "+lexems[lexemsIterator-1].command);
+				Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].command);
 				AnalyzeOperator(ref lexemsIterator);
 				//Finishing
 				if (lexems[lexemsIterator].key == 6) // ENTER
@@ -234,32 +245,37 @@ namespace Translators.Lab01
 
 		public void AnalyzeOperator(ref int lexemsIterator)
 		{
-			Console.WriteLine("Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].command);
 
 			if (lexems[lexemsIterator].key == 4) //input
 			{
 				AnalyzeIO(ref lexemsIterator);
+				Out.Log(Out.State.LogInfo,"Input accepted");
 			}
 			else if (lexems[lexemsIterator].key == 5) //output
 			{
 				AnalyzeIO(ref lexemsIterator);
+				Out.Log(Out.State.LogInfo,"Output accepted");
 			}
 			else if (lexems[lexemsIterator].key == 7) //for
 			{
 				AnalyzeCycle(ref lexemsIterator);
+				Out.Log(Out.State.LogInfo,"Cycle 'for' accepted");
 			}
 			else if (lexems[lexemsIterator].key == 11) //if
 			{
 				AnalyzeCondition(ref lexemsIterator);
+				Out.Log(Out.State.LogInfo,"Condition accepted");
 			}
 			else if (lexems[lexemsIterator].key == lexemsDict.Count-2) //setter
 			{
 				AnalyzeSetter(ref lexemsIterator);
+				Out.Log(Out.State.LogInfo,"Assignment accepted");
 			}
 			else
 			{
 				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-				                                "Invalid operator");
+				                                          "Invalid operator "+lexems[lexemsIterator].command);
 				throw error;
 			}
 		}
@@ -276,7 +292,7 @@ namespace Translators.Lab01
             /* ( */
             if (lexems[lexemsIterator].key == 16) // (
             {
-                Console.WriteLine("Confirm '('");
+				Out.Log(Out.State.LogVerbose,"Confirm '('");
                 lexemsIterator++;
             }
             else
@@ -289,7 +305,7 @@ namespace Translators.Lab01
             /* ID */
 			if (lexems[lexemsIterator].key == lexemsDict.Count-2) //id
             {
-                Console.WriteLine("Confirm ID "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Confirm ID "+lexems[lexemsIterator].command);
                 lexemsIterator++;
             }
             else
@@ -304,7 +320,7 @@ namespace Translators.Lab01
             {
 				if (lexems[lexemsIterator].key == 31 && lexems[lexemsIterator + 1].key == lexemsDict.Count-2) //,id
                 {
-                    Console.WriteLine("Confirm ID "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Confirm ID "+lexems[lexemsIterator+1].command);
                     lexemsIterator += 2;
                 }
                 else
@@ -314,7 +330,7 @@ namespace Translators.Lab01
                     throw error;
                 }
             }
-            Console.WriteLine("Confirm ')'");
+			Out.Log(Out.State.LogVerbose,"Confirm ')'");
                 
             
             lexemsIterator++;
@@ -327,7 +343,7 @@ namespace Translators.Lab01
 
 			if (lexems[lexemsIterator].command == "=") //id
 			{
-				Console.WriteLine("'=' accepted");
+				Out.Log(Out.State.LogVerbose,"'=' accepted");
 				lexemsIterator++;
 			}
 			else
@@ -344,15 +360,15 @@ namespace Translators.Lab01
 			lexemsIterator++;
 
 			AnalyzeLogicalExpression(ref lexemsIterator,6);
-			Console.WriteLine("ACCEPT LOGICAL EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"ACCEPT LOGICAL EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
 			lexemsIterator++;
 			AnalyzeAction(ref lexemsIterator);
-			Console.WriteLine("ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
 			lexemsIterator++;
 
 			if (lexems[lexemsIterator].command == "else")
 			{
-				Console.WriteLine("Passed ELSE");
+				Out.Log(Out.State.LogVerbose,"Passed ELSE");
 				lexemsIterator += 2;
 			}
 			else
@@ -362,12 +378,12 @@ namespace Translators.Lab01
 				throw error;
 			}
 			AnalyzeAction(ref lexemsIterator);
-			Console.WriteLine("ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"ACCEPT ACTION. NEXT LEXEM IS: "+lexems[lexemsIterator].command);
 			lexemsIterator++;
 			
 			if (lexems[lexemsIterator].command == "endif")
 			{
-				Console.WriteLine("Passed ENDIF");
+				Out.Log(Out.State.LogVerbose,"Passed ENDIF");
 				lexemsIterator++;
 			}
 			else
@@ -382,29 +398,29 @@ namespace Translators.Lab01
 		{
 			lexemsIterator++;
 			AnalyzeSetter(ref lexemsIterator);
-			Console.WriteLine("SETTER PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"SETTER PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
 			if (lexems[lexemsIterator].command == "to")
 			{
-				Console.WriteLine("'to' PASSED");
+				Out.Log(Out.State.LogVerbose,"'to' PASSED");
 				lexemsIterator++;
 			}
 			AnalyzeExpression(ref lexemsIterator);
 			
-			Console.WriteLine("EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
 			if (lexems[lexemsIterator].command == "step")
 			{
-				Console.WriteLine("'step' PASSED");
+				Out.Log(Out.State.LogVerbose,"'step' PASSED");
 				lexemsIterator++;
 			}
 			AnalyzeExpression(ref lexemsIterator);
-			Console.WriteLine("EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
 			lexemsIterator++;
 			AnalyzeAction(ref lexemsIterator);
-			Console.WriteLine("ACTION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"ACTION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command);
 			lexemsIterator++;
 			if (lexems[lexemsIterator].command == "next")
 			{
-				Console.WriteLine("'next' PASSED");
+				Out.Log(Out.State.LogVerbose,"'next' PASSED");
 				lexemsIterator++;
 			}
 			//
@@ -436,32 +452,28 @@ namespace Translators.Lab01
 		}
         
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="lexemsIterator">Lexems iterator.</param>
 		public void AnalyzeExpression(ref int lexemsIterator)
 		{
-			Console.WriteLine("Start analyze expression");
+			Out.Log(Out.State.LogVerbose,"Start analyze expression");
 
-			Console.WriteLine("!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].command);
 			if (lexems[lexemsIterator].command == "-") 
 			{
 				lexemsIterator++;
 				if (isTerm(ref lexemsIterator))
 				{
-					Console.WriteLine("Expression starts with '-': "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"Expression starts with '-': "+lexems[lexemsIterator].command);
 					lexemsIterator ++;
 				}
 				else
 				{
-					Console.WriteLine("Expression doesn't start with '-': "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"Expression doesn't start with '-': "+lexems[lexemsIterator].command);
 					lexemsIterator--;
 				}
 			} 
 			else if (isTerm(ref lexemsIterator)) 
 			{
-				Console.WriteLine("Expression starts normally: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Expression starts normally: "+lexems[lexemsIterator].command);
 				lexemsIterator ++;
 			} 
 			else
@@ -470,20 +482,20 @@ namespace Translators.Lab01
 				                                "Invalid expression");
 				throw error;
 			}
-			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].command);
 
 
 			while (true)
 			{
-				Console.WriteLine("Continue analyze expression");
+				Out.Log(Out.State.LogVerbose,"Continue analyze expression");
 				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
 				{
-					Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
-					Console.WriteLine("After operator lexem is "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].command);
 					lexemsIterator++;
 					if (isTerm(ref lexemsIterator))
 					{
-						Console.WriteLine("Next term accepted: "+lexems[lexemsIterator].command+"\n");
+						Out.Log(Out.State.LogVerbose,"Next term accepted: "+lexems[lexemsIterator].command+"\n");
 						lexemsIterator++;
 					}
 					else
@@ -495,7 +507,7 @@ namespace Translators.Lab01
 				}
 				else
 				{
-					Console.WriteLine("+-Current lexem: "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"+-Current lexem: "+lexems[lexemsIterator].command);
 					break;
 				}
 			}
@@ -505,30 +517,30 @@ namespace Translators.Lab01
 			int oldIterator = lexemsIterator;
 			if (isMultiplier(ref lexemsIterator))
 			{
-				Console.WriteLine("First term is multiplier. All OK");
+				Out.Log(Out.State.LogVerbose,"First term is multiplier. All OK");
 			}
 			else
 			{
-				Console.WriteLine("First term isn't multiplier. All BAD");
+				Out.Log(Out.State.LogVerbose,"First term isn't multiplier. All BAD");
 				lexemsIterator = oldIterator;
 				return false;
 			}
 
-			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
 			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "*" || lexems[lexemsIterator+1].command == "/")
 			{
-				Console.WriteLine("I see you Use */ after that. So I will inc iterator for you");
+				Out.Log(Out.State.LogVerbose,"Using */. Increment operator");
 				lexemsIterator++;
 				while (true)
 				{
 					if (lexems[lexemsIterator].command == "*" || lexems[lexemsIterator].command == "/")
 					{
-						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
 						lexemsIterator++;
 						if (isMultiplier(ref lexemsIterator))
 						{
-							Console.WriteLine("Next multiplier accepted: "+lexems[lexemsIterator].command);
+							Out.Log(Out.State.LogVerbose,"Next multiplier accepted: "+lexems[lexemsIterator].command);
 							lexemsIterator++;
 						}
 						else
@@ -540,7 +552,7 @@ namespace Translators.Lab01
 					}
 					else
 					{
-						Console.WriteLine("*/Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"*/Current lexem: "+lexems[lexemsIterator].command);
 						break;
 					}
 				}
@@ -548,7 +560,7 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Console.WriteLine("You don't use /* ? :'(. I will cry all night");
+				Out.Log(Out.State.LogVerbose,"Don't use */");
 			}
 			return true;
 		}
@@ -557,30 +569,30 @@ namespace Translators.Lab01
 			int oldIterator = lexemsIterator;
 			if (isExprResponce(ref lexemsIterator))
 			{
-				Console.WriteLine("First multiplier is exprResponce. All OK");
+				Out.Log(Out.State.LogVerbose,"First multiplier is exprResponce. All OK");
 			}
 			else
 			{
-				Console.WriteLine("First multiplier isn't exprResponce. All BAD");
+				Out.Log(Out.State.LogVerbose,"First multiplier isn't exprResponce. All BAD");
 				lexemsIterator = oldIterator;
 				return false;
 			}
 
-			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
 			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator+1].command == "^")
 			{
-				Console.WriteLine("I see you Use ^ after that. So I will inc iterator for you");
+				Out.Log(Out.State.LogVerbose,"Using ^. Increment iterator");
 				lexemsIterator++;
 				while (true)
 				{
 					if (lexems[lexemsIterator].command == "^")
 					{
-						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
 						lexemsIterator++;
 						if (isExprResponce(ref lexemsIterator))
 						{
-							Console.WriteLine("Next expressionResponse accepted: "+lexems[lexemsIterator].command);
+							Out.Log(Out.State.LogVerbose,"Next expressionResponse accepted: "+lexems[lexemsIterator].command);
 							lexemsIterator++;
 						}
 						else
@@ -592,7 +604,7 @@ namespace Translators.Lab01
 					}
 					else
 					{
-						Console.WriteLine("^Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"^Current lexem: "+lexems[lexemsIterator].command);
 						break;
 					}
 				}
@@ -600,7 +612,7 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Console.WriteLine("You don't use ^ ? >.<. I will never speak with you");
+				Out.Log(Out.State.LogVerbose,"Don't use ^");
 			}
 
 			return true;
@@ -612,23 +624,23 @@ namespace Translators.Lab01
 			while (lexems[lexemsIterator].command == " " || lexems[lexemsIterator].command == "") lexemsIterator++;
 			if (lexems[lexemsIterator].key == lexemsDict.Count-2)
 			{
-				Console.WriteLine("Founded exprResponce is ID: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Founded exprResponce is ID: "+lexems[lexemsIterator].command);
 			}
 			else if (lexems[lexemsIterator].key == lexemsDict.Count-1)
 			{
-				Console.WriteLine("Founded exprResponce is CONST: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Founded exprResponce is CONST: "+lexems[lexemsIterator].command);
 			}
 			else if (lexems[lexemsIterator].command == "(")
 			{
-				Console.WriteLine("!!!!!!!!!!!I see you want play game. Open scobes!!!!!!");
+				Out.Log(Out.State.LogVerbose,"() Open Scobes ()");
 				lexemsIterator++;
 				AnalyzeExpression(ref lexemsIterator);
-				Console.WriteLine("===== I here again. And lexem is "+lexems[lexemsIterator].command);
-				Console.WriteLine("===========I see you finish playing game. Close scobes!!!!!!");
+				Out.Log(Out.State.LogVerbose,"() Return from block with lexem "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"() Close Scobes ()");
 			}
 			else
 			{
-				Console.WriteLine("HEY! What is wrong with you?! I see here: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Wrong lexem: "+lexems[lexemsIterator].command);
 				lexemsIterator = oldIterator;
 				return false;
 			}
@@ -637,12 +649,12 @@ namespace Translators.Lab01
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void AnalyzeLogicalExpression(ref int lexemsIterator, int endLexemKey)
 		{
-			Console.WriteLine("Start analyze logical expression");
+			Out.Log(Out.State.LogVerbose,"Start analyze logical expression");
 
-			Console.WriteLine("!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].command);
 			if (isLogicalExpressionLevel1(ref lexemsIterator, endLexemKey)) 
 			{
-				Console.WriteLine("Logical expression starts normally: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Logical expression starts normally: "+lexems[lexemsIterator].command);
 //				if (lexems[lexemsIterator].key != endLexemKey)
 //					lexemsIterator ++;
 			} 
@@ -652,20 +664,20 @@ namespace Translators.Lab01
 				                                "Invalid logical expression");
 				throw error;
 			}
-			Console.WriteLine("!!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].command);
 
             //if (lexems[lexemsIterator].command == "or")
 			while (true)
 			{
-				Console.WriteLine("Continue analyze expression");
+				Out.Log(Out.State.LogVerbose,"Continue analyze expression");
 				if (lexems[lexemsIterator].command == "or")
 				{
-					Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
-					Console.WriteLine("After operator lexem is "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].command);
 					lexemsIterator++;
 					if (isLogicalExpressionLevel1(ref lexemsIterator, endLexemKey))
 					{
-						Console.WriteLine("Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].command+"\n");
+						Out.Log(Out.State.LogVerbose,"Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].command+"\n");
 
 					}
 					else
@@ -677,7 +689,7 @@ namespace Translators.Lab01
 				}
 				else
 				{
-					Console.WriteLine("||Current lexem: "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"||Current lexem: "+lexems[lexemsIterator].command);
 					break;
 				}
 			}
@@ -688,30 +700,30 @@ namespace Translators.Lab01
 			int oldIterator = lexemsIterator;
 			if (isLogicalExpressionLevel2(ref lexemsIterator, endLexemKey))
 			{
-				Console.WriteLine("First LogicalExpressionLevel1 is LogicalExpressionLevel2. All OK");
+				Out.Log(Out.State.LogVerbose,"First LogicalExpressionLevel1 is LogicalExpressionLevel2. All OK");
 			}
 			else
 			{
-				Console.WriteLine("First LogicalExpressionLevel1 isn't LogicalExpressionLevel2. All BAD");
+				Out.Log(Out.State.LogVerbose,"First LogicalExpressionLevel1 isn't LogicalExpressionLevel2. All BAD");
 				lexemsIterator = oldIterator;
 				return false;
 			}
 
-			Console.WriteLine("Yeah. Let see what's next: "+lexems[lexemsIterator].command+
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
 			                  "And after that I see "+lexems[lexemsIterator+1].command);
 			if (lexems[lexemsIterator].command == "and")
 			{
-				Console.WriteLine("I see you Use && after that. So I will inc iterator for you");
+				Out.Log(Out.State.LogVerbose,"I see you Use && after that. So I will inc iterator for you");
 				//lexemsIterator++;
 				while (true)
 				{
 					if (lexems[lexemsIterator].command == "and")
 					{
-						Console.WriteLine("Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
 						lexemsIterator++;
 						if (isLogicalExpressionLevel2(ref lexemsIterator, endLexemKey))
 						{
-							Console.WriteLine("Next LogicalExpressionLevel2 accepted: "+lexems[lexemsIterator].command);
+							Out.Log(Out.State.LogVerbose,"Next LogicalExpressionLevel2 accepted: "+lexems[lexemsIterator].command);
 							lexemsIterator++;
 						}
 						else
@@ -723,7 +735,7 @@ namespace Translators.Lab01
 					}
 					else
 					{
-						Console.WriteLine("&&Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"&&Current lexem: "+lexems[lexemsIterator].command);
 						break;
 					}
 				}
@@ -731,7 +743,7 @@ namespace Translators.Lab01
 			}
 			else
 			{
-				Console.WriteLine("You don't use && ? :'(. I will cry all night");
+				Out.Log(Out.State.LogVerbose,"Don't use operator 'and'");
 			}
 			return true;
 		}
@@ -741,17 +753,17 @@ namespace Translators.Lab01
 		{
 			while (lexems[lexemsIterator].command == "!")
 			{
-				Console.WriteLine("You want to use '!' ? Ok.");
+				Out.Log(Out.State.LogVerbose,"Using '!'");
 				lexemsIterator++;
 			}
 
 			if (lexems[lexemsIterator].command == "[")
 			{
-				Console.WriteLine("[[[[[[[[[[[I see you want play game. Open scobes!!!!!!");
+				Out.Log(Out.State.LogVerbose,"[] Open scobes []");
 				lexemsIterator++;
 				AnalyzeLogicalExpression(ref lexemsIterator, endLexemKey);
-				Console.WriteLine("[[[[[[[[[[[I here again. And lexem is "+lexems[lexemsIterator].command);
-				Console.WriteLine("[[[[[[[[[[[I see you finish playing game. Close scobes!!!!!!");
+				Out.Log(Out.State.LogVerbose,"[] Return from block with lexem "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"[] Close scobes []");
 				lexemsIterator++;
 			}
 			else
@@ -770,10 +782,10 @@ namespace Translators.Lab01
 			};
 
 			AnalyzeExpression(ref lexemsIterator);
-			Console.WriteLine("....... 1.After analyze expression next lexem is: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"....... 1.After analyze expression next lexem is: "+lexems[lexemsIterator].command);
 			if (connotials.Contains(lexems[lexemsIterator].command)) 
 			{
-				Console.WriteLine("Match connotial: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Match connotial: "+lexems[lexemsIterator].command);
 				lexemsIterator++;
 			}
 			else
@@ -783,7 +795,7 @@ namespace Translators.Lab01
 				throw error;
 			}
 			AnalyzeExpression(ref lexemsIterator);
-			Console.WriteLine("....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].command);
 			return true;
 		}
 	}

@@ -23,20 +23,20 @@ namespace Translators.Lab01
 
         public void CompileFile(string path)
         {
-            Console.WriteLine("======== Parse code ========");
+			Out.Log(Out.State.LogInfo,"======== Parse code ========");
             List<List<string>> parsed = Parser.sharedParser.ParseFile(path);
             try
             {
-                Console.WriteLine("======== Lexem Analyzer ========");
+				Out.Log(Out.State.LogInfo,"======== Lexem Analyzer ========");
                 LexemAnalyzer.sharedAnalyzer.AnalyzeWithDoubleList(parsed);
                 LexemAnalyzer.sharedAnalyzer.outputTables();
 
-                Console.WriteLine("======== Syntax Analyzer ========");
+				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
                 SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
             }
             catch (LexemException error)
             {
-                Console.WriteLine(error.UserInfo);
+				Out.Log(Out.State.LogInfo,"\n"+error.UserInfo);
             }
         }
     }

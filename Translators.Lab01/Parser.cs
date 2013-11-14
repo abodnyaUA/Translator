@@ -92,7 +92,7 @@ namespace Translators.Lab01
 				separtatorsSet.Add(ch);
 			}
 			
-			Console.WriteLine("Before: "+source);
+			Out.Log(Out.State.LogVerbose,"Before: "+source);
 			for (int i=0; i<source.Length; i++)
 			{
 				char ch = source[i];
@@ -100,10 +100,10 @@ namespace Translators.Lab01
 				char prevCh = '\0';
 				if (i < source.Length-1) nextCh = source[i+1]; 
 				if (i > 0) prevCh = source[i-1]; 
-				//Console.WriteLine("char = "+ch);
+				//Out.Log(Out.State.LogVerbose,"char = "+ch);
 				if (separtatorsSet.Contains(ch))
 				{
-					//Console.WriteLine("is separator");
+					//Out.Log(Out.State.LogVerbose,"is separator");
 					if (i > 0)
 					{
 						if (source[i-1] != ' ' && 
@@ -124,7 +124,7 @@ namespace Translators.Lab01
 					}
 				}
 			}
-			Console.WriteLine("After: "+source);
+			Out.Log(Out.State.LogVerbose,"After: "+source);
 
 			List<string> lexems = new List<string>() { new string ('\0',1) };
 			string[] lexemsArray = source.Split(' ');
@@ -175,9 +175,9 @@ namespace Translators.Lab01
             List< List<string> > parsedWordsByLines = LexemsListWithLines(parsedWords);
             for (int i = 0; i < parsedWordsByLines.Count; i++)
             {
-                Console.WriteLine("Line "+i+":");
+                Out.Log(Out.State.LogVerbose,"Line "+i+":");
                 foreach (string word in parsedWordsByLines[i])
-                    Console.WriteLine("\t" + word);
+                    Out.Log(Out.State.LogVerbose,"\t" + word);
             }
             return parsedWordsByLines;
         }
