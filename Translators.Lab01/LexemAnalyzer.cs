@@ -139,18 +139,25 @@ namespace Translators.Lab01
             {
 				// Check empty line
 				bool validLine = true;
-				if (i < parsedList.Count-1)
+				try
 				{
-					if (parsedList[i][0] == "\n" && parsedList[i+1][0] == "\n" && parsedList[i].Count == 1) validLine = false;
-				}
-				if (parsedList[i][0] == "\n" && i == 0 && parsedList[i].Count == 1) validLine = false;
-				if (parsedList[i][0] == "\n" && i == parsedList.Count-1 && parsedList[i].Count == 1) validLine = false;
+					if (i < parsedList.Count-1 
+					    && parsedList[i][0] == "\n" 
+					    && parsedList[i+1][0] == "\n" 
+					    && parsedList[i].Count == 1) validLine = false;
 
+					if (parsedList[i][0] == "\n" 
+					    && i == parsedList.Count-1 
+					    && parsedList[i].Count == 1) validLine = false;
+				} catch (Exception) {}
                 // Lexems in line cycle
 				if (validLine)
                 foreach (string lexem in parsedList[i])
                 {
-					if (lexem == "") continue;
+					//First lexem shouldn't be ENTER
+					if (Lexems.Count == 0 && lexem == "\n") continue;
+
+					//Continue
                     Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
                     for (int j = 0; j < 18 - lexem.Length; j++) Console.Write(" ");
                     // Try find lexem in Lexem's Table

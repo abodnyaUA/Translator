@@ -20,7 +20,9 @@ namespace Translators.Lab01
         }
         private Parser()
         { }
-
+		
+		private List<string> realLines = new List<string>();
+		public  List<string> RealLines { get { return realLines; } }
         private string ReadFile(string path)
         {
             String list = "";
@@ -35,12 +37,24 @@ namespace Translators.Lab01
                         packet = packet.Substring(0, i);
                     }
 				}
-				realLines.Add(packet);
-                list = list + packet + "\n";
+				list = list + packet + "\n";
+				realLines.Add(StringByRemoveTabs(packet));
             }
             sr.Close();
             return list;
         }
+
+		private string StringByRemoveTabs(string sourceString)
+		{
+			try
+			{
+				while (sourceString[0] == '\t') sourceString = sourceString.Remove(0,1);
+			}
+			catch (IndexOutOfRangeException)
+			{
+			}
+			return sourceString;
+		}
 
         public List<char> Separators()
         {
@@ -129,8 +143,6 @@ namespace Translators.Lab01
 
 			return lexems;
 		}
-
-		private List<string> realLines = new List<string>();
 
         public List<List<string>> LexemsListWithLines(List<string> source)
         {

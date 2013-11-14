@@ -1,6 +1,7 @@
 ﻿@interface Test1
 	int a,b,c,d,e,f,g,h,t,r,y,u,i,o,p,s
 	int zz
+	
 @implementation
 	if a >= 6 and y<=7 or ![[g >8] or [f<i or t>a]] and 5 equ 6
 		input(a)
@@ -8,7 +9,7 @@
 		output(b)
 	endif
 	
-	b = (6-6*89+(a-((b+c^d))+h+(y-u)+(8+6)))
+	b = (6-6*7+(a-((b+c^d))+h+(y-u)+(8+6)))
 
 	if 6 equ 5 or !6 >= 6
 	{

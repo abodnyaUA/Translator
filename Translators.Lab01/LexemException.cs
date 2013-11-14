@@ -7,7 +7,13 @@ namespace Translators.Lab01
 	{
 		public LexemException(int lineNumber, string comment)
 		{
-			userInfo = "Line: " + lineNumber + "\n"+ "Error: " + comment;
+			string line = Parser.sharedParser.RealLines[lineNumber];
+			Console.WriteLine("LINE = "+line);
+			for (int i=0; i< Parser.sharedParser.RealLines.Count; i++)
+				Console.WriteLine("Line_ "+i+":"+Parser.sharedParser.RealLines[i]);
+
+			userInfo = "Line " + lineNumber + ": " + line + "\n" + 
+					   "Error: " + comment;
 		}
 		private string userInfo;
 		public string UserInfo { get { return userInfo; } }
