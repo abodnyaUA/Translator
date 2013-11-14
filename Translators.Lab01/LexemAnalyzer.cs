@@ -133,12 +133,21 @@ namespace Translators.Lab01
         // Parse doubleArray //
         public void AnalyzeWithDoubleList(List<List<string>> parsedList)
         {
-
             Console.WriteLine("Line  Command         Key\tID\tConst");
             // line cycle
             for (int i = 0; i < parsedList.Count; i++)
             {
+				// Check empty line
+				bool validLine = true;
+				if (i < parsedList.Count-1)
+				{
+					if (parsedList[i][0] == "\n" && parsedList[i+1][0] == "\n" && parsedList[i].Count == 1) validLine = false;
+				}
+				if (parsedList[i][0] == "\n" && i == 0 && parsedList[i].Count == 1) validLine = false;
+				if (parsedList[i][0] == "\n" && i == parsedList.Count-1 && parsedList[i].Count == 1) validLine = false;
+
                 // Lexems in line cycle
+				if (validLine)
                 foreach (string lexem in parsedList[i])
                 {
 					if (lexem == "") continue;

@@ -118,7 +118,7 @@ namespace Translators.Lab01
 			for (int i=0;i<lexemsArray.Length;i++)
 			{
 				string lexem = lexemsArray[i];
-				if (lexem != "" && !(lexems.Last() == "\n" && lexem =="\n")) 
+				if (lexem != "") 
 				{
 					lexems.Add(lexem);
 				}
