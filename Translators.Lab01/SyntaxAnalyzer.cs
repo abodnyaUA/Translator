@@ -18,13 +18,44 @@ namespace Translators.Lab01
         private SyntaxAnalyzer()
         {
         }
-
-		private void Check(ref int lexemIterator, int key, string success, string failure)
+		
+		private void Check(ref int lexemsIterator, int key, string success, string failure)
 		{
-			if (lexems[lexemIterator].key == key)
+			Check(ref lexemsIterator,key,success,failure,1,Out.State.LogVerbose);
+		}
+		private void Check(ref int lexemsIterator, int key, string success, string failure, Out.State logState)
+		{
+			Check(ref lexemsIterator,key,success,failure,1,logState);
+		}
+		private void Check(ref int lexemsIterator, int key, string success, string failure, int incrementValue)
+		{
+			Check(ref lexemsIterator,key,success,failure,incrementValue,Out.State.LogVerbose);
+		}
+		private void Check(ref int lexemsIterator, int key, string success, string failure, int incrementValue, Out.State logState)
+		{
+			if (lexems[lexemsIterator].key == key)
 			{
-				Out.Log(Out.State.LogVerbose,success);
-				lexemIterator++;
+				Out.Log(logState,success);
+				lexemsIterator+=incrementValue;
+			}
+			else
+			{
+				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,failure);
+				throw error;
+			}
+		}
+
+		public delegate bool CheckerFunc <T>(ref T obj);
+		
+		private void Check(ref int lexemsIterator, CheckerFunc <int> Func, string success, string failure)
+		{
+			Check(ref lexemsIterator,Func,success,failure,Out.State.LogVerbose);
+		}
+		private void Check(ref int lexemsIterator, CheckerFunc <int> Func, string success, string failure, Out.State logState)
+		{
+			if (Func(ref lexemsIterator))
+			{
+				Out.Log(Out.State.LogInfo,success);
 			}
 			else
 			{
@@ -46,106 +77,46 @@ namespace Translators.Lab01
             this.lexemsDict = LexemAnalyzer.sharedAnalyzer.dict;
 
             /* @interface */
-            if (lexems[lexemsIterator].key == 0)
-            {
-                Out.Log(Out.State.LogVerbose,"'Interface' accept");
-                lexemsIterator++;
-            }
-            else
-            {
-				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-				                                          "Application should start with '@interface'");
-                throw error;
-            }
+			Check(ref lexemsIterator,0,
+			      "'Interface' accept",
+			      "Application should start with '@interface'");
             
-            /* ID */
-            if (lexems[lexemsIterator].key == lexemsDict.Count-2)
-            {
-				Out.Log(Out.State.LogVerbose,"Name "+lexems[lexemsIterator].command+" accept");
-                lexemsIterator++;
-            }
-            else
-            {
-				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-				 "Invalid @interface name: "+lexems[lexemsIterator].command + " ("+lexems[lexemsIterator].key+")");
-                throw error;
-            }
+			/* ID */
+			Check(ref lexemsIterator,lexemsDict.Count-2,
+			      "Name "+lexems[lexemsIterator].command+" accept",
+			      "Invalid @interface name: "+lexems[lexemsIterator].command + " ("+lexems[lexemsIterator].key+")");
 
-            /* ENTER */
-            if (lexems[lexemsIterator].key == 6)
-            {
-				Out.Log(Out.State.LogVerbose,"ENTER accepted");
-                lexemsIterator++;
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                    "Not found ENTER after @interface name");
-                throw error;
-            }
+			/* ENTER */
+			Check(ref lexemsIterator,6,
+			      "ENTER accepted",
+			      "Not found ENTER after @interface name");
                 
             /* PARSE Interface */
-            if (AnalyzeInterface(ref lexemsIterator))
-            {
-				Out.Log(Out.State.LogVerbose,"Definitions [Interface block] accept");
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                    "Invalid declarations");
-                throw error;
-            }
+			Check(ref lexemsIterator,AnalyzeInterface,
+			      "Definitions [Interface block] accept",
+			      "Invalid declarations");
 
-            /* @implementation */
-            if (lexems[lexemsIterator].key == 1)
-            {
-				Out.Log(Out.State.LogVerbose,"'Implementation' accept");
-                lexemsIterator++;
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                    "Not found '@implementation' word");
-                throw error;
-            }
+			/* @implementation */
+			Check(ref lexemsIterator,1,
+			      "'Implementation' accept",
+			      "Not found '@implementation' word");
 
-            /* ENTER */
-            if (lexems[lexemsIterator].key == 6)
-            {
-				Out.Log(Out.State.LogVerbose,"ENTER accepted");
-                lexemsIterator++;
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                    "Not found ENTER after @implementation");
-                throw error;
-            }
+			/* ENTER */
+			Check(ref lexemsIterator,6,
+			      "ENTER accepted",
+			      "Not found ENTER after @implementation name");
 
-            /* Parse Implementation */
-            if (AnalyzeImplementation(ref lexemsIterator))
-            {
-				Out.Log(Out.State.LogInfo,"Operators [Implementation block] accept");
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                    "Invalide by parsing implementation");
-                throw error;
-            }
+			/* Parse Implementation */
+			Check(ref lexemsIterator,AnalyzeImplementation,
+			          "Operators [Implementation block] accept",
+			          "Invalid operators block");
             
-            /* @end */
-            if (lexems[lexemsIterator].key == 2)
-            {
-				Out.Log(Out.State.LogInfo,"End accept. Success syntax analyze.");
-            }
-            else
-            {
-                LexemException error = new LexemException(lexems[lexemsIterator].lineNumber, 
-                    "Invalide declaration @end");
-                throw error;
-            }       
+			/* @end */
+			Check(ref lexemsIterator,2,
+			      "End accept. Success syntax analyze.",
+			      "Invalide declaration @end",0);
         }
+
 		public bool AnalyzeInterface(ref int lexemsIterator)
         {
             if (lexems[lexemsIterator].key == 1) //empty interface
