@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Translators.Lab01
+namespace Translators
 {
     class Parser
     {
@@ -23,7 +23,7 @@ namespace Translators.Lab01
 		
 		private List<string> realLines = new List<string>();
 		public  List<string> RealLines { get { return realLines; } }
-        private string ReadFile(string path)
+		public string ReadFile(string path)
         {
             String list = "";
             StreamReader sr = new StreamReader(path);

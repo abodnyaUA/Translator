@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Translators.Lab01
+namespace Translators
 {
     class Compiler
     {

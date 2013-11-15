@@ -1,6 +1,6 @@
 using System;
 
-namespace Translators.Lab01
+namespace Translators
 {
 	public class Out
 	{

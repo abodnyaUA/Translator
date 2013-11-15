@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Translators.Lab01
+namespace Translators
 {
 	public class Checker
 	{
