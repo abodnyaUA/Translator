@@ -100,5 +100,11 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\OpenFile.png" />
+    <EmbeddedResource Include="..\Resources\Compile.png" />
+    <EmbeddedResource Include="..\Resources\Help.png" />
+    <EmbeddedResource Include="..\Resources\SaveAs.png" />
+    <EmbeddedResource Include="..\Resources\Table.png" />
+    <EmbeddedResource Include="..\Resources\Save.png" />
   </ItemGroup>
 </Project>

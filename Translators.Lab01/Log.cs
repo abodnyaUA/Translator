@@ -11,11 +11,18 @@ namespace Translators
 		}
 
 		public static State LogState = State.LogInfo;
+		public static void LogOneLine(State LogState, string str)
+		{
+			if (LogState <= Out.LogState) 
+			{
+				Program.window.Console.Buffer.Text += str;
+			}
+		}
 		public static void Log(State LogState, string str)
 		{
 			if (LogState <= Out.LogState) 
 			{
-				System.Console.WriteLine(str);
+				Program.window.Console.Buffer.Text += str + "\n";
 			}
 		}
 	}

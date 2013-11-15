@@ -154,8 +154,10 @@ namespace Translators
 					if (Lexems.Count == 0 && lexem == "\n") continue;
 
 					//Continue
-                    Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
-                    for (int j = 0; j < 18 - lexem.Length; j++) Console.Write(" ");
+						Out.LogOneLine(Out.State.LogInfo,
+							(i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
+                    for (int j = 0; j < 18 - lexem.Length; j++) 
+							Out.LogOneLine(Out.State.LogInfo," ");
                     // Try find lexem in Lexem's Table
                     int find = -1;
                     string value = lexem.Replace(" ","");
@@ -306,8 +308,8 @@ namespace Translators
             for (int i=0;i<IDs.Count;i++)
             {
                 // Start new line
-                Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + IDs[i]);
-                for (int j = 0; j < 18 - IDs[i].Length; j++) Console.Write(" ");
+				Out.LogOneLine(Out.State.LogInfo,(i < 9 ? "0" : "") + (i + 1) + "  " + IDs[i]);
+				for (int j = 0; j < 18 - IDs[i].Length; j++) Out.LogOneLine(Out.State.LogInfo," ");
 				Out.Log(Out.State.LogInfo,"");
             }
 
@@ -317,8 +319,8 @@ namespace Translators
             for (int i = 0; i < CONSTs.Count; i++)
             {
                 // Start new line
-                Console.Write((i < 9 ? "0" : "") + (i + 1) + "  " + CONSTs[i]);
-                for (int j = 0; j < 18 - CONSTs[i].Length; j++) Console.Write(" ");
+				Out.LogOneLine(Out.State.LogInfo,(i < 9 ? "0" : "") + (i + 1) + "  " + CONSTs[i]);
+				for (int j = 0; j < 18 - CONSTs[i].Length; j++) Out.LogOneLine(Out.State.LogInfo," ");
 				Out.Log(Out.State.LogInfo,"");
             }
 			Out.Log(Out.State.LogInfo,"");

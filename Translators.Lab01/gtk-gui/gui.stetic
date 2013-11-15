@@ -8,9 +8,9 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/Translators.Lab01.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="Translators.MainWindow" design-size="662 398">
+  <widget class="Gtk.Window" id="Translators.MainWindow" design-size="664 429">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Title" translatable="yes">IDE Translator by Bodnya Alexey TV-11</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="BorderWidth">6</property>
     <child>
@@ -29,9 +29,11 @@
                   <widget class="Gtk.Button" id="OpenButton">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Open</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.OpenFile.png</property>
+                    <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
                     <signal name="Clicked" handler="OpenFileEventHandler" />
                   </widget>
                   <packing>
@@ -45,9 +47,11 @@
                   <widget class="Gtk.Button" id="SaveButton">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Save</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.Save.png</property>
+                    <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -60,9 +64,11 @@
                   <widget class="Gtk.Button" id="SaveAsButton">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Save As</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.SaveAs.png</property>
+                    <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -86,9 +92,12 @@
                   <widget class="Gtk.Button" id="CompileButton">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Compile</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.Compile.png</property>
+                    <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
+                    <signal name="Clicked" handler="CompileFileEventHandler" />
                   </widget>
                   <packing>
                     <property name="Position">4</property>
@@ -107,8 +116,14 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.VSeparator" id="vseparator2">
+                  <widget class="Gtk.Button" id="ShowLexemTableButton">
                     <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.Table.png</property>
+                    <property name="Label" translatable="yes" />
+                    <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
                   </widget>
                   <packing>
                     <property name="Position">6</property>
@@ -118,30 +133,17 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Button" id="ShowLexemTableButton">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Lexems</property>
-                    <property name="UseUnderline">True</property>
-                  </widget>
-                  <packing>
-                    <property name="Position">7</property>
-                    <property name="AutoSize">True</property>
-                    <property name="Expand">False</property>
-                    <property name="Fill">False</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="Gtk.Button" id="ShowGrammarButton">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Type">TextOnly</property>
-                    <property name="Label" translatable="yes">Grammar</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">resource:Translators.Lab01.Help.png</property>
+                    <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
+                    <property name="Relief">None</property>
                   </widget>
                   <packing>
-                    <property name="Position">8</property>
+                    <property name="Position">7</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
@@ -167,7 +169,7 @@
                   <widget class="Gtk.VPaned" id="vpaned2">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Position">289</property>
+                    <property name="Position">260</property>
                     <child>
                       <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
                         <property name="MemberName" />

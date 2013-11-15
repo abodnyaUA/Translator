@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-namespace Translators.Lab01
+namespace Translators
 {
     class SyntaxAnalyzer
     {
@@ -139,22 +139,22 @@ namespace Translators.Lab01
 		{
 			Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].command);
 
-			if (lexems[lexemsIterator].key == 4) //input
+			if (lexems[lexemsIterator].command == "input") //input
 			{
 				AnalyzeIO(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Input accepted");
 			}
-			else if (lexems[lexemsIterator].key == 5) //output
+			else if (lexems[lexemsIterator].command == "output") //output
 			{
 				AnalyzeIO(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Output accepted");
 			}
-			else if (lexems[lexemsIterator].key == 7) //for
+			else if (lexems[lexemsIterator].command == "for") //for
 			{
 				AnalyzeCycle(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Cycle 'for' accepted");
 			}
-			else if (lexems[lexemsIterator].key == 11) //if
+			else if (lexems[lexemsIterator].command == "if") //if
 			{
 				AnalyzeCondition(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Condition accepted");

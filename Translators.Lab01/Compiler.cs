@@ -22,17 +22,22 @@ namespace Translators
         }
 
         public void CompileFile(string path)
-        {
+		{
+			Program.window.ProgressBar.Adjustment.Value = 0;
+			Program.window.Console.Buffer.Text = "";
 			Out.Log(Out.State.LogInfo,"======== Parse code ========");
             List<List<string>> parsed = Parser.sharedParser.ParseFile(path);
+			Program.window.ProgressBar.Adjustment.Value += 25;
             try
             {
 				Out.Log(Out.State.LogInfo,"======== Lexem Analyzer ========");
                 LexemAnalyzer.sharedAnalyzer.AnalyzeWithDoubleList(parsed);
-                LexemAnalyzer.sharedAnalyzer.outputTables();
+				LexemAnalyzer.sharedAnalyzer.outputTables();
+				Program.window.ProgressBar.Adjustment.Value += 25;
 
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
-                SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
+				SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
+				Program.window.ProgressBar.Adjustment.Value += 50;
             }
             catch (LexemException error)
             {
