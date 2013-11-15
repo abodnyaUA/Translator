@@ -51,6 +51,7 @@
     <Compile Include="SyntaxAnalyzer.cs" />
     <Compile Include="LexemException.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Checker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleCode.txt" />

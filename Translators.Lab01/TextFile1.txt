@@ -1,6 +1,7 @@
 ﻿@interface Test1
 	int a,b,c,d,e,f,g,h,t,r,y,u,i,o,p,s
 	int zz
+	int Vahah,Kaa
 	
 @implementation
 	if a >= 6 and y<=7 or ![[g >8] or [f<i or t>a]] and 5 equ 6
@@ -32,7 +33,7 @@
 	}
 	endif
 
-	for t = 4*1 to 8 step 1
+	for t = 1 to 8 step 1
 	{
 		input(d)
 		output(a)
