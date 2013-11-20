@@ -100,9 +100,8 @@ namespace Translators
                     }
                     else
                     {
-                        LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+                        throw new LexemException(lexems[lexemsIterator].lineNumber,
                             "Invalid declaration");
-                        throw error;
                     }
                 }
 
@@ -112,6 +111,7 @@ namespace Translators
             } while (lexems[lexemsIterator].key != 1); /* @implementation */
             return true;
         }
+
 		public bool AnalyzeImplementation(ref int lexemsIterator)
         {
 			AnalyzeOperatorsBlock(ref lexemsIterator,2);
@@ -166,9 +166,9 @@ namespace Translators
 			}
 			else
 			{
-				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				throw new LexemException(lexems[lexemsIterator].lineNumber,
 				                                          "Invalid operator "+lexems[lexemsIterator].command);
-				throw error;
+				
 			}
 			return true;
 		}
@@ -202,9 +202,8 @@ namespace Translators
                 }
                 else
                 {
-                    LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
-                        "Invalid using the variables in function 'input'");
-                    throw error;
+                    throw new LexemException(lexems[lexemsIterator].lineNumber,
+                        "Invalid using the variables in function 'input'");
                 }
             }
 			Out.Log(Out.State.LogVerbose,"Confirm ')'");
@@ -583,9 +582,9 @@ namespace Translators
 			}
 			else
 			{
-				LexemException error = new LexemException(lexems[lexemsIterator].lineNumber,
+				throw new LexemException(lexems[lexemsIterator].lineNumber,
 				                                "Invalid Connotial "+lexems[lexemsIterator].command);
-				throw error;
+				
 			}
 			AnalyzeExpression(ref lexemsIterator);
 			Out.Log(Out.State.LogVerbose,"....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].command);

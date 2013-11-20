@@ -93,8 +93,7 @@ namespace Translators
             {
                 if (ImplementationWasDeclarated || EndWasDeclarated || InterfaceWasDeclarated)
                 {
-                    LexemException error = new LexemException(line,"Invalide declaration @interface");
-                    throw error;
+					throw new LexemException(line,"Invalide declaration @interface");
                 }
                 else
                     InterfaceWasDeclarated = true;
@@ -103,8 +102,7 @@ namespace Translators
             {
                 if (!InterfaceWasDeclarated || EndWasDeclarated || ImplementationWasDeclarated)
                 {
-                    LexemException error = new LexemException(line,"Invalide declaration @implementation");
-                    throw error;
+					throw new LexemException(line,"Invalide declaration @implementation");
                 }
                 else
                     ImplementationWasDeclarated = true;
@@ -113,22 +111,27 @@ namespace Translators
             {
                 if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
-                    LexemException error = new LexemException(line,"Invalide declaration @end");
-                    throw error;
+                    throw new LexemException(line,"Invalide declaration @end");
                 }
                 else
                     EndWasDeclarated = true;
             }
             if (value == "int" && ImplementationWasDeclarated)
             {
-                LexemException error = new LexemException(line,"Variables can be declarated only in @interface section");
-                throw error;
+                throw new LexemException(line,"Variables can be declarated only in @interface section");
             }
         }
 
         // Parse doubleArray //
         public void AnalyzeWithDoubleList(List<List<string>> parsedList)
-        {
+		{
+			InterfaceWasDeclarated = false;
+			ImplementationWasDeclarated = false;
+			EndWasDeclarated = false;
+			IDs = new List<string>();
+			CONSTs = new List<string>();
+			Lexems = new List<Lexem>();
+
 			Out.Log(Out.State.LogInfo,"Line  Command         Key\tID\tConst");
             // line cycle
             for (int i = 0; i < parsedList.Count; i++)
@@ -253,8 +256,7 @@ namespace Translators
                                 if (wasDeclaratedIndex != -1)
                                 {
 									Out.Log(Out.State.LogInfo,"");
-                                    LexemException error = new LexemException((i+1),"Variable " + value + " has declarated");
-                                    throw error;
+                                    throw new LexemException((i+1),"Variable " + value + " has declarated");
                                 }
                                 else
                                 {

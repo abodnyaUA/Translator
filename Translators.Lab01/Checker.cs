@@ -34,9 +34,9 @@ namespace Translators
 			}
 			else
 			{
-				LexemException error = new LexemException(
+				throw new LexemException(
 					SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,failure);
-				throw error;
+				
 			}
 		}
 
@@ -58,9 +58,9 @@ namespace Translators
 			}
 			else
 			{
-				LexemException error = new LexemException(
+				throw new LexemException(
 					SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,failure);
-				throw error;
+				
 			}
 		}
 
@@ -91,9 +91,9 @@ namespace Translators
 			}
 			else
 			{
-				LexemException error = new LexemException(SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,
+				throw new LexemException(SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,
 				                                          failure);
-				throw error;
+				
 			}
 		}
 
@@ -118,9 +118,9 @@ namespace Translators
 //			}
 //			else
 //			{
-//				LexemException error = new LexemException(SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,
+//				throw new LexemException(SyntaxAnalyzer.sharedAnalyzer.lexems[lexemsIterator].lineNumber,
 //				                                          failure);
-//				throw error;
+//				
 //			}
 //		}
 	}

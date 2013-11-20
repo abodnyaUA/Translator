@@ -27,6 +27,7 @@ namespace Translators
         {
             String list = "";
             StreamReader sr = new StreamReader(path);
+			realLines.Clear();
             while (!sr.EndOfStream)
             {
                 string packet = sr.ReadLine();
