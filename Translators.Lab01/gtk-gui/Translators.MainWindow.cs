@@ -154,7 +154,7 @@ namespace Translators
 			this.vpaned2 = new global::Gtk.VPaned ();
 			this.vpaned2.CanFocus = true;
 			this.vpaned2.Name = "vpaned2";
-			this.vpaned2.Position = 260;
+			this.vpaned2.Position = 338;
 			// Container child vpaned2.Gtk.Paned+PanedChild
 			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -175,6 +175,7 @@ namespace Translators
 			this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
 			this.GtkScrolledWindow1.HscrollbarPolicy = ((global::Gtk.PolicyType)(2));
 			this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
+			this.GtkScrolledWindow1.WindowPlacement = ((global::Gtk.CornerType)(1));
 			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
 			this.ConsoleTextView = new global::Gtk.TextView ();
 			this.ConsoleTextView.CanFocus = true;
@@ -198,9 +199,10 @@ namespace Translators
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 664;
-			this.DefaultHeight = 429;
+			this.DefaultHeight = 455;
 			this.Show ();
 			this.OpenButton.Clicked += new global::System.EventHandler (this.OpenFileEventHandler);
+			this.SaveButton.Clicked += new global::System.EventHandler (this.SaveButtonEventHandler);
 			this.CompileButton.Clicked += new global::System.EventHandler (this.CompileFileEventHandler);
 		}
 	}

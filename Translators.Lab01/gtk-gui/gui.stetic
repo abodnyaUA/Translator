@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/Translators.Lab01.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="Translators.MainWindow" design-size="664 429">
+  <widget class="Gtk.Window" id="Translators.MainWindow" design-size="664 455">
     <property name="MemberName" />
     <property name="Title" translatable="yes">IDE Translator by Bodnya Alexey TV-11</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -52,6 +52,7 @@
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
+                    <signal name="Clicked" handler="SaveButtonEventHandler" />
                   </widget>
                   <packing>
                     <property name="Position">1</property>
@@ -169,7 +170,7 @@
                   <widget class="Gtk.VPaned" id="vpaned2">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Position">260</property>
+                    <property name="Position">338</property>
                     <child>
                       <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
                         <property name="MemberName" />
@@ -195,6 +196,7 @@
                         <property name="MemberName" />
                         <property name="HscrollbarPolicy">Never</property>
                         <property name="ShadowType">In</property>
+                        <property name="WindowPlacement">BottomLeft</property>
                         <child>
                           <widget class="Gtk.TextView" id="ConsoleTextView">
                             <property name="MemberName" />

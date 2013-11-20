@@ -5,7 +5,8 @@ namespace Translators
 {
 	public partial class MainWindow : Gtk.Window
 	{
-		private string filePath = "";
+		private Gtk.TextBuffer CodeTextBuffer { get {return CodeTextView.Buffer; } }
+		private string filepath = "";
 
 		public MainWindow () : 
 			base (Gtk.WindowType.Toplevel)
@@ -25,19 +26,32 @@ namespace Translators
 			if (dialog.Run() == (int)Gtk.ResponseType.Accept) 
 			{
 				String list = "";
-				StreamReader sr = new StreamReader(dialog.Filename);
+				filepath = dialog.Filename;
+				StreamReader sr = new StreamReader(filepath);
 				list = sr.ReadToEnd();
 				sr.Close();
-				filePath = dialog.Filename;
 				CodeTextView.Buffer.Text = list;
 			}
 			//Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
 			dialog.Destroy();
 		}
 
+		private void SaveFile()
+		{
+			StreamWriter sw = new StreamWriter(filepath);
+			sw.Write(CodeTextView.Buffer.Text);
+			sw.Close();
+		}
+
 		protected void CompileFileEventHandler (object sender, EventArgs e)
 		{
-			Compiler.sharedCompiler.CompileFile(filePath);
+			SaveFile();
+			Compiler.sharedCompiler.CompileFile(filepath);
+		}
+
+		protected void SaveButtonEventHandler (object sender, EventArgs e)
+		{
+			SaveFile();
 		}
 	}
 }
