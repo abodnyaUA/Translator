@@ -120,7 +120,7 @@ namespace Translators
 
 		public void AnalyzeOperatorsBlock(ref int lexemsIterator, int endLexemKey)
 		{
-			if (lexems[lexemsIterator].key == 2) //empty implementation
+			if (lexems[lexemsIterator].key == endLexemKey) //empty implementation
 			{
 				return;
 			}
