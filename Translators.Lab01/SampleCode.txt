@@ -1,22 +1,8 @@
-// Test Application
-
-// Header
 @interface TestApp
+int c
 	int a,bcb
 
 // Body
-@implementation
-	input(a) 
-	if [a>=(3+52*a^bcb - a/a + bcb*(bcb*bcb-bcb))] and [a<=10 or a >8 and [a < bcb or a<7]]
-		a = (a + 5 / a - a * bcb)
-	else
-		{
-		}
-	endif
-	for bcb = 1 to 5 step 1
-	{
-		a = a * bcb
-	}
-	next
-	
+@implementation	
+a = (6 - 85)
 @end

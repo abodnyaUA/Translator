@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -203,7 +203,8 @@ namespace Translators
                 else
                 {
                     throw new LexemException(lexems[lexemsIterator].lineNumber,
-                        "Invalid using the variables in function 'input'");
+                        "Invalid using the variables in function 'input'");
+
                 }
             }
 			Out.Log(Out.State.LogVerbose,"Confirm ')'");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -111,7 +111,8 @@ namespace Translators
             {
                 if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
-                    throw new LexemException(line,"Invalide declaration @end");
+                    throw new LexemException(line,"Invalide declaration @end");
+
                 }
                 else
                     EndWasDeclarated = true;
@@ -256,7 +257,8 @@ namespace Translators
                                 if (wasDeclaratedIndex != -1)
                                 {
 									Out.Log(Out.State.LogInfo,"");
-                                    throw new LexemException((i+1),"Variable " + value + " has declarated");
+                                    throw new LexemException((i+1),"Variable " + value + " has declarated");
+
                                 }
                                 else
                                 {
