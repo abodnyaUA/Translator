@@ -536,7 +536,7 @@ namespace Translators
 		}
 		#endregion
 
-		#region Expression
+		#region H/A Expression
 		private void HalfAutomatExpression()
 		{
 			State_41();
@@ -597,7 +597,7 @@ namespace Translators
 		}
 		#endregion
 
-		#region Logical Expression
+		#region H/A Logical Expression
 		private void HalfAutomatLogicalExpression()
 		{
 			State_51();
