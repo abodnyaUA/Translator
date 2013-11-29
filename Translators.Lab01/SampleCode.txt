@@ -4,5 +4,53 @@ int c
 
 // Body
 @implementation	
-a = (6 - 85)
+// Test [=]
+a = (485 * 25 - (85 +(a * 85)) ^ (23) - bcb)
+bcb = 155 - 85 * a
+
+// Test IO
+input(a)
+input(bcb,a,a,bcb)
+output(a)
+output(bcb,a,bcb)
+
+// Test If
+if a > 6  
+{
+	output(bcb)
+if a > 6  
+{
+	output(bcb)
+if a > 6  
+{
+	output(bcb)
+}
+else	
+	{
+		a = 76 - 785
+		input(a)
+	}     
+endif
+}
+else	
+	{
+		a = 76 - 785
+		input(a)
+	}     
+endif
+}
+else	
+	{
+		a = 76 - 785
+		input(a)
+	}     
+endif
+
+for a = a * 45 * 552 - bcb 	to 	457 * 5252 - bcb * a 	step 	12*85
+{
+	output(a)
+	output(bcb)
+}
+next
+
 @end

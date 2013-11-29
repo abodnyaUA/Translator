@@ -201,14 +201,14 @@ namespace Translators
 				CurrentState = 51;
 				lexemsIterator++;
 				Out.Log(Out.State.LogInfo,"Call half-automat LOGICAL EXPRESSION");
-				Stack.Push(State_18);
+				Stack.Push(State_17);
 				HalfAutomatLogicalExpression();
 			}
 			else if (CurrentLexemValue() == "for")
 			{
-				CurrentState = 24;
+				CurrentState = 23;
 				lexemsIterator++;
-				State_24();
+				State_23();
 			}
 			else
 			{
@@ -237,7 +237,6 @@ namespace Translators
 			if (Stack.Last() != Stack.WrongLexem)
 			{
 				Action returnState = Stack.Pop();
-				lexemsIterator++;
 				returnState();
 			}
 		}
@@ -494,7 +493,6 @@ namespace Translators
 			else
 			{
 				Stack.Push(State_34);
-				lexemsIterator++;
 				HalfAutomatOperator();
 			}
 		}
@@ -524,7 +522,6 @@ namespace Translators
 			else
 			{
 				Stack.Push(State_32);
-				lexemsIterator++;
 				HalfAutomatOperator();
 			}
 		}
@@ -534,7 +531,6 @@ namespace Translators
 			if (Stack.Last() != Stack.WrongLexem)
 			{
 				Action returnState = Stack.Pop();
-				lexemsIterator++;
 				returnState();
 			}
 		}
@@ -582,7 +578,6 @@ namespace Translators
 			else
 			{
 				Action returnState = Stack.Pop();
-				lexemsIterator++;
 				returnState();
 			}
 		}
@@ -605,6 +600,7 @@ namespace Translators
 		#region Logical Expression
 		private void HalfAutomatLogicalExpression()
 		{
+			State_51();
 		}
 
 		private void State_51()
@@ -624,7 +620,6 @@ namespace Translators
 			else 
 			{
 				Stack.Push(State_54);
-				lexemsIterator++;
 				HalfAutomatExpression();
 			}
 		}
@@ -654,7 +649,6 @@ namespace Translators
 			else
 			{
 				Action returnState = Stack.Pop();
-				lexemsIterator++;
 				returnState();
 			}
 		}
