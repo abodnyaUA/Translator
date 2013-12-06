@@ -10,17 +10,17 @@ namespace Translators.Lab01
 		public static string LexemCONST = "__CONST__";
 		public static string NoLexem 	= null;
 
-		private Lexem lexem;
-		private int newState;
-		private int stackState;
+		private string lexem;
+		private int nextState;
+		private int exitState;
 		private StackUsing stackUsing;
 
-		static public Transition DefaultTransition(string lexemString, int newState)
+		static public Transition DefaultTransition(string lexemString, int nextState)
 		{
 			Transition transition = new Transition();
 			transition.lexem = lexemString;
-			transition.newState = newState;
-			transition.stackState = int.MaxValue;
+			transition.nextState = nextState;
+			transition.exitState = int.MaxValue;
 			transition.stackUsing = StackUsing.NoUse;
 			return transition;
 		}
@@ -29,18 +29,18 @@ namespace Translators.Lab01
 		{
 			Transition transition = new Transition();
 			transition.lexem = lexemString;
-			transition.newState = int.MaxValue;
-			transition.stackState = int.MaxValue;
+			transition.nextState = int.MaxValue;
+			transition.exitState = int.MaxValue;
 			transition.stackUsing = StackUsing.UsePop;
 			return transition;
 		}
 
-		static public Transition CallTransition(string lexemString, int newState, int stackState)
+		static public Transition CallTransition(string lexemString, int nextState, int exitState)
 		{
 			Transition transition = new Transition();
 			transition.lexem = lexemString;
-			transition.newState = newState;
-			transition.stackState = stackState;
+			transition.nextState = nextState;
+			transition.exitState = exitState;
 			transition.stackUsing = StackUsing.UsePush;
 			return transition;
 		}
@@ -73,7 +73,7 @@ namespace Translators.Lab01
 			{
 				case StackUsing.NoUse:
 				{
-					stateIterator = this.newState;
+					stateIterator = this.nextState;
 					break;
 				}
 				case StackUsing.UsePop:
@@ -84,13 +84,13 @@ namespace Translators.Lab01
 				}
 				case StackUsing.UsePush:
 				{
-					SyntaxAnalyzerWithTable.sharedAnalyzer.stack.Push(this.stackState);
-					stateIterator = this.newState;
+					SyntaxAnalyzerWithTable.sharedAnalyzer.stack.Push(this.exitState);
+					stateIterator = this.nextState;
 					break;
 				}
 			}
 
-			if (lexem != Transition.NoLexem)
+			if (lexem != null)
 			{
 				lexemsIterator++;
 			}
