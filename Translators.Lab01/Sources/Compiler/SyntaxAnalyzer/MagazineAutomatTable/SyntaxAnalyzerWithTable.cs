@@ -26,7 +26,7 @@ namespace Translators.Lab01
 
 		private void FIllTable()
 		{
-
+			table.AddState(1,new List<Transition>() {Transition.DefaultTransition("@interface",2)},"Missed @interface");
 		}		
 
 		public void ProcessLexemOnState(Lexem lexem, ref int lexemIterator, ref int stateNumber)

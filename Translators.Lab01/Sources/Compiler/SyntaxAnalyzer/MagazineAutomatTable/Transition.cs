@@ -5,35 +5,40 @@ namespace Translators.Lab01
 	public class Transition
 	{
 		enum StackUsing {UsePop, UsePush, NoUse};
+
+		public static string LexemID 	= "__ID__";
+		public static string LexemCONST = "__CONST__";
+		public static string NoLexem 	= null;
+
 		private Lexem lexem;
 		private int newState;
 		private int stackState;
 		private StackUsing stackUsing;
 
-		static public Transition DefaultTransition(Lexem lexem, int newState)
+		static public Transition DefaultTransition(string lexemString, int newState)
 		{
 			Transition transition = new Transition();
-			transition.lexem = lexem;
+			transition.lexem = lexemString;
 			transition.newState = newState;
 			transition.stackState = int.MaxValue;
 			transition.stackUsing = StackUsing.NoUse;
 			return transition;
 		}
 
-		static public Transition ExitTransition(Lexem lexem)
+		static public Transition ExitTransition(string lexemString)
 		{
 			Transition transition = new Transition();
-			transition.lexem = lexem;
+			transition.lexem = lexemString;
 			transition.newState = int.MaxValue;
 			transition.stackState = int.MaxValue;
 			transition.stackUsing = StackUsing.UsePop;
 			return transition;
 		}
 
-		static public Transition CallTransition(Lexem lexem, int newState, int stackState)
+		static public Transition CallTransition(string lexemString, int newState, int stackState)
 		{
 			Transition transition = new Transition();
-			transition.lexem = lexem;
+			transition.lexem = lexemString;
 			transition.newState = newState;
 			transition.stackState = stackState;
 			transition.stackUsing = StackUsing.UsePush;
@@ -42,11 +47,19 @@ namespace Translators.Lab01
 
 		public bool RespondLexem(Lexem lexem)
 		{
-			if (lexem == null && this.lexem == null)
+			if (lexem == null && this.lexem == Transition.NoLexem)
 			{
 				return true;
 			}
-			if (lexem.key == this.lexem.key)
+			if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count - 2 && this.lexem == Transition.LexemID)
+			{
+				return true;
+			}
+			if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count - 1 && this.lexem == Transition.LexemCONST)
+			{
+				return true;
+			}
+			if (lexem.command == this.lexem)
 			{
 				return true;
 			}
@@ -77,7 +90,7 @@ namespace Translators.Lab01
 				}
 			}
 
-			if (lexem != null)
+			if (lexem != Transition.NoLexem)
 			{
 				lexemsIterator++;
 			}
