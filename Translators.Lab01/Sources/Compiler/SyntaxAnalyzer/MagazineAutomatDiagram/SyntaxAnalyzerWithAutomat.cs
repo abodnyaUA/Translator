@@ -14,9 +14,6 @@ namespace Translators
 				return _sharedAnalyzer;
 			}
 		}
-		private SyntaxAnalyzerWithAutomat()
-		{
-		}
 
 		private List<Lexem> lexems;
 		public List<string> IDs;
@@ -169,7 +166,7 @@ namespace Translators
 			else 
 			{
 				CurrentState = 11;
-				Stack.Push(State_7);
+				ActionStack.Push(State_7);
 				Out.Log(Out.State.LogInfo,"Call half-automat OPERATOR");
 				HalfAutomatOperator();
 			} 
@@ -201,7 +198,7 @@ namespace Translators
 				CurrentState = 51;
 				lexemsIterator++;
 				Out.Log(Out.State.LogInfo,"Call half-automat LOGICAL EXPRESSION");
-				Stack.Push(State_17);
+				ActionStack.Push(State_17);
 				HalfAutomatLogicalExpression();
 			}
 			else if (CurrentLexemValue() == "for")
@@ -221,7 +218,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "=")
 			{
-				Stack.Push(State_13);
+				ActionStack.Push(State_13);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}
@@ -234,9 +231,9 @@ namespace Translators
 
 		private void State_13()
 		{
-			if (Stack.Last() != Stack.WrongLexem)
+			if (ActionStack.Last() != ActionStack.WrongLexem)
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				returnState();
 			}
 		}
@@ -280,7 +277,7 @@ namespace Translators
 			}
 			else if (CurrentLexemValue() == ")")
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				lexemsIterator++;
 				returnState();
 			}
@@ -295,7 +292,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "\n")
 			{
-				Stack.Push(State_18);
+				ActionStack.Push(State_18);
 				lexemsIterator++;
 				HalfAutomatOperatorsBlock();
 			}
@@ -337,7 +334,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "\n")
 			{
-				Stack.Push(State_21);
+				ActionStack.Push(State_21);
 				lexemsIterator++;
 				HalfAutomatOperatorsBlock();
 			}
@@ -365,7 +362,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "endif")
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				lexemsIterator++;
 				returnState();
 			}
@@ -394,7 +391,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "=")
 			{
-				Stack.Push(State_25);
+				ActionStack.Push(State_25);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}
@@ -408,7 +405,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "to")
 			{
-				Stack.Push(State_26);
+				ActionStack.Push(State_26);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}
@@ -422,7 +419,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "step")
 			{
-				Stack.Push(State_27);
+				ActionStack.Push(State_27);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}
@@ -436,7 +433,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "\n")
 			{
-				Stack.Push(State_28);
+				ActionStack.Push(State_28);
 				lexemsIterator++;
 				HalfAutomatOperatorsBlock();
 			}
@@ -464,7 +461,7 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "next")
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				lexemsIterator++;
 				returnState();
 			}
@@ -492,7 +489,7 @@ namespace Translators
 			}
 			else
 			{
-				Stack.Push(State_34);
+				ActionStack.Push(State_34);
 				HalfAutomatOperator();
 			}
 		}
@@ -515,22 +512,22 @@ namespace Translators
 		{
 			if (CurrentLexemValue() == "}")
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				lexemsIterator++;
 				returnState();
 			}
 			else
 			{
-				Stack.Push(State_32);
+				ActionStack.Push(State_32);
 				HalfAutomatOperator();
 			}
 		}
 
 		private void State_34()
 		{
-			if (Stack.Last() != Stack.WrongLexem)
+			if (ActionStack.Last() != ActionStack.WrongLexem)
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				returnState();
 			}
 		}
@@ -552,7 +549,7 @@ namespace Translators
 			}
 			else if (CurrentLexemValue() == "(")
 			{
-				Stack.Push(State_43);
+				ActionStack.Push(State_43);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}
@@ -577,7 +574,7 @@ namespace Translators
 			}
 			else
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				returnState();
 			}
 		}
@@ -613,13 +610,13 @@ namespace Translators
 			}
 			else if (CurrentLexemValue() == "[")
 			{
-				Stack.Push(State_52);
+				ActionStack.Push(State_52);
 				lexemsIterator++;
 				HalfAutomatLogicalExpression();
 			}
 			else 
 			{
-				Stack.Push(State_54);
+				ActionStack.Push(State_54);
 				HalfAutomatExpression();
 			}
 		}
@@ -648,7 +645,7 @@ namespace Translators
 			}
 			else
 			{
-				Action returnState = Stack.Pop();
+				Action returnState = ActionStack.Pop();
 				returnState();
 			}
 		}
@@ -662,7 +659,7 @@ namespace Translators
 
 			if (operators.Contains(CurrentLexemValue()))
 			{
-				Stack.Push(State_53);
+				ActionStack.Push(State_53);
 				lexemsIterator++;
 				HalfAutomatExpression();
 			}

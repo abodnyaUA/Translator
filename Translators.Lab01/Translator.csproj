@@ -78,13 +78,17 @@
     <Compile Include="Sources\Compiler\LexemAnalyzer\Parser.cs" />
     <Compile Include="Sources\Compiler\Other\LexemException.cs" />
     <Compile Include="Sources\Compiler\Other\Log.cs" />
-    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\Stack.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\SyntaxAnalyzerWithAutomat.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\Checker.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzer.cs" />
     <Compile Include="Sources\UI\MainWindow.cs" />
     <Compile Include="Sources\Prefix\Program.cs" />
     <Compile Include="gtk-gui\Translators.MainWindow.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\Transition.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\State.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\SyntaxAnalyzerWithTable.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\AutomatTable.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\ActionStack.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Samples\TextFile1.txt" />

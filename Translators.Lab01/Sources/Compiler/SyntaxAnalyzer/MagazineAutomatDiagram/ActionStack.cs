@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Translators
 {
-	public class Stack
+	public class ActionStack
 	{
 		private static List<Action> _stack = new List<Action>();
 
@@ -16,8 +16,8 @@ namespace Translators
 
 		public static Action Pop()
 		{
-			Action returnValue = Stack.Last();
-			if (returnValue != Stack.WrongLexem)
+			Action returnValue = ActionStack.Last();
+			if (returnValue != ActionStack.WrongLexem)
 			{
 				_stack.RemoveAt(_stack.Count-1);
 			}
@@ -31,7 +31,7 @@ namespace Translators
 				Action returnValue = _stack[_stack.Count-1];
 				return returnValue;
 			}
-			return Stack.WrongLexem;
+			return ActionStack.WrongLexem;
 		}
 	}
 }

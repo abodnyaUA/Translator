@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 namespace Translators
 {
-    class Lexem
+	public class Lexem
     {
         public int lineNumber;
         public string command;
