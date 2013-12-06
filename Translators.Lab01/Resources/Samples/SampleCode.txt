@@ -1,0 +1,31 @@
+@interface TestApp
+int c
+	int a,bcb
+
+// Body
+@implementation	
+// Test [=]
+bcb = 155 - 85 * a
+
+// Test IO
+input(a)
+
+// Test If
+if [4 equ 5] and bcb < 4565 * 85 
+{
+	output(bcb)
+}
+else	
+{
+	a = 76 - 785
+	input(a)
+}     
+endif
+
+for a = 1	to a* 5 step 2
+{
+	output(a)
+}
+next
+
+@end

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Translators.Lab01</RootNamespace>
-    <AssemblyName>Translators.Lab01</AssemblyName>
+    <AssemblyName>Translators</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Builds\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +30,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Builds\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -71,24 +71,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LexemAnalyzer.cs" />
-    <Compile Include="Compiler.cs" />
-    <Compile Include="Parser.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyntaxAnalyzer.cs" />
-    <Compile Include="LexemException.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Checker.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="Sources\Compiler\Compiler.cs" />
+    <Compile Include="Sources\Compiler\LexemAnalyzer\LexemAnalyzer.cs" />
+    <Compile Include="Sources\Compiler\LexemAnalyzer\Parser.cs" />
+    <Compile Include="Sources\Compiler\Other\LexemException.cs" />
+    <Compile Include="Sources\Compiler\Other\Log.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\Stack.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\SyntaxAnalyzerWithAutomat.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\Checker.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzer.cs" />
+    <Compile Include="Sources\UI\MainWindow.cs" />
+    <Compile Include="Sources\Prefix\Program.cs" />
     <Compile Include="gtk-gui\Translators.MainWindow.cs" />
-    <Compile Include="SyntaxAnalyzerWithAutomat.cs" />
-    <Compile Include="Stack.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleCode.txt" />
-    <Content Include="TextFile1.txt" />
+    <Content Include="Resources\Samples\TextFile1.txt" />
+    <Content Include="Resources\Samples\SampleCode.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -102,11 +102,37 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\OpenFile.png" />
-    <EmbeddedResource Include="..\Resources\Compile.png" />
-    <EmbeddedResource Include="..\Resources\Help.png" />
-    <EmbeddedResource Include="..\Resources\SaveAs.png" />
-    <EmbeddedResource Include="..\Resources\Table.png" />
-    <EmbeddedResource Include="..\Resources\Save.png" />
+    <EmbeddedResource Include="..\Resources\OpenFile.png">
+      <DependentUpon>Compile.png</DependentUpon>
+      <Link>Resources\Images\OpenFile.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Compile.png">
+      <Link>Resources\Images\Compile.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Help.png">
+      <DependentUpon>Compile.png</DependentUpon>
+      <Link>Resources\Images\Help.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\SaveAs.png">
+      <DependentUpon>Compile.png</DependentUpon>
+      <Link>Resources\Images\SaveAs.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Table.png">
+      <DependentUpon>Compile.png</DependentUpon>
+      <Link>Resources\Images\Table.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Save.png">
+      <DependentUpon>Compile.png</DependentUpon>
+      <Link>Resources\Images\Save.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Sources\" />
+    <Folder Include="Sources\UI\" />
+    <Folder Include="Sources\Prefix\" />
+    <Folder Include="Resources\Samples\" />
+    <Folder Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\" />
   </ItemGroup>
 </Project>

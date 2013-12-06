@@ -49,7 +49,7 @@ namespace Translators
 			this.OpenButton.UseUnderline = true;
 			this.OpenButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w1 = new global::Gtk.Image ();
-			w1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.OpenFile.png");
+			w1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.OpenFile.png");
 			this.OpenButton.Image = w1;
 			this.hbox3.Add (this.OpenButton);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.OpenButton]));
@@ -63,7 +63,7 @@ namespace Translators
 			this.SaveButton.UseUnderline = true;
 			this.SaveButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w3 = new global::Gtk.Image ();
-			w3.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Save.png");
+			w3.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.Save.png");
 			this.SaveButton.Image = w3;
 			this.hbox3.Add (this.SaveButton);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.SaveButton]));
@@ -77,7 +77,7 @@ namespace Translators
 			this.SaveAsButton.UseUnderline = true;
 			this.SaveAsButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w5 = new global::Gtk.Image ();
-			w5.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.SaveAs.png");
+			w5.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.SaveAs.png");
 			this.SaveAsButton.Image = w5;
 			this.hbox3.Add (this.SaveAsButton);
 			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.SaveAsButton]));
@@ -99,7 +99,7 @@ namespace Translators
 			this.CompileButton.UseUnderline = true;
 			this.CompileButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w8 = new global::Gtk.Image ();
-			w8.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Compile.png");
+			w8.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.Compile.png");
 			this.CompileButton.Image = w8;
 			this.hbox3.Add (this.CompileButton);
 			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.CompileButton]));
@@ -119,7 +119,7 @@ namespace Translators
 			this.ShowLexemTableButton.UseUnderline = true;
 			this.ShowLexemTableButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w11 = new global::Gtk.Image ();
-			w11.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Table.png");
+			w11.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.Table.png");
 			this.ShowLexemTableButton.Image = w11;
 			this.hbox3.Add (this.ShowLexemTableButton);
 			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.ShowLexemTableButton]));
@@ -133,7 +133,7 @@ namespace Translators
 			this.ShowGrammarButton.UseUnderline = true;
 			this.ShowGrammarButton.Relief = ((global::Gtk.ReliefStyle)(2));
 			global::Gtk.Image w13 = new global::Gtk.Image ();
-			w13.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Help.png");
+			w13.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Translators.Lab01.Resources.Images.Help.png");
 			this.ShowGrammarButton.Image = w13;
 			this.hbox3.Add (this.ShowGrammarButton);
 			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.ShowGrammarButton]));

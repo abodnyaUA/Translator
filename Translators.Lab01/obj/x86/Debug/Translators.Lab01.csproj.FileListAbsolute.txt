@@ -1,5 +1,0 @@
-C:\Developer\Projects\Translators.Lab01\Translators.Lab01\bin\Debug\Translators.Lab01.exe
-C:\Developer\Projects\Translators.Lab01\Translators.Lab01\bin\Debug\Translators.Lab01.pdb
-C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translators.Lab01.exe
-C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translators.Lab01.pdb
-C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translators.Lab01.csprojResolveAssemblyReference.cache

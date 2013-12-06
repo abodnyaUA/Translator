@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/Translators.Lab01.exe" internal="true" />
+    <widget-library name="../../Builds/Debug/Translators.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="Translators.MainWindow" design-size="664 455">
     <property name="MemberName" />
@@ -30,7 +30,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.OpenFile.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.OpenFile.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
@@ -48,7 +48,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.Save.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.Save.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
@@ -66,7 +66,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.SaveAs.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.SaveAs.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
@@ -94,7 +94,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.Compile.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.Compile.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
@@ -121,7 +121,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.Table.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.Table.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
@@ -138,7 +138,7 @@
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextAndIcon</property>
-                    <property name="Icon">resource:Translators.Lab01.Help.png</property>
+                    <property name="Icon">resource:Translators.Lab01.Resources.Images.Help.png</property>
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
