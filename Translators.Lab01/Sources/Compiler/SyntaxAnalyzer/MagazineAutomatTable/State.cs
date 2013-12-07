@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Translators.Lab01
+namespace Translators
 {
 	public class State
 	{

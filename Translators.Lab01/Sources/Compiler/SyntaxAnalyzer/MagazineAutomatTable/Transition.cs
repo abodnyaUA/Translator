@@ -1,6 +1,6 @@
 using System;
 
-namespace Translators.Lab01
+namespace Translators
 {
 	public class Transition
 	{
@@ -45,9 +45,14 @@ namespace Translators.Lab01
 			return transition;
 		}
 
+		public bool NeedEmptyLexem()
+		{
+			return (this.lexem == Transition.NoLexem);
+		}
+
 		public bool RespondLexem(Lexem lexem)
 		{
-			if (lexem == null && this.lexem == Transition.NoLexem)
+			if (this.lexem == Transition.NoLexem)
 			{
 				return true;
 			}
@@ -79,6 +84,10 @@ namespace Translators.Lab01
 				case StackUsing.UsePop:
 				{
 					int newState = SyntaxAnalyzerWithTable.sharedAnalyzer.stack.Pop();
+					if (newState == int.MaxValue)
+					{
+						Out.Log(Out.State.LogInfo,"End of File");
+					}
 					stateIterator = newState;
 					break;
 				}
@@ -90,7 +99,7 @@ namespace Translators.Lab01
 				}
 			}
 
-			if (lexem != null)
+			if (this.lexem != NoLexem)
 			{
 				lexemsIterator++;
 			}

@@ -37,7 +37,7 @@ namespace Translators
 
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
 				//SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
-				SyntaxAnalyzerWithAutomat.sharedAnalyzer.AnalyzeLexems();
+				SyntaxAnalyzerWithTable.sharedAnalyzer.AnalyzeLexems();
 				Program.window.ProgressBar.Adjustment.Value += 50;
             }
             catch (LexemException error)

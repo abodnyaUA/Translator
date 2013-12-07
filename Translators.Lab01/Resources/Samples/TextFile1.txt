@@ -1,0 +1,6 @@
+@interface App1
+int a,b,c
+int h
+@implementation 
+a = 45 * 85 / 75 * b * c ^ (b + c / a)
+@end
