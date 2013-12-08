@@ -89,6 +89,9 @@
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\SyntaxAnalyzerWithTable.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\AutomatTable.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\ActionStack.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\BottomUpTable.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\SyntaxAnalyzerBottomUp.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\Grammar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Samples\TextFile1.txt" />
@@ -138,5 +141,6 @@
     <Folder Include="Sources\Prefix\" />
     <Folder Include="Resources\Samples\" />
     <Folder Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\" />
+    <Folder Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\" />
   </ItemGroup>
 </Project>
