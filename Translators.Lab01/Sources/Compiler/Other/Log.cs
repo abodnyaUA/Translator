@@ -10,7 +10,7 @@ namespace Translators
 			LogVerbose
 		}
 
-		public static State LogState = State.LogInfo;
+		public static State LogState = State.LogDebug;
 		public static void LogOneLine(State LogState, string str)
 		{
 			if (LogState <= Out.LogState) 

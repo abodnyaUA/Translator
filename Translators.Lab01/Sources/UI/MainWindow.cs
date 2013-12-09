@@ -45,8 +45,9 @@ namespace Translators
 
 		protected void CompileFileEventHandler (object sender, EventArgs e)
 		{
-			SaveFile();
-			Compiler.sharedCompiler.CompileFile(filepath);
+			SyntaxAnalyzerBottomUp analyzer = SyntaxAnalyzerBottomUp.sharedAnalyzer;
+			//SaveFile();
+			//Compiler.sharedCompiler.CompileFile(filepath);
 		}
 
 		protected void SaveButtonEventHandler (object sender, EventArgs e)

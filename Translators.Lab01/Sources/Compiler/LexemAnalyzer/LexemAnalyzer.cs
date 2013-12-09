@@ -71,6 +71,7 @@ namespace Translators
 			dict.Add("or");
 			dict.Add("[");
 			dict.Add("]");
+			dict.Add(";");
             dict.Add("var");
             dict.Add("const");
             return dict;
