@@ -86,9 +86,10 @@ namespace Translators
 				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(currentTerm);
 				foreach (GrammarPair pair in pairs)
 				{
-					if (ConnotialBetweenTerminals(currentTerm,pair.RootLexem) == Connotial.NoConnotial)
+					string firstPartLexem = pair.PartLexems[0];
+					if (ConnotialBetweenTerminals(currentTerm,firstPartLexem) == Connotial.NoConnotial)
 					{
-						SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,pair.RootLexem);
+						SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,firstPartLexem);
 						RecursiveSetup(currentTerm,pair,nextTerm);
 					}
 				}
@@ -131,6 +132,20 @@ namespace Translators
 			}
 			string lastTerm = grammarPair.PartLexems[grammarPair.PartLexems.Count-1];
 			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastTerm,prevLevelNextTerm);
+
+			if (this.grammar.GrammarPairWithRootLexem(lastTerm) != null)
+			{
+				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(lastTerm);
+				foreach (GrammarPair pair in pairs)
+				{
+					string lastPartLexem = pair.PartLexems[pair.PartLexems.Count-1];
+					if (ConnotialBetweenTerminals(lastTerm,lastPartLexem) == Connotial.NoConnotial)
+					{
+						SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastPartLexem,prevLevelNextTerm);
+						RecursiveSetup(currentTerm,pair,nextTerm);
+					}
+				}
+			}
 		}
 
 		private Connotial Cell(int row, int column)

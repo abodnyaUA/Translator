@@ -154,7 +154,7 @@ namespace Translators
 			this.vpaned2 = new global::Gtk.VPaned ();
 			this.vpaned2.CanFocus = true;
 			this.vpaned2.Name = "vpaned2";
-			this.vpaned2.Position = 338;
+			this.vpaned2.Position = 329;
 			// Container child vpaned2.Gtk.Paned+PanedChild
 			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -204,6 +204,7 @@ namespace Translators
 			this.OpenButton.Clicked += new global::System.EventHandler (this.OpenFileEventHandler);
 			this.SaveButton.Clicked += new global::System.EventHandler (this.SaveButtonEventHandler);
 			this.CompileButton.Clicked += new global::System.EventHandler (this.CompileFileEventHandler);
+			this.ShowLexemTableButton.Clicked += new global::System.EventHandler (this.TableButtonHandler);
 		}
 	}
 }

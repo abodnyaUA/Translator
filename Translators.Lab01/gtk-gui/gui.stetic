@@ -125,6 +125,7 @@
                     <property name="Label" translatable="yes" />
                     <property name="UseUnderline">True</property>
                     <property name="Relief">None</property>
+                    <signal name="Clicked" handler="TableButtonHandler" />
                   </widget>
                   <packing>
                     <property name="Position">6</property>
@@ -170,7 +171,7 @@
                   <widget class="Gtk.VPaned" id="vpaned2">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
-                    <property name="Position">338</property>
+                    <property name="Position">329</property>
                     <child>
                       <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
                         <property name="MemberName" />
