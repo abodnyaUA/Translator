@@ -53,6 +53,12 @@ namespace Translators
 			}
 
 			RecursiveSetup("#",grammar.GrammarPairWithRootLexem("<app>")[0],"#");
+
+
+			for (int j=0;j<terminals.Count;j++)
+			{
+				this.table[this.table.Count-1][j] = Connotial.LessConnotial;
+			}
 			for (int i=0;i<terminals.Count;i++)
 			{
 				for (int j=0;j<terminals.Count;j++)
@@ -74,75 +80,116 @@ namespace Translators
 			}
 		}
 
+//		public void RecursiveSetup(string prevLevelPrevTerm, GrammarPair grammarPair, string prevLevelNextTerm)
+//		{
+//
+//			string currentTerm = grammarPair.PartLexems[0];
+//			string nextTerm = grammarPair.PartLexems.Count > 1 ? grammarPair.PartLexems[1] : prevLevelNextTerm;
+//			//SetConnotialBetweenTerminals(Connotial.LessConnotial,prevLevelNextTerm,currentTerm);
+//
+//			if (this.grammar.GrammarPairWithRootLexem(currentTerm) != null)
+//			{
+//				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(currentTerm);
+//				foreach (GrammarPair pair in pairs)
+//				{
+//					string firstPartLexem = pair.PartLexems[0];
+//					if (ConnotialBetweenTerminals(prevLevelPrevTerm,firstPartLexem) == Connotial.NoConnotial)
+//					{
+//						SetConnotialBetweenTerminals(Connotial.LessConnotial,prevLevelPrevTerm,firstPartLexem);
+//						RecursiveSetup(prevLevelPrevTerm,pair,nextTerm);
+//					}
+//				}
+//			}
+//
+//			for (int i=1;i<grammarPair.PartLexems.Count; i++)
+//			{
+//				currentTerm = grammarPair.PartLexems[i-1];
+//				nextTerm = grammarPair.PartLexems[i];
+//
+//				if (ConnotialBetweenTerminals(currentTerm,nextTerm) == Connotial.NoConnotial)
+//				{
+//					if (this.grammar.GrammarPairWithRootLexem(nextTerm) == null)
+//					{
+//						SetConnotialBetweenTerminals(Connotial.EqualConnotial,currentTerm,nextTerm);
+//					}
+//					else
+//					{
+//						if (i < grammarPair.PartLexems.Count-1)
+//						{
+//							SetConnotialBetweenTerminals(Connotial.EqualConnotial,currentTerm,nextTerm);
+//							string nextNextTerm = grammarPair.PartLexems[i+1];
+//							List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(nextTerm);
+//							foreach (GrammarPair pair in pairs)
+//							{
+//								SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,pair.PartLexems[0]);
+//								RecursiveSetup(currentTerm,pair,nextNextTerm);
+//							}
+//						}
+//						else
+//						{
+//							SetConnotialBetweenTerminals(Connotial.EqualConnotial,currentTerm,nextTerm);
+//							List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(nextTerm);
+//							foreach (GrammarPair pair in pairs)
+//							{
+//								SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,pair.PartLexems[0]);
+//								RecursiveSetup(currentTerm,pair,prevLevelNextTerm);
+//							}
+//						}
+//					}
+//				}
+//			}
+//			string lastTerm = grammarPair.PartLexems[grammarPair.PartLexems.Count-1];
+//			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastTerm,prevLevelNextTerm);
+//
+//			if (this.grammar.GrammarPairWithRootLexem(lastTerm) != null)
+//			{
+//				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(lastTerm);
+//				foreach (GrammarPair pair in pairs)
+//				{
+//					string lastPartLexem = pair.PartLexems[pair.PartLexems.Count-1];
+//					if (ConnotialBetweenTerminals(lastTerm,lastPartLexem) == Connotial.NoConnotial)
+//					{
+//						SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastPartLexem,prevLevelNextTerm);
+//						RecursiveSetup(currentTerm,pair,nextTerm);
+//					}
+//				}
+//			}
+//		}
 		public void RecursiveSetup(string prevLevelPrevTerm, GrammarPair grammarPair, string prevLevelNextTerm)
 		{
-
-			string currentTerm = grammarPair.PartLexems[0];
-			string nextTerm = grammarPair.PartLexems.Count > 1 ? grammarPair.PartLexems[1] : prevLevelNextTerm;
-			SetConnotialBetweenTerminals(Connotial.LessConnotial,prevLevelNextTerm,currentTerm);
-
-			if (this.grammar.GrammarPairWithRootLexem(currentTerm) != null)
+			List<string> grammarPairs = new List<string>();
+			grammarPairs.Add(prevLevelPrevTerm);
+			foreach (string pair in grammarPair.PartLexems)
 			{
-				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(currentTerm);
-				foreach (GrammarPair pair in pairs)
-				{
-					string firstPartLexem = pair.PartLexems[0];
-					if (ConnotialBetweenTerminals(currentTerm,firstPartLexem) == Connotial.NoConnotial)
-					{
-						SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,firstPartLexem);
-						RecursiveSetup(currentTerm,pair,nextTerm);
-					}
-				}
+				grammarPairs.Add(pair);
 			}
+			grammarPairs.Add(prevLevelNextTerm);
 
-			for (int i=1;i<grammarPair.PartLexems.Count; i++)
+			for (int i=1;i<grammarPairs.Count-1; i++)
 			{
-				currentTerm = grammarPair.PartLexems[i-1];
-				nextTerm = grammarPair.PartLexems[i];
+				string currentTerm = grammarPairs[i-1];
+				string nextTerm = grammarPairs[i];
 
 				if (ConnotialBetweenTerminals(currentTerm,nextTerm) == Connotial.NoConnotial)
 				{
-					if (this.grammar.GrammarPairWithRootLexem(nextTerm) == null)
+					if (i==1)
 					{
-						SetConnotialBetweenTerminals(Connotial.EqualConnotial,currentTerm,nextTerm);
+						SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,nextTerm);
 					}
 					else
 					{
-						if (i < grammarPair.PartLexems.Count-1)
-						{
-							SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,nextTerm);
-							string nextNextTerm = grammarPair.PartLexems[i+1];
-							List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(nextTerm);
-							foreach (GrammarPair pair in pairs)
-							{
-								RecursiveSetup(currentTerm,pair,nextNextTerm);
-							}
-						}
-						else
-						{
-							SetConnotialBetweenTerminals(Connotial.LessConnotial,currentTerm,nextTerm);
-							List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(nextTerm);
-							foreach (GrammarPair pair in pairs)
-							{
-								RecursiveSetup(currentTerm,pair,prevLevelNextTerm);
-							}
-						}
+						SetConnotialBetweenTerminals(Connotial.EqualConnotial,currentTerm,nextTerm);
 					}
-				}
-			}
-			string lastTerm = grammarPair.PartLexems[grammarPair.PartLexems.Count-1];
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastTerm,prevLevelNextTerm);
-
-			if (this.grammar.GrammarPairWithRootLexem(lastTerm) != null)
-			{
-				List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(lastTerm);
-				foreach (GrammarPair pair in pairs)
-				{
-					string lastPartLexem = pair.PartLexems[pair.PartLexems.Count-1];
-					if (ConnotialBetweenTerminals(lastTerm,lastPartLexem) == Connotial.NoConnotial)
+					if (this.grammar.GrammarPairWithRootLexem(nextTerm) != null)
 					{
-						SetConnotialBetweenTerminals(Connotial.GreaterConnotial,lastPartLexem,prevLevelNextTerm);
-						RecursiveSetup(currentTerm,pair,nextTerm);
+						string nextNextTerm = grammarPairs[i+1];
+						List<GrammarPair> pairs = this.grammar.GrammarPairWithRootLexem(nextTerm);
+						foreach (GrammarPair pair in pairs)
+						{
+							RecursiveSetup(currentTerm,pair,nextNextTerm);
+							string pairLastTerm = pair.PartLexems[pair.PartLexems.Count-1];
+							SetConnotialBetweenTerminals(Connotial.GreaterConnotial,pairLastTerm,nextNextTerm);
+						}
 					}
 				}
 			}
