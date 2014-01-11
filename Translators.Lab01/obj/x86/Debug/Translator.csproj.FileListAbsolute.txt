@@ -1,0 +1,5 @@
+C:\Developer\Projects\Translators.Lab01\Builds\Debug\Translators.exe
+C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translator.csprojResolveAssemblyReference.cache
+C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translators.exe
+C:\Developer\Projects\Translators.Lab01\Translators.Lab01\obj\x86\Debug\Translators.pdb
+C:\Developer\Projects\Translators.Lab01\Builds\Debug\Translators.pdb

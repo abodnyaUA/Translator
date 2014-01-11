@@ -1,10 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\Stack.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\BottomUp\Grammar.cs">
     <Files>
-      <File FileName="Translators.Lab01\Sources\Prefix\Program.cs" Line="1" Column="1" />
-      <File FileName="Translators.Lab01\Sources\UI\MainWindow.cs" Line="1" Column="1" />
-      <File FileName="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\Stack.cs" Line="1" Column="1" />
+      <File FileName="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\BottomUp\Grammar.cs" Line="32" Column="37" />
+      <File FileName="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\BottomUp\BottomUpTable.cs" Line="1" Column="1" />
+      <File FileName="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\BottomUp\SyntaxAnalyzerBottomUp.cs" Line="78" Column="11" />
+      <File FileName="Translators.Lab01\Sources\Compiler\SyntaxAnalyzer\MagazineAutomatDiagram\SyntaxAnalyzerWithAutomat.cs" Line="1" Column="1" />
+      <File FileName="Translators.Lab01\Sources\Compiler\Compiler.cs" Line="1" Column="1" />
+      <File FileName="Translators.Lab01\Sources\Compiler\LexemAnalyzer\LexemAnalyzer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

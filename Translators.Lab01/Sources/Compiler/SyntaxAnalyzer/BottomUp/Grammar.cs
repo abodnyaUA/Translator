@@ -26,14 +26,16 @@ namespace Translators
 			this.grammar = new List<GrammarPair>()
 			{
 				new GrammarPair("<app>", 
-					new List<string>() {"@interface","<appName>","ENTER","<list of definitions>","ENTER",
+					new List<string>() {"@interface","<appName>","ENTER","<list of definitions2>","ENTER",
 					"@implementation","ENTER","<list of operators>","ENTER","@end"}),
 				new GrammarPair("<appName>", 
 					new List<string>() {"ID",";"}),
+				new GrammarPair("<list of definitions2>", 
+					new List<string>() {"<list of definitions>"}),
 				new GrammarPair("<list of definitions>", 
 					new List<string>() {"ENTER","<definition2>"}),
 				new GrammarPair("<list of definitions>", 
-					new List<string>() {"<list of definitions>","ENTER","<definition2>"}),
+					new List<string>() {"<list of definitions>","ENTER","<definition>"}),
 				new GrammarPair("<definition2>", 
 					new List<string>() {"<definition>"}),
 				new GrammarPair("<definition>", 

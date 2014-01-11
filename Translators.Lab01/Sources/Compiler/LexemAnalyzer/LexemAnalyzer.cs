@@ -142,10 +142,10 @@ namespace Translators
 				bool validLine = true;
 				try
 				{
-					if (i < parsedList.Count-1 
-					    && parsedList[i][0] == "\n" 
-					    && parsedList[i+1][0] == "\n" 
-					    && parsedList[i].Count == 1) validLine = false;
+//					if (i < parsedList.Count-1 
+//					    && parsedList[i][0] == "\n" 
+//					    && parsedList[i+1][0] == "\n" 
+//					    && parsedList[i].Count == 1) validLine = false;
 
 					if (parsedList[i][0] == "\n" 
 					    && i == parsedList.Count-1 
