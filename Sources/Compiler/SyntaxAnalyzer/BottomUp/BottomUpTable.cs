@@ -20,7 +20,7 @@ namespace Translators
 			this.terminals = new Dictionary<string, int>();
 			List<string> terms = new List<string>()
 			{
-				"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators>",
+				"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators2>","<list of operators>",
 				"<operator>","<operator2>","<setter>","<input>","<output>","<cycle>","<condition>","<logical expression>","<log.exp.lev1>",
 				"<log.exp.lev2>","<relation>","<expression2>","<expression>","<term>","<multiplier>","<expr.response>","ID","CONST",
 				"@implementation","@interface","@end","int","input","output","ENTER","for","to","step","next","if","else","endif",

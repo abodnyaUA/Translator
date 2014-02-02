@@ -27,7 +27,7 @@ namespace Translators
 			{
 				new GrammarPair("<app>", 
 					new List<string>() {"@interface","<appName>","ENTER","<list of definitions2>","ENTER",
-					"@implementation","ENTER","<list of operators>","ENTER","@end"}),
+					"@implementation","ENTER","<list of operators2>","ENTER","@end"}),
 				new GrammarPair("<appName>", 
 					new List<string>() {"ID",";"}),
 				new GrammarPair("<list of definitions2>", 
@@ -44,6 +44,8 @@ namespace Translators
 					new List<string>() {",","ID"}),
 				new GrammarPair("<list of var>", 
 					new List<string>() {",","ID","<list of var>"}),
+				new GrammarPair("<list of operators2>", 
+				    new List<string>() {"<list of operators>"}),
 				new GrammarPair("<list of operators>", 
 					new List<string>() {"ENTER","<operator2>"}),
 				new GrammarPair("<list of operators>", 
