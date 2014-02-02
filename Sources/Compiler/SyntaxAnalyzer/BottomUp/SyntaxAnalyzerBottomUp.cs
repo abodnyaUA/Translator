@@ -51,13 +51,34 @@ namespace Translators
 			Analyze();
 		}
 
+		
+		/* BAD. Very bad code. Absolute shity */
+		HashSet<string> lowPriorityItems = new HashSet<string>() {"<list of definitions2>","<list of operators2>"};
+		HashSet<string> globalItems = new HashSet<string>() {"<definition2>","<definition>","<operator2>","<operator>"};
+		bool allowLowPriority()
+		{
+			int globalItemsCount = 0;
+			for (int i=0;i<lexems.Count-1;i++)
+			{
+				if (globalItems.Contains(lexems[i]))
+				{
+					globalItemsCount++;
+				}
+			}
+			return globalItemsCount == 0;
+		}
+
 		private void Analyze()
 		{
+
+			/* So-so code */
 			bool replacable = false;
+			int openscobeIdx = int.MaxValue;
 			do
 			{
 				replacable = false;
-				int openscobeIdx = int.MaxValue;
+				openscobeIdx = int.MaxValue;
+
 				for (int i=0;i<lexems.Count-1;i++)
 				{
 					string current = lexems[i];
@@ -74,7 +95,14 @@ namespace Translators
 							openscobeIdx == int.MaxValue ? i : openscobeIdx,i);
 						if (pair != null)
 						{
-							replace(openscobeIdx,pair);
+							if (lowPriorityItems.Contains(pair.RootLexem) && false == allowLowPriority())
+							{
+								Out.Log(Out.State.LogInfo,"It's not time for low-level pair");
+							}
+							else
+							{
+								replace(openscobeIdx,pair);
+							}
 						}
 						else
 						{

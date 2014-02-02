@@ -35,7 +35,7 @@ namespace Translators
 				new GrammarPair("<list of definitions>", 
 					new List<string>() {"ENTER","<definition2>"}),
 				new GrammarPair("<list of definitions>", 
-					new List<string>() {"<list of definitions>","ENTER","<definition>"}),
+					new List<string>() {"<list of definitions>","ENTER","<definition2>"}),
 				new GrammarPair("<definition2>", 
 					new List<string>() {"<definition>"}),
 				new GrammarPair("<definition>", 

@@ -1,7 +1,0 @@
-@interface App1;
-
-int ,a,b,c
-@implementation 
-
-a = 4
-@end
