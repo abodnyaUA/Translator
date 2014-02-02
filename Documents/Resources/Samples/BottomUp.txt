@@ -1,0 +1,10 @@
+@interface App1;
+
+int ,a,b,c
+int ,h
+int ,u
+int ,y
+@implementation 
+
+output(,a)
+@end
