@@ -11,6 +11,7 @@
   <widget class="Gtk.Window" id="Translators.RootWindow" design-size="444 300">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Bodnya Alexey's Translator. Group TV-11.</property>
+    <property name="Icon">resource:Translators.Resources.Icons.Puzzle-grey.png</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="DefaultWidth">640</property>
     <property name="DefaultHeight">480</property>

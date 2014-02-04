@@ -72,6 +72,7 @@ namespace Translators
 			dict.Add("[");
 			dict.Add("]");
 			dict.Add(";");
+			dict.Add("endset");
             dict.Add("var");
             dict.Add("const");
             return dict;

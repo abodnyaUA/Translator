@@ -104,10 +104,6 @@ namespace Translators
 								replace(openscobeIdx,pair);
 							}
 						}
-						else
-						{
-							Out.Log(Out.State.LogInfo,"Should finish analyze");
-						}
 						replacable = true;
 						//break;
 					}

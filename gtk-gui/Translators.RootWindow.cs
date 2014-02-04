@@ -25,6 +25,7 @@ namespace Translators
 			// Widget Translators.RootWindow
 			this.Name = "Translators.RootWindow";
 			this.Title = global::Mono.Unix.Catalog.GetString ("Bodnya Alexey's Translator. Group TV-11.");
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("Translators.Resources.Icons.Puzzle-grey.png");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.DefaultWidth = 640;
 			this.DefaultHeight = 480;

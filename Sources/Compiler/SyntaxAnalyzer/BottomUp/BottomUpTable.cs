@@ -22,8 +22,8 @@ namespace Translators
 			{
 				"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators2>","<list of operators>",
 				"<operator>","<operator2>","<setter>","<input>","<output>","<cycle>","<condition>","<logical expression>","<log.exp.lev1>",
-				"<log.exp.lev2>","<relation>","<expression2>","<expression>","<term>","<multiplier>","<expr.response>","ID","CONST",
-				"@implementation","@interface","@end","int","input","output","ENTER","for","to","step","next","if","else","endif",
+				"<log.exp.lev2>","<relation>","<expression3>","<expression2>","<expression>","<term>","<term2>","<multiplier>","<multiplier2>","<expr.response>","<expr.response2>","ID","CONST",
+				"@implementation","@interface","@end","int","input","output","ENTER","for","to","step","next","if","else","endif","endset",
 				"{","}","(",")","[","]","=","equ","!=",">","<",">=","<=","!","+","-","/","*","^",",","and","or",";","#"
 			};
 			for (int i=0;i<terms.Count;i++)
@@ -53,14 +53,27 @@ namespace Translators
 			}
 
 			RecursiveSetup("#",grammar.GrammarPairWithRootLexem("<app>")[0],"#");
-
+			RepairTable();
 
 			for (int j=0;j<terminals.Count;j++)
 			{
 				this.table[this.table.Count-1][j] = Connotial.LessConnotial;
 			}
+
+			List<string> terminalsHeaders = new List<string>(terminals.Keys);
+			
+			Out.LogOneLine(Out.State.LogDebug,"\t");
 			for (int i=0;i<terminals.Count;i++)
 			{
+				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogDebug,"\t");
+			}
+			Out.LogOneLine(Out.State.LogDebug,"\n");
+
+			for (int i=0;i<terminals.Count;i++)
+			{
+				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogDebug,"\t");
 				for (int j=0;j<terminals.Count;j++)
 				{
 					char connotial = ' ';
@@ -217,6 +230,42 @@ namespace Translators
 		public BottomUpTable ()
 		{
 			SetupDictionary();
+		}
+
+		void RepairTable()
+		{
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","^");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","^");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","^");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","^");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","-");
 		}
 	}
 }

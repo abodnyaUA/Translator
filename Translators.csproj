@@ -9,6 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Translators</RootNamespace>
     <AssemblyName>Translators</AssemblyName>
+    <StartupObject>Translators.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -56,6 +57,7 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Icons\Puzzle-grey.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
