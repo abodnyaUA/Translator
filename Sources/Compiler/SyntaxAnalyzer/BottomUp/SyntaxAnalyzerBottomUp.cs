@@ -70,7 +70,6 @@ namespace Translators
 
 		private void Analyze()
 		{
-
 			/* So-so code */
 			bool replacable = false;
 			int openscobeIdx = int.MaxValue;

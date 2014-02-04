@@ -266,6 +266,11 @@ namespace Translators
 			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","-");
 			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","+");
 			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","+");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","-");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","*");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","/");
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","^");
 		}
 	}
 }
