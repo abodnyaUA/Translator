@@ -71,7 +71,7 @@ namespace Translators
 				new GrammarPair("<cycle>", 
 					new List<string>() {"for","ID","=","<expression>","to","<expression>","step","<expression3>","ENTER","<list of operators>","ENTER","next"}),
 				new GrammarPair("<condition>", 
-					new List<string>() {"if","<logical expression>","ENTER","<list of operators>","ENTER","else","ENTER","<list of operators>","ENTER","endif"}),
+					new List<string>() {"if","<logical expression>","ENTER","<list of operators2>","ENTER","else","<list of operators2>","ENTER","endif"}),
 				new GrammarPair("<logical expression>", 
 					new List<string>() {"<log.exp.lev1>"}),
 				new GrammarPair("<logical expression>", 
