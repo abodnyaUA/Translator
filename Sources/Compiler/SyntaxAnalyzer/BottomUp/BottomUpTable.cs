@@ -253,7 +253,7 @@ namespace Translators
 			{ "ID", "CONST", "<expr.response>", "<multiplier>", "<term>", 
 				"<expr.response2>", "<multiplier2>", "<term2>",")"};
 			List <string> problems = new List<string>()
-			{ "+", "-", "*", "/", "to", ">", ">=", "<", "<=", "!=", "equ","and", "or", "]"};
+			{ "+", "-", "*", "/","^", "to", ">", ">=", "<", "<=", "!=", "equ","and", "or", "]"};
 
 			Connotial conBetweenTermMult = ConnotialBetweenTerminals("<term>","*");
 			Connotial conBetweenTerm2Mult = ConnotialBetweenTerminals("<term2>","*");
