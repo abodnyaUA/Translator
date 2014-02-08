@@ -234,43 +234,63 @@ namespace Translators
 
 		void RepairTable()
 		{
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"ID","^");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"CONST","^");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response>","^");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<expr.response2>","^");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier>","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<multiplier2>","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term2>","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","+");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","-");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","*");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","/");
-			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,")","^");
+			List <string> recievers = new List<string>() 
+			{ "ID", "CONST", "<expr.response>", "<multiplier>", "<term>", 
+				"<expr.response2>", "<multiplier2>", "<term2>",")"};
+			List <string> problems = new List<string>()
+			{ "+", "-", "*", "/", ">", ">=", "<", "<=", "!=", "equ","and", "or", "]"};
+
+			Connotial conBetweenTermMult = ConnotialBetweenTerminals("<term>","*");
+			Connotial conBetweenTerm2Mult = ConnotialBetweenTerminals("<term2>","*");
+
+			foreach (string reciever in recievers)
+			{
+				foreach (string problem in problems)
+				{
+					SetConnotialBetweenTerminals(Connotial.GreaterConnotial,reciever,problem);
+				}
+			}
+
+			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","*");
+			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","/");
+			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","^");
+			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","*");
+			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","/");
+			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","^");
+
+			problems.Remove("+");
+			problems.Remove("-");
+			problems.Remove("/");
+			problems.Remove("^");
+			problems.Remove("*");
+			recievers.Clear();
+			recievers.Add("<expression>");
+			recievers.Add("<expression2>");
+			foreach (string reciever in recievers)
+			{
+				foreach (string problem in problems)
+				{
+					SetConnotialBetweenTerminals(Connotial.GreaterConnotial,reciever,problem);
+				}
+			}
+			problems.Remove(">");
+			problems.Remove("<");
+			problems.Remove(">=");
+			problems.Remove("<=");
+			problems.Remove("!=");
+			problems.Remove("equ");
+			problems.Remove("]");
+			recievers.Clear();
+			recievers.Add("<relation>");
+			recievers.Add("<log.exp.lev2>");
+			recievers.Add("]");
+			foreach (string reciever in recievers)
+			{
+				foreach (string problem in problems)
+				{
+					SetConnotialBetweenTerminals(Connotial.GreaterConnotial,reciever,problem);
+				}
+			}
 		}
 	}
 }

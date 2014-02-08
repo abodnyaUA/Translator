@@ -98,16 +98,32 @@ namespace Translators
 			return false;
 		}
 
+		private bool readyToReplace(string lexemOrigin)
+		{
+			return true;
+			if (lexemOrigin == "<log.exp.lev1>")
+			{
+				int andOrWords = 0;
+				for (int i=0;i<lexems.Count-1;i++)
+				{
+					if (lexems[i] == "or" || lexems[i] == "and")
+					{
+						andOrWords++;
+					}
+				}
+				return andOrWords == 0;
+			}
+		}
+
 		private void Analyze()
 		{
 			/* So-so code */
-			bool replacable = false;
 			int failedProcessCount = 0;
 			int LastLexemsCount = lexems.Count;
 			int openscobeIdx = int.MaxValue;
 			do
 			{
-				replacable = false;
+				bool replacable = false;
 				openscobeIdx = int.MaxValue;
 
 				for (int i=0;i<lexems.Count-1;i++)
@@ -132,7 +148,10 @@ namespace Translators
 							}
 							else
 							{
-								replace(openscobeIdx,pair);
+								if (pair.PartLexems.Count > 1 || readyToReplace(pair.PartLexems[0]))
+								{
+									replace(openscobeIdx,pair);
+								}
 							}
 						}
 						replacable = true;
