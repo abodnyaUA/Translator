@@ -101,18 +101,6 @@ namespace Translators
 		private bool readyToReplace(string lexemOrigin)
 		{
 			return true;
-			if (lexemOrigin == "<log.exp.lev1>")
-			{
-				int andOrWords = 0;
-				for (int i=0;i<lexems.Count-1;i++)
-				{
-					if (lexems[i] == "or" || lexems[i] == "and")
-					{
-						andOrWords++;
-					}
-				}
-				return andOrWords == 0;
-			}
 		}
 
 		private void Analyze()
@@ -123,7 +111,6 @@ namespace Translators
 			int openscobeIdx = int.MaxValue;
 			do
 			{
-				bool replacable = false;
 				openscobeIdx = int.MaxValue;
 
 				for (int i=0;i<lexems.Count-1;i++)
@@ -154,15 +141,16 @@ namespace Translators
 								}
 							}
 						}
-						replacable = true;
 						//break;
 					}
 				}
 
 				Out.Log(Out.State.LogInfo,"=========Dumb LOG:============");
-				foreach (string lexem in lexems)
+				for (int i = 0; i< lexems.Count -1; i++)
 				{
-					Out.Log(Out.State.LogInfo,lexem+" ");
+					BottomUpTable.Connotial connotial = table.ConnotialBetweenTerminals(lexems[i],lexems[i+1]);
+					string ConnotialString = table.ConnotialToString(connotial);
+					Out.Log(Out.State.LogInfo, ConnotialString + lexems[i] + " ");
 				}
 
 				if (LastLexemsCount == lexems.Count)

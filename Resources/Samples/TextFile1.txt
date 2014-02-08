@@ -1,12 +1,10 @@
 @interface App1;
 
-int ,a,b
+int ,a,b,v
 @implementation 
 
-if [5 + (8 - 9) * 5 > 5 +5 * 8 / (5 * 7 + 9) - b * a + b and 8 > 5] and 5 + 8 - 8 / a < 5
+for a = 5 to 8 step 1 
 
-b = 5 endset
-else
-  a = 6 endset
-endif
+a = v endset
+next
 @end

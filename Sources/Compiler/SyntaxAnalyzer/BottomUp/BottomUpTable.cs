@@ -23,7 +23,7 @@ namespace Translators
 				"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators2>","<list of operators>",
 				"<operator>","<operator2>","<setter>","<input>","<output>","<cycle>","<condition>","<logical expression>","<log.exp.lev1>",
 				"<log.exp.lev2>","<relation>","<expression3>","<expression2>","<expression>","<term>","<term2>","<multiplier>","<multiplier2>","<expr.response>","<expr.response2>","ID","CONST",
-				"@implementation","@interface","@end","int","input","output","ENTER","for","to","step","next","if","else","endif","endset",
+				"@implementation","@interface","@end","int","input","output","ENTER","for","from","to","step","next","if","else","endif","endset",
 				"{","}","(",")","[","]","=","equ","!=",">","<",">=","<=","!","+","-","/","*","^",",","and","or",";","#"
 			};
 			for (int i=0;i<terms.Count;i++)
@@ -213,6 +213,21 @@ namespace Translators
 			return this.table[row][column];
 		}
 
+		public string ConnotialToString(Connotial con)
+		{
+			char connotial = ' ';
+			switch (con)
+			{
+			case Connotial.NoConnotial: 	connotial = ' '; break;
+			case Connotial.LessConnotial: 	connotial = '<'; break;
+			case Connotial.GreaterConnotial:connotial = '>'; break;
+			case Connotial.EqualConnotial: 	connotial = '='; break;
+			}
+			string connotialString = "[";
+			connotialString += connotial + "] ";
+			return connotialString;
+		}
+
 		public Connotial ConnotialBetweenTerminals(string leftTerminal,string rightTerminal)
 		{
 			int row = this.terminals[leftTerminal];
@@ -238,7 +253,7 @@ namespace Translators
 			{ "ID", "CONST", "<expr.response>", "<multiplier>", "<term>", 
 				"<expr.response2>", "<multiplier2>", "<term2>",")"};
 			List <string> problems = new List<string>()
-			{ "+", "-", "*", "/", ">", ">=", "<", "<=", "!=", "equ","and", "or", "]"};
+			{ "+", "-", "*", "/", "to", ">", ">=", "<", "<=", "!=", "equ","and", "or", "]"};
 
 			Connotial conBetweenTermMult = ConnotialBetweenTerminals("<term>","*");
 			Connotial conBetweenTerm2Mult = ConnotialBetweenTerminals("<term2>","*");
@@ -263,6 +278,7 @@ namespace Translators
 			problems.Remove("/");
 			problems.Remove("^");
 			problems.Remove("*");
+			problems.Remove("to");
 			recievers.Clear();
 			recievers.Add("<expression>");
 			recievers.Add("<expression2>");
