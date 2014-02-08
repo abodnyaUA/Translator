@@ -54,8 +54,9 @@ namespace Translators
 		
 		/* BAD. Very bad code. Absolute shity */
 		HashSet<string> lowPriorityItems = new HashSet<string>() {"<list of definitions2>","<list of operators2>"};
-		HashSet<string> globalItems = new HashSet<string>() {"<definition2>","<definition>","<operator2>","<operator>"};
-		bool allowLowPriority()
+		HashSet<string> globalItems = new HashSet<string>() {"<definition2>","<definition>","<operator2>","<operator>",
+			"<setter>","<input>","<output>","<cycle>","<condition>"};
+		bool allowLowPriorityForItemAtIndex(int idx)
 		{
 			int globalItemsCount = 0;
 			for (int i=0;i<lexems.Count-1;i++)
@@ -65,13 +66,44 @@ namespace Translators
 					globalItemsCount++;
 				}
 			}
-			return globalItemsCount == 0;
+			
+			if (globalItemsCount == 0) 
+			{
+				// Check for "if" //
+				bool ifUsed = false;
+				for (int i=0;i<lexems.Count-1;i++)
+				{
+					if (lexems[i] == "if")
+					{
+						ifUsed = true;
+					}
+				}
+				if (!ifUsed) return true;
+
+				// Calc IF condition //
+				int ifIdx = int.MaxValue;
+				for (int i=0;i<lexems.Count-1;i++)
+				{
+					if (lexems[i] == "if") 
+					{
+						ifIdx = i;
+					}
+					if (lexems[i] == "endif")
+					{
+						// lowPriority between if and endif
+						return (idx > ifIdx && idx < i);
+					}
+				}
+			}
+			return false;
 		}
 
 		private void Analyze()
 		{
 			/* So-so code */
 			bool replacable = false;
+			int failedProcessCount = 0;
+			int LastLexemsCount = lexems.Count;
 			int openscobeIdx = int.MaxValue;
 			do
 			{
@@ -94,7 +126,7 @@ namespace Translators
 							openscobeIdx == int.MaxValue ? i : openscobeIdx,i);
 						if (pair != null)
 						{
-							if (lowPriorityItems.Contains(pair.RootLexem) && false == allowLowPriority())
+							if (lowPriorityItems.Contains(pair.RootLexem) && false == allowLowPriorityForItemAtIndex(i))
 							{
 								Out.Log(Out.State.LogInfo,"It's not time for low-level pair");
 							}
@@ -108,7 +140,22 @@ namespace Translators
 					}
 				}
 
-			} while (lexems.Count > 3);
+				Out.Log(Out.State.LogInfo,"=========Dumb LOG:============");
+				foreach (string lexem in lexems)
+				{
+					Out.Log(Out.State.LogInfo,lexem+" ");
+				}
+
+				if (LastLexemsCount == lexems.Count)
+				{
+					failedProcessCount++;
+				}
+				else
+				{
+					failedProcessCount = 0;
+				}
+				LastLexemsCount = lexems.Count;
+			} while (lexems.Count > 3 && failedProcessCount != 20);
 		}
 
 		void replace(int idx, GrammarPair grammarpair)

@@ -7,43 +7,24 @@ namespace Translators
 	{
 		public Gtk.TextView Console { get { return ConsoleTextView; } }
 		public Gtk.ProgressBar ProgressBar { get { return CompileProgressBar; } }
-		private Gtk.TextBuffer CodeTextBuffer { get {return CodeTextView.Buffer; } }
-		private string filepath = "";
+		private string FileName = "/home/abodnya/.translatorfile";
 
 		public RootWindow () : base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
+			BaseSetup();
 		}
 
-		protected void OpenFileEventHandler (object o, EventArgs args)
+		private void BaseSetup()
 		{
-			Gtk.FileChooserDialog dialog = new Gtk.FileChooserDialog("Choose text file",
-			                                                         this,Gtk.FileChooserAction.Open,
-			                                                         "Cancel",Gtk.ResponseType.Cancel,
-			                                                         "Open",Gtk.ResponseType.Accept);
-			if (dialog.Run() == (int)Gtk.ResponseType.Accept) 
+			if (File.Exists(FileName))
 			{
-				String list = "";
-				filepath = dialog.Filename;
-				StreamReader sr = new StreamReader(filepath);
-				list = sr.ReadToEnd();
-				sr.Close();
-				CodeTextView.Buffer.Text = list;
+				string [] lines = File.ReadAllLines(FileName);
+				if (lines.Length > 0)
+				{
+					FileChooser.SetFilename(lines[0]);
+				}
 			}
-			//Don't forget to call Destroy() or the FileChooserDialog window won't get closed.
-			dialog.Destroy();
-		}
-		
-		private void SaveFile()
-		{
-			StreamWriter sw = new StreamWriter(filepath);
-			sw.Write(CodeTextView.Buffer.Text);
-			sw.Close();
-		}
-
-		protected void SaveButtonEventHandler (object o, EventArgs args)
-		{
-			SaveFile();
 		}
 
 		protected void TableButtonHandler (object o, EventArgs args)
@@ -53,8 +34,15 @@ namespace Translators
 
 		protected void CompileFileEventHandler (object o, EventArgs args)
 		{
-			SaveFile();
-			Compiler.sharedCompiler.CompileFile(filepath);
+			if (FileChooser.Filename != "")
+			{
+				Compiler.sharedCompiler.CompileFile(FileChooser.Filename);
+			}
+		}
+
+		protected void OpenFileEventHandler (object sender, EventArgs e)
+		{
+			File.WriteAllLines(FileName,new string[] { FileChooser.Filename } );
 		}
 	}
 }

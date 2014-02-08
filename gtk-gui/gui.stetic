@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/Translators.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="Translators.RootWindow" design-size="444 300">
+  <widget class="Gtk.Window" id="Translators.RootWindow" design-size="444 248">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Bodnya Alexey's Translator. Group TV-11.</property>
     <property name="Icon">resource:Translators.Resources.Icons.Puzzle-grey.png</property>
@@ -16,123 +16,22 @@
     <property name="DefaultWidth">640</property>
     <property name="DefaultHeight">480</property>
     <child>
-      <widget class="Gtk.VBox" id="vbox3">
+      <widget class="Gtk.VBox" id="vbox1">
         <property name="MemberName" />
         <property name="Spacing">6</property>
+        <property name="BorderWidth">6</property>
         <child>
-          <widget class="Gtk.HBox" id="hbox2">
+          <widget class="Gtk.HBox" id="hbox1">
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Button" id="OpenButton">
+              <widget class="Gtk.FileChooserButton" id="FileChooser">
                 <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-open Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="OpenFileEventHandler" />
+                <signal name="SelectionChanged" handler="OpenFileEventHandler" />
               </widget>
               <packing>
                 <property name="Position">0</property>
                 <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Button" id="SaveButton">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-save Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="SaveButtonEventHandler" />
-              </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Button" id="SaveAsButton">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-save-as Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-              </widget>
-              <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Button" id="CompileButton">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-media-play Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="CompileFileEventHandler" />
-              </widget>
-              <packing>
-                <property name="Position">3</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Button" id="ShowLexemTableButton">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-index Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-                <signal name="Clicked" handler="TableButtonHandler" />
-              </widget>
-              <packing>
-                <property name="Position">4</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Fixed" id="fixed1">
-                <property name="MemberName" />
-                <property name="HasWindow">False</property>
-              </widget>
-              <packing>
-                <property name="PackType">End</property>
-                <property name="Position">5</property>
-                <property name="AutoSize">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.Button" id="ShowGrammarButton">
-                <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="Type">TextAndIcon</property>
-                <property name="Icon">stock:gtk-help Menu</property>
-                <property name="Label" translatable="yes" />
-                <property name="UseUnderline">True</property>
-              </widget>
-              <packing>
-                <property name="PackType">End</property>
-                <property name="Position">6</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
               </packing>
             </child>
           </widget>
@@ -144,21 +43,58 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+          <widget class="Gtk.HBox" id="hbox2">
             <property name="MemberName" />
-            <property name="ShadowType">In</property>
+            <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.TextView" id="CodeTextView">
+              <widget class="Gtk.Button" id="button2">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
-                <property name="ShowScrollbars">True</property>
-                <property name="Text" translatable="yes" />
+                <property name="Type">TextAndIcon</property>
+                <property name="Icon">stock:gtk-media-play Menu</property>
+                <property name="Label" translatable="yes">Compile</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="CompileFileEventHandler" />
               </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="button3">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextAndIcon</property>
+                <property name="Icon">stock:stock_dialog-info Menu</property>
+                <property name="Label" translatable="yes">Info</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="TableButtonHandler" />
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ProgressBar" id="CompileProgressBar">
+                <property name="MemberName" />
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="Position">1</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
         <child>
@@ -175,19 +111,9 @@
             </child>
           </widget>
           <packing>
+            <property name="PackType">End</property>
             <property name="Position">2</property>
             <property name="AutoSize">True</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.ProgressBar" id="CompileProgressBar">
-            <property name="MemberName" />
-          </widget>
-          <packing>
-            <property name="Position">3</property>
-            <property name="AutoSize">True</property>
-            <property name="Expand">False</property>
-            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
