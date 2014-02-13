@@ -3,8 +3,12 @@
 int ,a,b,v
 @implementation 
 
-for a = 5 to 8 step 1 
+for a from 5 to 8 step 1 
 
 a = v endset
+for a from 5 to 8 step 1 
+
+a = v endset
+next
 next
 @end
