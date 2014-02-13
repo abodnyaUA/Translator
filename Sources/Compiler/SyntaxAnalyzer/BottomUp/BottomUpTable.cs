@@ -14,18 +14,19 @@ namespace Translators
 			GreaterConnotial
 		};
 		private List<List<Connotial>> table;
+		List<string> terms = new List<string>()
+		{
+			"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators2>","<list of operators>",
+			"<operator>","<operator2>","<setter>","<input>","<output>","<cycle>","<condition>","<logical expression>","<logical expression2>","<log.exp.lev1>",
+			"<log.exp.lev2>","<relation>","<expression3>","<expression2>","<expression>","<term>","<term2>","<multiplier>","<multiplier2>","<expr.response>","<expr.response2>","ID","CONST",
+			"@implementation","@interface","@end","int","input","output","ENTER","for","from","to","step","next","if","else","endif","endset",
+			"{","}","(",")","[","]","=","equ","!=",">","<",">=","<=","!","+","-","/","*","^",",","and","or",";","#"
+		};
 
 		private void SetupDictionary()
 		{
 			this.terminals = new Dictionary<string, int>();
-			List<string> terms = new List<string>()
-			{
-				"<app>","<appName>","<list of definitions>","<list of definitions2>","<definition>","<definition2>","<list of var>","<list of operators2>","<list of operators>",
-				"<operator>","<operator2>","<setter>","<input>","<output>","<cycle>","<condition>","<logical expression>","<log.exp.lev1>",
-				"<log.exp.lev2>","<relation>","<expression3>","<expression2>","<expression>","<term>","<term2>","<multiplier>","<multiplier2>","<expr.response>","<expr.response2>","ID","CONST",
-				"@implementation","@interface","@end","int","input","output","ENTER","for","from","to","step","next","if","else","endif","endset",
-				"{","}","(",")","[","]","=","equ","!=",">","<",">=","<=","!","+","-","/","*","^",",","and","or",";","#"
-			};
+
 			for (int i=0;i<terms.Count;i++)
 			{
 				this.terminals.Add(terms[i],i);
@@ -54,43 +55,6 @@ namespace Translators
 
 			RecursiveSetup("#",grammar.GrammarPairWithRootLexem("<app>")[0],"#");
 			RepairTable();
-
-			for (int j=0;j<terminals.Count;j++)
-			{
-				this.table[this.table.Count-1][j] = Connotial.LessConnotial;
-			}
-
-			List<string> terminalsHeaders = new List<string>(terminals.Keys);
-			
-			Out.LogOneLine(Out.State.LogDebug,"\t");
-			for (int i=0;i<terminals.Count;i++)
-			{
-				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
-				Out.LogOneLine(Out.State.LogDebug,"\t");
-			}
-			Out.LogOneLine(Out.State.LogDebug,"\n");
-
-			for (int i=0;i<terminals.Count;i++)
-			{
-				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
-				Out.LogOneLine(Out.State.LogDebug,"\t");
-				for (int j=0;j<terminals.Count;j++)
-				{
-					char connotial = ' ';
-					switch (this.table[i][j])
-					{
-					case Connotial.NoConnotial: 	connotial = ' '; break;
-					case Connotial.LessConnotial: 	connotial = '<'; break;
-					case Connotial.GreaterConnotial:connotial = '>'; break;
-					case Connotial.EqualConnotial: 	connotial = '='; break;
-					}
-					string connotialString = "";
-					connotialString += connotial;
-					connotialString += "\t";
-					Out.LogOneLine(Out.State.LogDebug,connotialString);
-				}
-				Out.LogOneLine(Out.State.LogDebug,"\n");
-			}
 		}
 
 //		public void RecursiveSetup(string prevLevelPrevTerm, GrammarPair grammarPair, string prevLevelNextTerm)
@@ -247,6 +211,41 @@ namespace Translators
 			SetupDictionary();
 		}
 
+		public void PrintTable()
+		{
+			List<string> terminalsHeaders = new List<string>(terminals.Keys);
+			
+			Out.LogOneLine(Out.State.LogDebug,"\t");
+			for (int i=0;i<terminals.Count;i++)
+			{
+				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogDebug,"\t");
+			}
+			Out.LogOneLine(Out.State.LogDebug,"\n");
+			
+			for (int i=0;i<terminals.Count;i++)
+			{
+				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogDebug,"\t");
+				for (int j=0;j<terminals.Count;j++)
+				{
+					char connotial = ' ';
+					switch (this.table[i][j])
+					{
+					case Connotial.NoConnotial: 	connotial = ' '; break;
+					case Connotial.LessConnotial: 	connotial = '<'; break;
+					case Connotial.GreaterConnotial:connotial = '>'; break;
+					case Connotial.EqualConnotial: 	connotial = '='; break;
+					}
+					string connotialString = "";
+					connotialString += connotial;
+					connotialString += "\t";
+					Out.LogOneLine(Out.State.LogDebug,connotialString);
+				}
+				Out.LogOneLine(Out.State.LogDebug,"\n");
+			}
+		}
+
 		void RepairTable()
 		{
 			List <string> recievers = new List<string>() 
@@ -307,6 +306,14 @@ namespace Translators
 					SetConnotialBetweenTerminals(Connotial.GreaterConnotial,reciever,problem);
 				}
 			}
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<log.exp.lev1>","or");
+
+
+			for (int j=0;j<terms.Count-1;j++)
+			{
+				SetConnotialBetweenTerminals(Connotial.LessConnotial,"#",terms[j]);
+			}
+			SetConnotialBetweenTerminals(Connotial.NoConnotial,"#","#");
 		}
 	}
 }

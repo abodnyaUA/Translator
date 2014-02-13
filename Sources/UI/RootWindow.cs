@@ -29,7 +29,7 @@ namespace Translators
 
 		protected void TableButtonHandler (object o, EventArgs args)
 		{
-			SyntaxAnalyzerBottomUp analyzer = SyntaxAnalyzerBottomUp.sharedAnalyzer;
+			SyntaxAnalyzerBottomUp.sharedAnalyzer.PrintTable();
 		}
 
 		protected void CompileFileEventHandler (object o, EventArgs args)

@@ -22,6 +22,10 @@ namespace Translators
 			}
 		}
 
+		public void  PrintTable()
+		{
+			this.table.PrintTable();
+		}
 		private List<string> lexems;
 		public void AnalyzeLexems()
 		{
@@ -55,11 +59,33 @@ namespace Translators
 		/* BAD. Very bad code. Absolute shity */
 		HashSet<string> lowPriorityItems = new HashSet<string>() {"<list of definitions2>","<list of operators2>"};
 		HashSet<string> globalItems = new HashSet<string>() {"<definition2>","<definition>","<operator2>","<operator>",
-			"<setter>","<input>","<output>","<cycle>","<condition>"};
+			"<setter>","<input>","<output>","<cycle>","<condition>","if"};
+		Dictionary<string,string> globalSections = new Dictionary<string, string>()
+		{ {"@interface","@implementation"},{"@implementation","@end"},{"if","endif"},{"for","next"} };
 		bool allowLowPriorityForItemAtIndex(int idx)
 		{
+			HashSet<string> globalSectionsBegins = new HashSet<string>(globalSections.Keys);
+			int beginBlock = int.MaxValue;
+			for (int i=idx;beginBlock == int.MaxValue;i--)
+			{
+				if (globalSectionsBegins.Contains(lexems[i]))
+				{
+					beginBlock = i;
+				}
+			}
+
+			string endValue = globalSections[lexems[beginBlock]];
+			int endBlock = int.MaxValue;
+			for (int i=idx;endBlock == int.MaxValue;i++)
+			{
+				if (lexems[i] == endValue)
+				{
+					endBlock = i;
+				}
+			}
+
 			int globalItemsCount = 0;
-			for (int i=0;i<lexems.Count-1;i++)
+			for (int i=beginBlock+1;i<endBlock;i++)
 			{
 				if (globalItems.Contains(lexems[i]))
 				{
@@ -67,39 +93,19 @@ namespace Translators
 				}
 			}
 			
-			if (globalItemsCount == 0) 
-			{
-				// Check for "if" //
-				bool ifUsed = false;
-				for (int i=0;i<lexems.Count-1;i++)
-				{
-					if (lexems[i] == "if")
-					{
-						ifUsed = true;
-					}
-				}
-				if (!ifUsed) return true;
-
-				// Calc IF condition //
-				int ifIdx = int.MaxValue;
-				for (int i=0;i<lexems.Count-1;i++)
-				{
-					if (lexems[i] == "if") 
-					{
-						ifIdx = i;
-					}
-					if (lexems[i] == "endif")
-					{
-						// lowPriority between if and endif
-						return (idx > ifIdx && idx < i);
-					}
-				}
-			}
-			return false;
+			return globalItemsCount == 0;
 		}
 
-		private bool readyToReplace(string lexemOrigin)
+		private bool readyToReplace(string lexemOrigin, int begin)
 		{
+			if (lexemOrigin == "<expression2>")
+			{
+				HashSet<string> connotials = new HashSet<string>()
+				{ ">","<",">=","<=","equ","!=" };
+				string previous = lexems[begin-1];
+				string next = lexems[begin+1];
+				return !(connotials.Contains(previous) || connotials.Contains(next));
+			}
 			return true;
 		}
 
@@ -125,17 +131,17 @@ namespace Translators
 
 					if (connotial == BottomUpTable.Connotial.GreaterConnotial)
 					{
-						GrammarPair pair = grammarPairWithLexemList(
-							openscobeIdx == int.MaxValue ? i : openscobeIdx,i);
+						int begin = openscobeIdx == int.MaxValue ? i : openscobeIdx;
+						GrammarPair pair = grammarPairWithLexemList(begin,i);
 						if (pair != null)
 						{
 							if (lowPriorityItems.Contains(pair.RootLexem) && false == allowLowPriorityForItemAtIndex(i))
 							{
-								Out.Log(Out.State.LogInfo,"It's not time for low-level pair");
+								Out.Log(Out.State.LogDebug,"It's not time for low-level pair");
 							}
 							else
 							{
-								if (pair.PartLexems.Count > 1 || readyToReplace(pair.PartLexems[0]))
+								if (pair.PartLexems.Count > 1 || readyToReplace(pair.PartLexems[0],begin))
 								{
 									replace(openscobeIdx,pair);
 								}
@@ -150,7 +156,7 @@ namespace Translators
 				{
 					BottomUpTable.Connotial connotial = table.ConnotialBetweenTerminals(lexems[i],lexems[i+1]);
 					string ConnotialString = table.ConnotialToString(connotial);
-					Out.Log(Out.State.LogInfo, ConnotialString + lexems[i] + " ");
+					Out.Log(Out.State.LogDebug, ConnotialString + lexems[i] + " ");
 				}
 
 				if (LastLexemsCount == lexems.Count)
