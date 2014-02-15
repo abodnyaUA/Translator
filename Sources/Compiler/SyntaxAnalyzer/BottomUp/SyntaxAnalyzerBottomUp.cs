@@ -44,11 +44,11 @@ namespace Translators
 			{
 				if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count-2)
 				{
-					lexems.Add("ID");
+					lexems.Add("ID_"+lexem.command);
 				}
 				else if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count-1)
 				{
-					lexems.Add("CONST");
+					lexems.Add("CONST_"+lexem.command);
 				}
 				else if (lexem.command == "\n")
 				{
@@ -122,6 +122,14 @@ namespace Translators
 			return true;
 		}
 
+		string processValue(string element)
+		{
+			string processed = element;
+			if (processed.StartsWith("ID")) processed = "ID";
+			if (processed.StartsWith("CONST")) processed = "CONST";
+			return processed;
+		}
+
 		private void Analyze()
 		{
 			/* So-so code */
@@ -131,7 +139,8 @@ namespace Translators
 			poliz.Clear();
 			lexems.RemoveAt(0);
 			stack.Add("#");
-			htmlTable = "<html>\n<head></head>\n" +
+			htmlTable = "<html>\n<head>\n<style type=\"text/css\">\n" +
+						"table { font-size: 8pt;}\n</style>\n</head>\n" +
 				"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td></tr>";
 			LogToTable(stack,Translators.BottomUpTable.Connotial.NoConnotial,lexems);
 
@@ -139,7 +148,7 @@ namespace Translators
 			do
 			{
 				Translators.BottomUpTable.Connotial connotial = 
-					table.ConnotialBetweenTerminals(stack[stack.Count-1],lexems[0]);
+					table.ConnotialBetweenTerminals(processValue(stack[stack.Count-1]),processValue(lexems[0]));
 				if (connotial == BottomUpTable.Connotial.EqualConnotial 
 				    || connotial == BottomUpTable.Connotial.LessConnotial
 				    || connotial == BottomUpTable.Connotial.NoConnotial)
@@ -152,7 +161,7 @@ namespace Translators
 					int openScobeIdx = int.MaxValue;
 					for (int i=stack.Count-2;i>=0 && openScobeIdx == int.MaxValue;i--)
 					{
-						if (table.ConnotialBetweenTerminals(stack[i],stack[i+1]) == 
+						if (table.ConnotialBetweenTerminals(processValue(stack[i]),processValue(stack[i+1])) == 
 						    BottomUpTable.Connotial.LessConnotial)
 						{
 							openScobeIdx = i+1;
@@ -161,7 +170,8 @@ namespace Translators
 					GrammarPair pair = grammarPairWithLexemList(openScobeIdx,stack.Count-1);
 					if (pair != null)
 					{
-						if (lowPriorityItems.Contains(pair.RootLexem) && false == allowLowPriorityForItemAtIndex(stack.Count-1))
+						if (lowPriorityItems.Contains(pair.RootLexem) && 
+						    false == allowLowPriorityForItemAtIndex(stack.Count-1))
 						{
 							stack.Add(lexems[0]);
 							lexems.RemoveAt(0);
@@ -184,24 +194,6 @@ namespace Translators
 				}
 
 				LogToTable(stack,connotial,lexems);
-				Out.Log(Out.State.LogInfo,"=========Dumb LOG:============");
-				Out.Log(Out.State.LogInfo,"Stack: ");
-				for (int i = 0; i< stack.Count-1; i++)
-				{
-					BottomUpTable.Connotial connotial2 = table.ConnotialBetweenTerminals(stack[i],stack[i+1]);
-					string ConnotialString = table.ConnotialToString(connotial2);
-					Out.Log(Out.State.LogDebug, ConnotialString + stack[i] + " ");
-				}
-				Out.Log(Out.State.LogDebug, table.ConnotialToString(connotial)+stack[stack.Count-1]);
-				Out.Log(Out.State.LogInfo,"Connotial: "+table.ConnotialToString(connotial));
-				Out.Log(Out.State.LogInfo,"Source Code: ");
-				for (int i = 0; i< lexems.Count -1; i++)
-				{
-					BottomUpTable.Connotial connotial2 = table.ConnotialBetweenTerminals(lexems[i],lexems[i+1]);
-					string ConnotialString = table.ConnotialToString(connotial2);
-					Out.Log(Out.State.LogDebug, ConnotialString + lexems[i] + " ");
-				}
-				Out.Log(Out.State.LogDebug, "[ ]" +lexems[lexems.Count-1]);
 
 				if (LastLexemsCount == lexems.Count)
 				{
@@ -223,7 +215,7 @@ namespace Translators
 				}
 
 			} while (!successFinish && failedProcessCount != 20);
-			htmlTable += "</table></body></html>";
+			htmlTable += "</table>\n</body>\n</html>";
 			File.WriteAllLines("/home/abodnya/TranslatorOutput.html",new string[] { htmlTable } );
 		}
 
@@ -245,26 +237,26 @@ namespace Translators
 			int length = endIdx-startIdx+1;
 			
 			try  { 
-			foreach (GrammarPair pair in grammar.Gramatic)
-			{
-				if (length == pair.PartLexems.Count)
+				foreach (GrammarPair pair in grammar.Gramatic)
 				{
-					bool exist = true;
-					for (int i=0;i<pair.PartLexems.Count;i++)
+					if (length == pair.PartLexems.Count)
 					{
-						if (stack[i+startIdx] != pair.PartLexems[i])
+						bool exist = true;
+						for (int i=0;i<pair.PartLexems.Count;i++)
 						{
-							exist = false;
+							if (processValue(stack[i+startIdx]) != pair.PartLexems[i])
+							{
+								exist = false;
+							}
+						}
+						if (exist)
+						{
+							result = pair;
+							return result;
 						}
 					}
-					if (exist)
-					{
-						result = pair;
-						return result;
-					}
 				}
-			}
-			}catch(Exception e) 
+			}catch(Exception) 
 			{
 				Console.WriteLine("SHIT!");
 			};
@@ -273,25 +265,48 @@ namespace Translators
 
 		void LogToTable(List<string> stack, BottomUpTable.Connotial connotial, List<string> source)
 		{
+			// Log output //
+			Out.Log(Out.State.LogInfo,"=========Dumb LOG:============");
+			Out.Log(Out.State.LogInfo,"Stack: ");
+			for (int i = 0; i< stack.Count-1; i++)
+			{
+				BottomUpTable.Connotial connotial2 = 
+					table.ConnotialBetweenTerminals(processValue(stack[i]),processValue(stack[i+1]));
+				string ConnotialString = table.ConnotialToString(connotial2);
+				Out.Log(Out.State.LogDebug, ConnotialString + stack[i] + " ");
+			}
+			Out.Log(Out.State.LogDebug, table.ConnotialToString(connotial)+stack[stack.Count-1]);
+			Out.Log(Out.State.LogInfo,"Connotial: "+table.ConnotialToString(connotial));
+			Out.Log(Out.State.LogInfo,"Source Code: ");
+			for (int i = 0; i< lexems.Count -1; i++)
+			{
+				BottomUpTable.Connotial connotial2 = 
+					table.ConnotialBetweenTerminals(processValue(lexems[i]),processValue(lexems[i+1]));
+				string ConnotialString = table.ConnotialToString(connotial2);
+				Out.Log(Out.State.LogDebug, ConnotialString + lexems[i] + " ");
+			}
+			Out.Log(Out.State.LogDebug, "[ ]" +lexems[lexems.Count-1]);
+
+			// HTML output //
 			string content = "<tr><td>";
 			for (int i=0;i<stack.Count;i++) 
 			{
-				content += stack[i].Replace("<","&lt;").Replace(">","&gt;")+" ";
+				content += stack[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
 			}
 			content += "</td><td>" + table.ConnotialToString(connotial) + "</td><td>";
 			for (int i=0;i<lexems.Count;i++) 
 			{
-				content += lexems[i].Replace("<","&lt;").Replace(">","&gt;")+" ";
+				content += lexems[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
 			}
 			if (AnalyzeMode == CompileMode.PolizConverter)
 			{
 				content += "</td><td>";
 				for (int i=0;i<poliz.Count;i++) 
 				{
-					content += poliz[i].Replace("<","&lt;").Replace(">","&gt;")+" ";
+					content += poliz[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
 				}
 			}
-			content += "</td></tr>";
+			content += "</td></tr>\n";
 			htmlTable += content;
 		}
 

@@ -265,6 +265,7 @@ namespace Translators
 				}
 			}
 			
+			SetConnotialBetweenTerminals(Connotial.EqualConnotial,"<list of var>",")");
 			SetConnotialBetweenTerminals(Connotial.EqualConnotial,"<multiplier>","^");
 			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","*");
 			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","/");
