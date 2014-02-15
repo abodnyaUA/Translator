@@ -9,12 +9,16 @@ namespace Translators
 		private Grammar grammar = new Grammar();
 		private BottomUpTable table = new BottomUpTable();
 		List<string> stack = new List<string>();
-		string htmlTable = "<html>\n<head></head>\n" +
-			"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td></tr>";
+		List<string> lexems;
+		List<string> poliz = new List<string>();
+		string htmlTable = "";
+
+		private CompileMode AnalyzeMode { 
+			get { return Compiler.sharedCompiler.AnalyzeMode; } set {} }
+
 		private SyntaxAnalyzerBottomUp ()
 		{
 			table.GenerateTableWithGrammar(this.grammar);
-			;
 		}
 		private static SyntaxAnalyzerBottomUp _sharedAnalyzer = null;
 		public static SyntaxAnalyzerBottomUp sharedAnalyzer
@@ -30,7 +34,7 @@ namespace Translators
 		{
 			this.table.PrintTable();
 		}
-		private List<string> lexems;
+
 		public void AnalyzeLexems()
 		{
 			List<Lexem> lexemsFull = LexemAnalyzer.sharedAnalyzer.Lexems;
@@ -68,6 +72,7 @@ namespace Translators
 		{ {"@interface","@implementation"},{"@implementation","@end"},{"if","endif"},{"for","next"} };
 		bool allowLowPriorityForItemAtIndex(int idx)
 		{
+			if (AnalyzeMode == CompileMode.PolizConverter) return true;
 			HashSet<string> globalSectionsBegins = new HashSet<string>(globalSections.Keys);
 			int beginBlock = int.MaxValue;
 
@@ -123,9 +128,14 @@ namespace Translators
 			int failedProcessCount = 0;
 			int LastLexemsCount = lexems.Count;
 			stack.Clear();
+			poliz.Clear();
 			lexems.RemoveAt(0);
 			stack.Add("#");
+			htmlTable = "<html>\n<head></head>\n" +
+				"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td></tr>";
 			LogToTable(stack,Translators.BottomUpTable.Connotial.NoConnotial,lexems);
+
+			bool successFinish = false;
 			do
 			{
 				Translators.BottomUpTable.Connotial connotial = 
@@ -176,11 +186,15 @@ namespace Translators
 				LogToTable(stack,connotial,lexems);
 				Out.Log(Out.State.LogInfo,"=========Dumb LOG:============");
 				Out.Log(Out.State.LogInfo,"Stack: ");
-				for (int i = 0; i< stack.Count; i++)
+				for (int i = 0; i< stack.Count-1; i++)
 				{
-					Out.Log(Out.State.LogDebug, stack[i] + " ");
+					BottomUpTable.Connotial connotial2 = table.ConnotialBetweenTerminals(stack[i],stack[i+1]);
+					string ConnotialString = table.ConnotialToString(connotial2);
+					Out.Log(Out.State.LogDebug, ConnotialString + stack[i] + " ");
 				}
+				Out.Log(Out.State.LogDebug, table.ConnotialToString(connotial)+stack[stack.Count-1]);
 				Out.Log(Out.State.LogInfo,"Connotial: "+table.ConnotialToString(connotial));
+				Out.Log(Out.State.LogInfo,"Source Code: ");
 				for (int i = 0; i< lexems.Count -1; i++)
 				{
 					BottomUpTable.Connotial connotial2 = table.ConnotialBetweenTerminals(lexems[i],lexems[i+1]);
@@ -198,7 +212,17 @@ namespace Translators
 					failedProcessCount = 0;
 				}
 				LastLexemsCount = lexems.Count;
-			} while (stack[1] != "<app>" && failedProcessCount != 20);
+
+				if (AnalyzeMode == CompileMode.NormalAnalyze)
+				{
+					successFinish = stack[1] == "<app>" && stack.Count == 2;
+				}
+				else
+				{
+					successFinish = stack[1] == "<expression3>" && stack.Count == 2;
+				}
+
+			} while (!successFinish && failedProcessCount != 20);
 			htmlTable += "</table></body></html>";
 			File.WriteAllLines("/home/abodnya/TranslatorOutput.html",new string[] { htmlTable } );
 		}
@@ -258,6 +282,14 @@ namespace Translators
 			for (int i=0;i<lexems.Count;i++) 
 			{
 				content += lexems[i].Replace("<","&lt;").Replace(">","&gt;")+" ";
+			}
+			if (AnalyzeMode == CompileMode.PolizConverter)
+			{
+				content += "</td><td>";
+				for (int i=0;i<poliz.Count;i++) 
+				{
+					content += poliz[i].Replace("<","&lt;").Replace(">","&gt;")+" ";
+				}
 			}
 			content += "</td></tr>";
 			htmlTable += content;

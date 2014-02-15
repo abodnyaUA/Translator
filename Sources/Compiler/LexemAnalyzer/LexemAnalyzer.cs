@@ -78,7 +78,9 @@ namespace Translators
             dict.Add("const");
             return dict;
         }
-
+		
+		private CompileMode AnalyzeMode { 
+			get { return Compiler.sharedCompiler.AnalyzeMode; } set {} }
 
         private bool InterfaceWasDeclarated = false;
         private bool ImplementationWasDeclarated = false;
@@ -92,6 +94,10 @@ namespace Translators
 
         private void checkForGlobalCommands(string value, int line)
         {
+			if (AnalyzeMode == CompileMode.PolizConverter)
+			{
+				return; // Shouldn't check global commands for poliz mode
+			}
             if (value == "@interface")
             {
                 if (ImplementationWasDeclarated || EndWasDeclarated || InterfaceWasDeclarated)
@@ -245,7 +251,8 @@ namespace Translators
                                 }
                             }
                             // It's interface zone ? Then it's mabe new id
-                            if (InterfaceWasDeclarated && !ImplementationWasDeclarated)
+							if ((InterfaceWasDeclarated && !ImplementationWasDeclarated) 
+							    || AnalyzeMode == CompileMode.PolizConverter )
                             {
                                 int wasDeclaratedIndex = -1;
                                 for (int j = 0; j < IDs.Count; j++)
@@ -259,9 +266,16 @@ namespace Translators
                                 // It hasn't declarated.
                                 if (wasDeclaratedIndex != -1)
                                 {
-									Out.Log(Out.State.LogInfo,"");
-                                    throw new LexemException((i+1),"Variable " + value + " has declarated");
-
+									if (AnalyzeMode == CompileMode.NormalAnalyze)
+									{
+										Out.Log(Out.State.LogInfo,"");
+                                    	throw new LexemException((i+1),"Variable " + value + " has declarated");
+									}
+									else
+									{ 
+										this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
+										Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
+									}
                                 }
                                 else
                                 {

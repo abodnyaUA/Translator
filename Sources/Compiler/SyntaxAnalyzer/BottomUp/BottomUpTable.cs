@@ -264,13 +264,15 @@ namespace Translators
 					SetConnotialBetweenTerminals(Connotial.GreaterConnotial,reciever,problem);
 				}
 			}
-
+			
+			SetConnotialBetweenTerminals(Connotial.EqualConnotial,"<multiplier>","^");
 			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","*");
 			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","/");
-			SetConnotialBetweenTerminals(conBetweenTermMult,"<term>","^");
+			//SetConnotialBetweenTerminals(Connotial.LessConnotial,reciever,problem);
+			SetConnotialBetweenTerminals(Connotial.GreaterConnotial,"<term>","^");
 			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","*");
 			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","/");
-			SetConnotialBetweenTerminals(conBetweenTerm2Mult,"<term2>","^");
+			SetConnotialBetweenTerminals(Connotial.EqualConnotial,"<term2>","^");
 
 			problems.Remove("+");
 			problems.Remove("-");

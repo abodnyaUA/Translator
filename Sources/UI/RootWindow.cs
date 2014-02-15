@@ -44,6 +44,14 @@ namespace Translators
 		{
 			File.WriteAllLines(FileName,new string[] { FileChooser.Filename } );
 		}
+
+		protected void PolizButtonHandler (object sender, EventArgs e)
+		{
+			if (FileChooser.Filename != "")
+			{
+				Compiler.sharedCompiler.AnalyzeForPoliz(FileChooser.Filename);
+			}
+		}
 	}
 }
 
