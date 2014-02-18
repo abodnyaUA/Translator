@@ -7,7 +7,6 @@ namespace Translators
 	{
 		private List<Transition> transitions;
 		private string errorMessage;
-		private int number;
 		public State (int number, List<Transition> transitions, string errorMessage)
 		{
 			this.transitions = transitions;

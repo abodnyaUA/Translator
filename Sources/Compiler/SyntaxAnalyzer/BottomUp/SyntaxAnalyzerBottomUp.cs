@@ -130,6 +130,19 @@ namespace Translators
 			return processed;
 		}
 
+		private HashSet<string> stackOperations = new HashSet<string>() { "+","-","^","*","/" };
+
+		private void PutToStack()
+		{
+			stack.Add(lexems[0]);
+			lexems.RemoveAt(0);
+			string element = stack[stack.Count-1];
+			if (element.StartsWith("ID") || element.StartsWith("CONST"))
+			{
+				poliz.Add(element);
+			}
+		}
+
 		private void Analyze()
 		{
 			/* So-so code */
@@ -137,11 +150,18 @@ namespace Translators
 			int LastLexemsCount = lexems.Count;
 			stack.Clear();
 			poliz.Clear();
-			lexems.RemoveAt(0);
-			stack.Add("#");
+			PutToStack();
 			htmlTable = "<html>\n<head>\n<style type=\"text/css\">\n" +
 						"table { font-size: 8pt;}\n</style>\n</head>\n" +
-				"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td></tr>";
+				"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td>";
+			if (AnalyzeMode == CompileMode.NormalAnalyze)
+			{
+				htmlTable += "</tr>";
+			}
+			else
+			{
+				htmlTable += "<td>Poliz</td></tr>";
+			}
 			LogToTable(stack,Translators.BottomUpTable.Connotial.NoConnotial,lexems);
 
 			bool successFinish = false;
@@ -153,8 +173,7 @@ namespace Translators
 				    || connotial == BottomUpTable.Connotial.LessConnotial
 				    || connotial == BottomUpTable.Connotial.NoConnotial)
 				{
-					stack.Add(lexems[0]);
-					lexems.RemoveAt(0);
+					PutToStack();
 				}
 				if (connotial == BottomUpTable.Connotial.GreaterConnotial)
 				{
@@ -173,8 +192,7 @@ namespace Translators
 						if (lowPriorityItems.Contains(pair.RootLexem) && 
 						    false == allowLowPriorityForItemAtIndex(stack.Count-1))
 						{
-							stack.Add(lexems[0]);
-							lexems.RemoveAt(0);
+							PutToStack();
 							Out.Log(Out.State.LogDebug,"It's not time for low-level pair");
 						}
 						else
@@ -186,10 +204,15 @@ namespace Translators
 							}
 							else
 							{
-								stack.Add(lexems[0]);
-								lexems.RemoveAt(0);
+								PutToStack();
 							}
 						}
+					}
+					else
+					{
+						Out.Log(Out.State.LogInfo,"Invalid pair");
+						return;
+
 					}
 				}
 
@@ -227,6 +250,10 @@ namespace Translators
 			foreach (string str in grammarpair.PartLexems)
 			{
 				original += str + " ";
+				if (stackOperations.Contains(str))
+				{
+					poliz.Add(str);
+				}
 			}
 			Out.Log(Out.State.LogInfo,"Replace "+original + " with " +grammarpair.RootLexem);
 		}
