@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Translators
 {
-	public class SyntaxAnalyzerWithAutomat
+	public class SyntaxAnalyzerWithAutomat : ISyntaxAnalyzer
 	{
 		private static SyntaxAnalyzerWithAutomat _sharedAnalyzer = null;
 		public static SyntaxAnalyzerWithAutomat sharedAnalyzer

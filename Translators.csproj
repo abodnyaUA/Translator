@@ -75,7 +75,6 @@
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\SyntaxAnalyzerWithTable.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\State.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\MagazineAutomatTable\AutomatTable.cs" />
-    <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzer.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\Checker.cs" />
     <Compile Include="Sources\Prefix\Program.cs" />
     <Compile Include="Sources\Prefix\AssemblyInfo.cs" />
@@ -86,6 +85,8 @@
     <Compile Include="Sources\Compiler\PolizProcessing\PolizOperarionsList.cs" />
     <Compile Include="Sources\Compiler\Other\HTMLTable.cs" />
     <Compile Include="Sources\Compiler\Other\Constants.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzerRecursiveDown.cs" />
+    <Compile Include="Sources\Compiler\SyntaxAnalyzer\ISyntaxAnalyzer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

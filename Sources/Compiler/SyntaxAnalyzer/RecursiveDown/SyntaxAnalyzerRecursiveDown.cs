@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 namespace Translators
 {
-    class SyntaxAnalyzer
+    class SyntaxAnalyzerRecursiveDown : ISyntaxAnalyzer
     {
-        private static SyntaxAnalyzer _sharedAnalyzer = null;
-        public static SyntaxAnalyzer sharedAnalyzer
+		private static SyntaxAnalyzerRecursiveDown _sharedAnalyzer = null;
+		public static SyntaxAnalyzerRecursiveDown sharedAnalyzer
         {
             get
             {
-                if (_sharedAnalyzer == null) _sharedAnalyzer = new SyntaxAnalyzer();
+				if (_sharedAnalyzer == null) _sharedAnalyzer = new SyntaxAnalyzerRecursiveDown();
                 return _sharedAnalyzer;
             }
         }
-        private SyntaxAnalyzer()
-        {
-        }
+		private SyntaxAnalyzerRecursiveDown() { }
 
 		public List<Lexem> lexems;
 		public List<string> IDs;

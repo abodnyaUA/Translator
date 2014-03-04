@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Translators
 {
-	public class SyntaxAnalyzerBottomUp
+	public class SyntaxAnalyzerBottomUp : ISyntaxAnalyzer
 	{
 		private Grammar grammar = new Grammar();
 		private BottomUpTable table = new BottomUpTable();

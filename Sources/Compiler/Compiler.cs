@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Translators
 {
-	public enum CompileMode {
+	public enum CompileMode 
+	{
 		NormalAnalyze,
 		PolizConverter
 	}
@@ -21,12 +22,13 @@ namespace Translators
                 return _sharedCompiler;
             }
         }
-		public CompileMode AnalyzeMode;
+		public CompileMode AnalyzeMode;		
+		public ISyntaxAnalyzer SyntaxAnalyzer;
 
-        private Compiler()
-        {
-//			
-        }
+        private Compiler() 
+		{
+			SyntaxAnalyzer = SyntaxAnalyzerBottomUp.sharedAnalyzer;
+		}
 
         public void CompileFile(string path)
 		{
@@ -54,8 +56,7 @@ namespace Translators
 				Program.window.ProgressBar.Adjustment.Value += 25;
 				
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
-				//SyntaxAnalyzer.sharedAnalyzer.AnalyzeLexems();
-				SyntaxAnalyzerBottomUp.sharedAnalyzer.AnalyzeLexems();
+				SyntaxAnalyzer.AnalyzeLexems();
 				Program.window.ProgressBar.Adjustment.Value += 50;
 			}
 			catch (LexemException error)
