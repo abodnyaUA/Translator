@@ -16,7 +16,7 @@ namespace Translators
 			State state = null;
 			try 
 			{
-				state = states[number];
+				state = this.states[number];
 			} 
 			catch 
 			{

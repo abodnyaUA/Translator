@@ -180,7 +180,8 @@ namespace Translators
 				"Missed >, <, >=, <=, !=, or equ");
 		}		
 
-		public void ProcessLexemOnState(Lexem lexem, ref int lexemIterator, ref int stateNumber)
+		public void ProcessLexemOnState(Lexem lexem, ref int lexemIterator, 
+		                                ref int stateNumber)
 		{
 			State state = table.StateWithNumber(stateNumber);
 			state.Run(lexem,ref stateNumber, ref lexemIterator);
@@ -194,9 +195,12 @@ namespace Translators
 			stack.Push(int.MaxValue);
 			while (lexemsIterator < lexems.Count)
 			{
-				Out.Log(Out.State.LogVerbose,"On state "+currentState+". Will Process lexem: "+lexems[lexemsIterator].command);
-				ProcessLexemOnState(lexems[lexemsIterator],ref lexemsIterator,ref currentState);
-				Out.Log(Out.State.LogInfo,"Did Process "+lexemsIterator+" of "+lexems.Count+" lexems");
+				Out.Log(Out.State.LogVerbose,"On state "+currentState+
+				        ". Will Process lexem: "+lexems[lexemsIterator].command);
+				ProcessLexemOnState(lexems[lexemsIterator],
+				                    ref lexemsIterator,ref currentState);
+				Out.Log(Out.State.LogInfo,"Did Process "+lexemsIterator+
+				        " of "+lexems.Count+" lexems");
 			}
 			Out.Log(Out.State.LogInfo,"Finish analyze");
 		}

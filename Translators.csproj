@@ -81,6 +81,11 @@
     <Compile Include="Sources\Prefix\AssemblyInfo.cs" />
     <Compile Include="Sources\UI\RootWindow.cs" />
     <Compile Include="gtk-gui\Translators.RootWindow.cs" />
+    <Compile Include="Sources\Compiler\PolizProcessing\PolizAnalyzer.cs" />
+    <Compile Include="Sources\Compiler\PolizProcessing\PolizOperation.cs" />
+    <Compile Include="Sources\Compiler\PolizProcessing\PolizOperarionsList.cs" />
+    <Compile Include="Sources\Compiler\Other\HTMLTable.cs" />
+    <Compile Include="Sources\Compiler\Other\Constants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -98,6 +103,7 @@
     <Folder Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\" />
     <Folder Include="Resources\Icons\" />
     <Folder Include="Resources\Samples\" />
+    <Folder Include="Sources\Compiler\PolizProcessing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Samples\TextFile1.txt" />

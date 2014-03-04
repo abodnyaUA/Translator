@@ -11,7 +11,7 @@ namespace Translators
 		List<string> stack = new List<string>();
 		List<string> lexems;
 		List<string> poliz = new List<string>();
-		string htmlTable = "";
+		HTMLTable htmlTable;
 
 		private CompileMode AnalyzeMode { 
 			get { return Compiler.sharedCompiler.AnalyzeMode; } set {} }
@@ -61,9 +61,13 @@ namespace Translators
 			}
 			lexems.Add("#");
 			Analyze();
+			if (AnalyzeMode == CompileMode.PolizConverter)
+			{
+				PolizAnalyzer.sharedAnalyzer.CalculatePoliz(this.poliz);
+			}
 		}
 
-		
+
 		/* BAD. Very bad code. Absolute shity */
 		HashSet<string> lowPriorityItems = new HashSet<string>() {"<list of definitions2>","<list of operators2>"};
 		HashSet<string> globalItems = new HashSet<string>() {"<definition2>","<definition>","<operator2>","<operator>",
@@ -130,8 +134,6 @@ namespace Translators
 			return processed;
 		}
 
-		private HashSet<string> stackOperations = new HashSet<string>() { "+","-","^","*","/" };
-
 		private void PutToStack()
 		{
 			stack.Add(lexems[0]);
@@ -151,16 +153,13 @@ namespace Translators
 			stack.Clear();
 			poliz.Clear();
 			PutToStack();
-			htmlTable = "<html>\n<head>\n<style type=\"text/css\">\n" +
-						"table { font-size: 8pt;}\n</style>\n</head>\n" +
-				"<body>\n<table border=\"1\">\n<tr><td>Stack</td><td>Connotial</td><td>Source Code</td>";
 			if (AnalyzeMode == CompileMode.NormalAnalyze)
 			{
-				htmlTable += "</tr>";
+				htmlTable = new HTMLTable("Stack","Connotial","Source Code");
 			}
 			else
 			{
-				htmlTable += "<td>Poliz</td></tr>";
+				htmlTable = new HTMLTable("Stack","Connotial","Source Code","Poliz");
 			}
 			LogToTable(stack,Translators.BottomUpTable.Connotial.NoConnotial,lexems);
 
@@ -212,7 +211,6 @@ namespace Translators
 					{
 						Out.Log(Out.State.LogInfo,"Invalid pair");
 						return;
-
 					}
 				}
 
@@ -238,8 +236,8 @@ namespace Translators
 				}
 
 			} while (!successFinish && failedProcessCount != 20);
-			htmlTable += "</table>\n</body>\n</html>";
-			File.WriteAllLines("/home/abodnya/TranslatorOutput.html",new string[] { htmlTable } );
+			htmlTable.WriteToFile(Constants.HTMLTablePath);
+
 		}
 
 		void replace(int idx, GrammarPair grammarpair)
@@ -250,7 +248,7 @@ namespace Translators
 			foreach (string str in grammarpair.PartLexems)
 			{
 				original += str + " ";
-				if (stackOperations.Contains(str))
+				if (PolizAnalyzer.sharedAnalyzer.operationList.isOperation(str))
 				{
 					poliz.Add(str);
 				}
@@ -290,6 +288,16 @@ namespace Translators
 			return result;
 		}
 
+		string ListToString(List<string> strings)
+		{
+			string str = "";
+			for (int i=0;i<strings.Count;i++) 
+			{
+				str += strings[i].Replace("CONST_","").Replace("ID_","")+" ";
+			}
+			return str;
+		}
+
 		void LogToTable(List<string> stack, BottomUpTable.Connotial connotial, List<string> source)
 		{
 			// Log output //
@@ -315,26 +323,18 @@ namespace Translators
 			Out.Log(Out.State.LogDebug, "[ ]" +lexems[lexems.Count-1]);
 
 			// HTML output //
-			string content = "<tr><td>";
-			for (int i=0;i<stack.Count;i++) 
-			{
-				content += stack[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
-			}
-			content += "</td><td>" + table.ConnotialToString(connotial) + "</td><td>";
-			for (int i=0;i<lexems.Count;i++) 
-			{
-				content += lexems[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
-			}
+			string stackLine = ListToString(stack);
+			string connotialLine = table.ConnotialToString(connotial);
+			string lexemsLine = ListToString(lexems);
 			if (AnalyzeMode == CompileMode.PolizConverter)
 			{
-				content += "</td><td>";
-				for (int i=0;i<poliz.Count;i++) 
-				{
-					content += poliz[i].Replace("<","&lt;").Replace(">","&gt;").Replace("CONST_","").Replace("ID_","")+" ";
-				}
+				string polizLine = ListToString(poliz);
+				htmlTable.AddLine(stackLine,connotialLine,lexemsLine,polizLine);
 			}
-			content += "</td></tr>\n";
-			htmlTable += content;
+			else
+			{
+				htmlTable.AddLine(stackLine,connotialLine,lexemsLine);
+			}
 		}
 
 	}
