@@ -27,7 +27,7 @@ namespace Translators
 
         private Compiler() 
 		{
-			SyntaxAnalyzer = SyntaxAnalyzerBottomUp.sharedAnalyzer;
+			SyntaxAnalyzer = SyntaxAnalyzerWithTable.sharedAnalyzer;
 		}
 
         public void CompileFile(string path)
@@ -56,7 +56,8 @@ namespace Translators
 				Program.window.ProgressBar.Adjustment.Value += 25;
 				
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
-				SyntaxAnalyzer.AnalyzeLexems();
+				//SyntaxAnalyzer.AnalyzeLexems();
+				PolizAnalyzer.sharedAnalyzer.AnalyzeLexems();
 				Program.window.ProgressBar.Adjustment.Value += 50;
 			}
 			catch (LexemException error)

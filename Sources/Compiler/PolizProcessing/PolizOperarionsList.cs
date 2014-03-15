@@ -19,10 +19,22 @@ namespace Translators
 			return exist;
 		}
 
-		public PolizOperarionsList ()
+		public int LexemPriority(Lexem lexem)
 		{
-			//operations.Add(PolizOperation.Operation("(",0));
-			//operations.Add(PolizOperation.Operation(")",1));
+			foreach (PolizOperation polizOperation in this.operations)
+			{
+				if (polizOperation.operation == lexem.command)
+				{
+					return polizOperation.priority;
+				}
+			}
+			return int.MaxValue;
+		}
+
+		public PolizOperarionsList()
+		{
+			operations.Add(PolizOperation.Operation("(",0));
+			operations.Add(PolizOperation.Operation(")",1));
 			operations.Add(PolizOperation.Operation("+",1));
 			operations.Add(PolizOperation.Operation("-",1));
 			operations.Add(PolizOperation.Operation("*",2));

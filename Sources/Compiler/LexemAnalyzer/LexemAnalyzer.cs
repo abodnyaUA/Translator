@@ -15,6 +15,21 @@ namespace Translators
             this.lineNumber = line;
             this.command = command;
         }
+
+		public bool isIDorCONST()
+		{
+			return this.key >= LexemAnalyzer.sharedAnalyzer.dict.Count-2;
+		}
+
+		public bool isID()
+		{
+			return this.key == LexemAnalyzer.sharedAnalyzer.dict.Count-2;
+		}
+
+		public bool isCONST()
+		{
+			return this.key == LexemAnalyzer.sharedAnalyzer.dict.Count-1;
+		}
     }
     class LexemAnalyzer
     {
@@ -150,11 +165,6 @@ namespace Translators
 				bool validLine = true;
 				try
 				{
-//					if (i < parsedList.Count-1 
-//					    && parsedList[i][0] == "\n" 
-//					    && parsedList[i+1][0] == "\n" 
-//					    && parsedList[i].Count == 1) validLine = false;
-
 					if (parsedList[i][0] == "\n" 
 					    && i == parsedList.Count-1 
 					    && parsedList[i].Count == 1) validLine = false;
@@ -346,6 +356,5 @@ namespace Translators
             }
 			Out.Log(Out.State.LogInfo,"");
         }
-
     }
 }
