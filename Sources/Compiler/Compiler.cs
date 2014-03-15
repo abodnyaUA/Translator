@@ -24,10 +24,12 @@ namespace Translators
         }
 		public CompileMode AnalyzeMode;		
 		public ISyntaxAnalyzer SyntaxAnalyzer;
+		public LexemList LexemList;
 
         private Compiler() 
 		{
 			SyntaxAnalyzer = SyntaxAnalyzerWithTable.sharedAnalyzer;
+			LexemList = new LexemList();
 		}
 
         public void CompileFile(string path)
@@ -52,7 +54,6 @@ namespace Translators
 			{
 				Out.Log(Out.State.LogInfo,"======== Lexem Analyzer ========");
 				LexemAnalyzer.sharedAnalyzer.AnalyzeWithDoubleList(parsed);
-				LexemAnalyzer.sharedAnalyzer.outputTables();
 				Program.window.ProgressBar.Adjustment.Value += 25;
 				
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");

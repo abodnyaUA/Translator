@@ -37,16 +37,16 @@ namespace Translators
 
 		public void AnalyzeLexems()
 		{
-			List<Lexem> lexemsFull = LexemAnalyzer.sharedAnalyzer.Lexems;
+			List<Lexem> lexemsFull = LexemList.Instance.Lexems;
 			lexems = new List<string>();
 			lexems.Add("#");
 			foreach (Lexem lexem in lexemsFull)
 			{
-				if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count-2)
+				if (lexem.isID())
 				{
 					lexems.Add("ID_"+lexem.command);
 				}
-				else if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count-1)
+				else if (lexem.isCONST())
 				{
 					lexems.Add("CONST_"+lexem.command);
 				}
@@ -61,10 +61,6 @@ namespace Translators
 			}
 			lexems.Add("#");
 			Analyze();
-			if (AnalyzeMode == CompileMode.PolizConverter)
-			{
-				PolizAnalyzer.sharedAnalyzer.CalculatePoliz(this.poliz);
-			}
 		}
 
 

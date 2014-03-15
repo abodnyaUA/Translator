@@ -87,6 +87,7 @@
     <Compile Include="Sources\Compiler\Other\Constants.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzerRecursiveDown.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\ISyntaxAnalyzer.cs" />
+    <Compile Include="Sources\Compiler\LexemList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

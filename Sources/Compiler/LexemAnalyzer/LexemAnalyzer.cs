@@ -4,33 +4,6 @@ using System.Linq;
 using System.Text;
 namespace Translators
 {
-	public class Lexem
-    {
-        public int lineNumber;
-        public string command;
-        public int key;
-        public Lexem(int line, string command, int key)
-        {
-            this.key = key;
-            this.lineNumber = line;
-            this.command = command;
-        }
-
-		public bool isIDorCONST()
-		{
-			return this.key >= LexemAnalyzer.sharedAnalyzer.dict.Count-2;
-		}
-
-		public bool isID()
-		{
-			return this.key == LexemAnalyzer.sharedAnalyzer.dict.Count-2;
-		}
-
-		public bool isCONST()
-		{
-			return this.key == LexemAnalyzer.sharedAnalyzer.dict.Count-1;
-		}
-    }
     class LexemAnalyzer
     {
         private static LexemAnalyzer _sharedAnalyzer = null;
@@ -42,57 +15,7 @@ namespace Translators
                 return _sharedAnalyzer;
             }
         }
-        private LexemAnalyzer()
-        {
-            this.dict = LexemsDict();
-        }
-
-        private List<string> LexemsDict()
-        {
-            List<string> dict = new List<string>();
-            dict.Add("@interface");
-            dict.Add("@implementation");
-            dict.Add("@end");
-            dict.Add("int");
-            dict.Add("input");
-            dict.Add("output");
-            dict.Add("\n");
-            dict.Add("for");
-            dict.Add("to");
-            dict.Add("step");
-            dict.Add("next");
-            dict.Add("if");
-            dict.Add("else");
-            dict.Add("endif");
-            dict.Add("{");
-            dict.Add("}");
-            dict.Add("(");
-            dict.Add(")");
-            dict.Add("=");
-			dict.Add("equ");
-			dict.Add("!=");
-            dict.Add(">");
-            dict.Add("<");
-            dict.Add(">=");
-            dict.Add("<=");
-            dict.Add("!");
-            dict.Add("+");
-            dict.Add("-");
-            dict.Add("/");
-            dict.Add("*");
-            dict.Add("^");
-            dict.Add(",");
-            dict.Add("and");
-			dict.Add("or");
-			dict.Add("[");
-			dict.Add("]");
-			dict.Add(";");
-			dict.Add("endset");
-			dict.Add("from");
-            dict.Add("var");
-            dict.Add("const");
-            return dict;
-        }
+		private LexemAnalyzer() { }
 		
 		private CompileMode AnalyzeMode { 
 			get { return Compiler.sharedCompiler.AnalyzeMode; } set {} }
@@ -100,12 +23,6 @@ namespace Translators
         private bool InterfaceWasDeclarated = false;
         private bool ImplementationWasDeclarated = false;
         private bool EndWasDeclarated = false;
-
-        public List<string> dict;
-        public List<string> IDs = new List<string>();
-        public List<string> CONSTs = new List<string>();
-        public List<Lexem>  Lexems = new List<Lexem>();
-
 
         private void checkForGlobalCommands(string value, int line)
         {
@@ -153,9 +70,10 @@ namespace Translators
 			InterfaceWasDeclarated = false;
 			ImplementationWasDeclarated = false;
 			EndWasDeclarated = false;
-			IDs = new List<string>();
-			CONSTs = new List<string>();
-			Lexems = new List<Lexem>();
+			List<string> IDs = new List<string>();
+			List<string> CONSTs = new List<string>();
+			List<Lexem> Lexems = new List<Lexem>();
+			List<string> dict = LexemList.Instance.Grammar;
 
 			Out.Log(Out.State.LogInfo,"Line  Command         Key\tID\tConst");
             // line cycle
@@ -199,7 +117,7 @@ namespace Translators
                     if (find != -1)
                     {
 						Out.Log(Out.State.LogInfo,""+(find + 1));
-                        this.Lexems.Add(new Lexem(i,value,find));
+                        Lexems.Add(new Lexem(i,value,find));
                     }
                     // No? Don't worry. May be it's ID or CONST
                     else
@@ -230,13 +148,13 @@ namespace Translators
                             if (wasDeclaratedIndex == -1)
                             {
                                 CONSTs.Add(value);
-                                this.Lexems.Add(new Lexem(i, value, dict.Count-1));
+                                Lexems.Add(new Lexem(i, value, dict.Count-1));
                                 Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
                             }
                             else
                             {
 								Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
-								this.Lexems.Add(new Lexem(i, value, dict.Count-1));
+								Lexems.Add(new Lexem(i, value, dict.Count-1));
                             }
                         }
                         // No? Okay, May be ID
@@ -283,7 +201,7 @@ namespace Translators
 									}
 									else
 									{ 
-										this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
+										Lexems.Add(new Lexem(i, value, dict.Count - 2));
 										Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
 									}
                                 }
@@ -292,7 +210,7 @@ namespace Translators
                                     // Declaration zone //
                                     
                                     IDs.Add(value);
-                                    this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
+                                    Lexems.Add(new Lexem(i, value, dict.Count - 2));
 									Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
                                 }
                             }
@@ -319,20 +237,23 @@ namespace Translators
                                 // Fuuuh. I've find it.
                                 else
                                 {
-                                    this.Lexems.Add(new Lexem(i, value, dict.Count - 2));
+                                    Lexems.Add(new Lexem(i, value, dict.Count - 2));
 									Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
                                 }
                             }
                         }
                     }
-
-                    //Console.ReadKey();
                 } // Lexems Cycle
             } // Line cycle
+			LexemList.Instance.UpdateConsts(CONSTs);
+			LexemList.Instance.UpdateIDs(IDs);
+			LexemList.Instance.UpdateLexems(Lexems);
+
+			outputTables(IDs,CONSTs,Lexems);
         }
         /// Parse doubleArray //
 
-        public void outputTables()
+        public void outputTables(List<string> IDs, List<string> CONSTs, List<Lexem> Lexems)
         {
 			Out.Log(Out.State.LogInfo,"IDs:");
 			Out.Log(Out.State.LogInfo,"Num  ID");

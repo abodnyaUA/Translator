@@ -23,10 +23,10 @@ namespace Translators
 		public void AnalyzeLexems()
 		{
 			lexemsIterator = 0;
-			this.lexems = LexemAnalyzer.sharedAnalyzer.Lexems;
-			this.IDs = LexemAnalyzer.sharedAnalyzer.IDs;
-			this.CONSTs = LexemAnalyzer.sharedAnalyzer.CONSTs;
-			this.lexemsDict = LexemAnalyzer.sharedAnalyzer.dict;
+			this.lexems = LexemList.Instance.Lexems;
+			this.IDs = LexemList.Instance.IDs;
+			this.CONSTs = LexemList.Instance.Consts;
+			this.lexemsDict = LexemList.Instance.Grammar;
 			StartAutomat();
 		}
 

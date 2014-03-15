@@ -24,7 +24,7 @@ namespace Translators
 		{
 			this.stack = new List<Lexem>();
 			this.poliz = new List<Lexem>();
-			this.lexems = new List<Lexem>(LexemAnalyzer.sharedAnalyzer.Lexems);
+			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
 			UseOperatorsBlock();
 
 			while (lexems.Count > 0)
@@ -37,8 +37,6 @@ namespace Translators
 				stack.RemoveAt(stack.Count-1);
 				this.poliz.Add(lastStack);
 			}
-
-			FilteredPolizList();
 			LogLexems("Poliz",poliz);
 		}
 
@@ -112,22 +110,6 @@ namespace Translators
 		private List<Lexem> poliz;
 		private List<Lexem> stack;
 		private List<Lexem> lexems;
-
-		public void CalculatePoliz(List<string> poliz)
-		{
-			//poliz = FilteredPolizList(poliz);
-			//LogPoliz();
-			CalculateExpression(poliz,0,poliz.Count-1);
-		}
-
-		private List<Lexem> FilteredPolizList()
-		{
-			poliz.RemoveAll((Lexem polizElement) => { 
-				return polizElement.command == "(" || polizElement.command == ")"; 
-			});
-			return poliz;
-		}
-
 		private void LogLexems(string name, List<Lexem> list)
 		{
 			Out.LogOneLine(Out.State.LogInfo,name+": ");

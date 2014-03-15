@@ -56,11 +56,11 @@ namespace Translators
 			{
 				return true;
 			}
-			if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count - 2 && this.lexem == Transition.LexemID)
+			if (lexem.isID() && this.lexem == Transition.LexemID)
 			{
 				return true;
 			}
-			if (lexem.key == LexemAnalyzer.sharedAnalyzer.dict.Count - 1 && this.lexem == Transition.LexemCONST)
+			if (lexem.isCONST() && this.lexem == Transition.LexemCONST)
 			{
 				return true;
 			}

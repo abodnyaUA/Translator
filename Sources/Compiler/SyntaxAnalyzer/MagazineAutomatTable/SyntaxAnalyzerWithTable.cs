@@ -189,7 +189,7 @@ namespace Translators
 
 		public void AnalyzeLexems()
 		{
-			List<Lexem> lexems = LexemAnalyzer.sharedAnalyzer.Lexems;
+			List<Lexem> lexems = LexemList.Instance.Lexems;
 			int lexemsIterator = 0;
 			int currentState = 1;
 			stack.Push(int.MaxValue);
