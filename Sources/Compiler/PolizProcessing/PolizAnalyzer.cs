@@ -80,7 +80,7 @@ namespace Translators
 						this.poliz.Add(lastStack);
 					}
 
-					if ((operationList.LexemPriority(this.stack[stack.Count-1]) < 
+					else if ((operationList.LexemPriority(this.stack[stack.Count-1]) < 
 					     operationList.LexemPriority(lexems[0]) || 
 					     operationList.OpenScobe(lexems[0])) &&
 					    !operationList.CloseScobe(lexems[0]))
@@ -89,7 +89,7 @@ namespace Translators
 						this.lexems.RemoveAt(0);
 					}
 
-					if (operationList.CloseScobe(lexems[0]))
+					else if (operationList.CloseScobe(lexems[0]))
 					{
 						this.lexems.RemoveAt(0);
 						while (!operationList.OpenScobe(stack[stack.Count-1]) && stack.Count >= 0)
@@ -100,7 +100,6 @@ namespace Translators
 						}
 						stack.RemoveAt(stack.Count-1); // "(" "["
 					}
-
 				}
 			}
 			LogLexems("Stack",stack);
