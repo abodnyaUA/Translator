@@ -22,7 +22,7 @@ namespace Translators
 		#region Processing
 		public void AnalyzeLexems()
 		{
-			this.stack = new Stack<Lexem>();
+			this.stack = new List<Lexem>();
 			this.poliz = new List<Lexem>();
 			this.lexems = new List<Lexem>(LexemAnalyzer.sharedAnalyzer.Lexems);
 			UseOperatorsBlock();
@@ -31,13 +31,15 @@ namespace Translators
 			{
 				ProcessLexem();
 			}
-			foreach (Lexem stackElement in this.stack)
+			while (stack.Count > 0)
 			{
-				this.poliz.Add(stackElement);
+				Lexem lastStack = this.stack[stack.Count-1];
+				stack.RemoveAt(stack.Count-1);
+				this.poliz.Add(lastStack);
 			}
 
 			FilteredPolizList();
-			LogPoliz();
+			LogLexems("Poliz",poliz);
 		}
 
 		private void UseOperatorsBlock()
@@ -49,6 +51,7 @@ namespace Translators
 			lexems.RemoveAt(0); // "\n"
 			lexems.RemoveAt(0); // "@implementation"
 			lexems.RemoveAt(0); // "\n"
+			lexems.RemoveAt(lexems.Count-1); // "\n"
 			lexems.RemoveAt(lexems.Count-1); // "@end"
 		}
 
@@ -61,38 +64,58 @@ namespace Translators
 			}
 			else
 			{
-				int lastStackPriority = this.stack.Count > 0 ? 
-					operationList.LexemPriority(this.stack.Peek()) : int.MaxValue;
-				Out.Log(Translators.Out.State.LogInfo,"Priority: " + lastStackPriority + 
-				        "; Element: "+lexems[0].command);
-				if (lastStackPriority == int.MaxValue)
+				if (this.stack.Count == 0)
 				{
-					this.stack.Push(lexems[0]);
+					this.stack.Add(lexems[0]);
 					this.lexems.RemoveAt(0);
 				}
-				else if (lastStackPriority >= operationList.LexemPriority(lexems[0]))
+				else 
 				{
-					this.stack.Push(lexems[0]);
-					this.lexems.RemoveAt(0);
-				}
-				else
-				{
-					Lexem lastStack = this.stack.Pop();
-					this.poliz.Add(lastStack);
+					if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
+				         operationList.LexemPriority(lexems[0]) && lexems[0].command != "(")
+					{
+						Lexem lastStack = this.stack[stack.Count-1];
+						stack.RemoveAt(stack.Count-1);
+						this.poliz.Add(lastStack);
+					}
+
+					if ((operationList.LexemPriority(this.stack[stack.Count-1]) < 
+					    operationList.LexemPriority(lexems[0]) || lexems[0].command == "(")
+					    && lexems[0].command != ")")
+					{
+						this.stack.Add(lexems[0]);
+						this.lexems.RemoveAt(0);
+					}
+
+					if (lexems[0].command == ")")
+					{
+						this.lexems.RemoveAt(0);
+						while (stack[stack.Count-1].command != "(" && stack.Count >= 0)
+						{
+							Lexem lastStack = this.stack[stack.Count-1];
+							stack.RemoveAt(stack.Count-1);
+							this.poliz.Add(lastStack);
+						}
+						stack.RemoveAt(stack.Count-1); // "("
+					}
+
 				}
 			}
-			LogPoliz();
+			LogLexems("Stack",stack);
+			LogLexems("Source",lexems);
+			LogLexems("Poliz",poliz);
+			Out.Log(Out.State.LogInfo,"");
 		}
 
 		public PolizOperarionsList operationList = new PolizOperarionsList();
 		private List<Lexem> poliz;
-		private Stack<Lexem> stack;
+		private List<Lexem> stack;
 		private List<Lexem> lexems;
 
 		public void CalculatePoliz(List<string> poliz)
 		{
 			//poliz = FilteredPolizList(poliz);
-			LogPoliz();
+			//LogPoliz();
 			CalculateExpression(poliz,0,poliz.Count-1);
 		}
 
@@ -104,10 +127,10 @@ namespace Translators
 			return poliz;
 		}
 
-		private void LogPoliz()
+		private void LogLexems(string name, List<Lexem> list)
 		{
-			Out.LogOneLine(Out.State.LogInfo,"POLIZ: ");
-			foreach (Lexem polizString in this.poliz)
+			Out.LogOneLine(Out.State.LogInfo,name+": ");
+			foreach (Lexem polizString in list)
 			{
 				Out.LogOneLine(Out.State.LogInfo,polizString.command+" ");
 			}
