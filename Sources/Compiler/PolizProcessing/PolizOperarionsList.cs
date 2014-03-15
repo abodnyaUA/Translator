@@ -52,13 +52,15 @@ namespace Translators
 		public PolizOperarionsList()
 		{
 			AddOperations(0,"(","[");
-			AddOperations(1,")","]","or");
-			AddOperations(2,"and");
-			AddOperations(3,"!");
-			AddOperations(4,">","<",">=","<=","equ","!=");
-			AddOperations(5,"+","-");
-			AddOperations(6,"*","/");
-			AddOperations(7,"^");
+			AddOperations(1,")","]");
+			AddOperations(2,"=");
+			AddOperations(3,"or");
+			AddOperations(4,"and");
+			AddOperations(5,"!");
+			AddOperations(6,">","<",">=","<=","equ","!=");
+			AddOperations(7,"+","-");
+			AddOperations(8,"*","/");
+			AddOperations(9,"^");
 		}
 	}
 }

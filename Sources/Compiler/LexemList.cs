@@ -5,6 +5,9 @@ namespace Translators
 {
 	public class Lexem
 	{
+		public static int kIDKey { get { return LexemList.Instance.Grammar.Count-2; } }
+		public static int kConstKey { get { return LexemList.Instance.Grammar.Count-1; } }
+
 		public int LineNumber { get { return lineNumber; } }
 		public string Command { get { return command; } }
 		public int Key { get { return key; } }
@@ -44,6 +47,10 @@ namespace Translators
 					Variable variable = LexemList.Instance.VariableWithName(this.command);
 					variable.Value = value;
 				}
+				else if (this.isCONST())
+				{
+					this.command = value.ToString();
+				}
 				else
 				{
 					throw new Exception("Try to set value to non-ID");
@@ -63,7 +70,7 @@ namespace Translators
 				}
 				else
 				{
-					throw new Exception("Try to get value from non-ID and non-CONST");
+					return int.MaxValue;
 				}
 			}
 		}

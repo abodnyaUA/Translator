@@ -23,7 +23,8 @@ namespace Translators
 		public void AnalyzeLexems()
 		{
 			this.stack = new List<Lexem>();
-			this.poliz = new List<Lexem>();
+			this.allPoliz = new List<List<Lexem>>();
+			this.allPoliz.Add(new List<Lexem>());
 			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
 			UseOperatorsBlock();
 
@@ -31,13 +32,15 @@ namespace Translators
 			{
 				ProcessLexem();
 			}
-			while (stack.Count > 0)
+			FinishCurrentPoliz();
+			if (this.poliz.Count == 0)
 			{
-				Lexem lastStack = this.stack[stack.Count-1];
-				stack.RemoveAt(stack.Count-1);
-				this.poliz.Add(lastStack);
+				allPoliz.RemoveAt(allPoliz.Count-1);
 			}
-			LogLexems("Poliz",poliz);
+			foreach (List<Lexem> poliz in this.allPoliz)
+			{
+				LogLexems("Poliz",poliz);
+			}
 		}
 
 		private void UseOperatorsBlock()
@@ -49,8 +52,46 @@ namespace Translators
 			lexems.RemoveAt(0); // "\n"
 			lexems.RemoveAt(0); // "@implementation"
 			lexems.RemoveAt(0); // "\n"
-			lexems.RemoveAt(lexems.Count-1); // "\n"
+			//lexems.RemoveAt(lexems.Count-1); // "\n"
 			lexems.RemoveAt(lexems.Count-1); // "@end"
+		}
+
+		private void ProcessPolizResult()
+		{
+			if (this.poliz.Count > 0)
+			{
+				if (this.poliz[poliz.Count-1].Command == "=")
+				{
+					ProcessSetter();
+				}
+			}
+		}
+
+		private void ProcessSetter()
+		{
+			CalculateExpression(poliz,1,poliz.Count-2);
+			poliz[0].Value = poliz[1].Value;
+			Out.Log(Out.State.LogInfo,"VALUE OF "+poliz[0].Value.ToString());
+		}
+
+		private void FinishCurrentPoliz()
+		{
+			// Clear stack //
+			while (stack.Count > 0)
+			{
+				Lexem lastStack = this.stack[stack.Count-1];
+				stack.RemoveAt(stack.Count-1);
+				this.poliz.Add(lastStack);
+			}
+
+			ProcessPolizResult();
+
+			// Start new poliz //
+			if (lexems.Count > 0)
+			{
+				allPoliz.Add(new List<Lexem>());
+				lexems.RemoveAt(0);
+			}
 		}
 
 		private void ProcessLexem()
@@ -69,7 +110,13 @@ namespace Translators
 				}
 				else 
 				{
-					if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
+					// If separator (\n), start writing new poliz //
+					if (lexems[0].isSeparator())
+					{
+						FinishCurrentPoliz();
+					}
+
+					else if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
 				        operationList.LexemPriority(lexems[0]) && 
 					    !operationList.OpenScobe(lexems[0]))
 					{
@@ -107,7 +154,15 @@ namespace Translators
 		}
 
 		public PolizOperarionsList operationList = new PolizOperarionsList();
-		private List<Lexem> poliz;
+		private List<List<Lexem>> allPoliz;
+		private List<Lexem> poliz 
+		{
+			get 
+			{
+				return allPoliz[allPoliz.Count - 1];
+			}
+		}
+
 		private List<Lexem> stack;
 		private List<Lexem> lexems;
 		private void LogLexems(string name, List<Lexem> list)
@@ -120,23 +175,25 @@ namespace Translators
 			Out.Log(Out.State.LogInfo,"");
 		}
 
-		public void CalculateExpression(List<string> poliz, int start, int end)
+		public void CalculateExpression(List<Lexem> poliz, int start, int end)
 		{
 			for (int i = start; i <= end; i++)
 			{
-				string polizElement = poliz[i];
-				if (PolizAnalyzer.sharedAnalyzer.operationList.isOperation(polizElement))
+				if (poliz[i].Value == int.MaxValue) //operator
 				{
-					int operand1 = Convert.ToInt32(poliz[i-2].Replace("CONST_",""));
-					int operand2 = Convert.ToInt32(poliz[i-1].Replace("CONST_",""));
-					int result = resultCalculation(operand1,operand2,polizElement);
+					Lexem result = new Lexem(poliz[start].LineNumber,"0",Lexem.kConstKey);
+					string operation = poliz[i].Command;
+					int operand1 = poliz[i-2].Value;
+					int operand2 = poliz[i-1].Value;
+					result.Value = resultCalculation(operand1,operand2,operation);
 					i -= 2;
 					end -= 2;
 					poliz.RemoveRange(i,3);
-					poliz.Insert(i,result.ToString());
+					poliz.Insert(i,result);
+					LogLexems("Poliz", this.poliz);
 				}
 			}
-			Out.Log(Out.State.LogInfo,"Result calculation is: "+poliz[0].Replace("CONST_",""));
+			Out.Log(Out.State.LogInfo,"Result calculation is: "+poliz[0].Command+" = "+poliz[1].Value.ToString());
 		}
 		
 		private int resultCalculation(int operand1, int operand2, string calcOperator)
