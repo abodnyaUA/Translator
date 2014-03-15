@@ -32,7 +32,9 @@ namespace Translators
 			{
 				ProcessLexem();
 			}
+
 			FinishCurrentPoliz();
+
 			if (this.poliz.Count == 0)
 			{
 				allPoliz.RemoveAt(allPoliz.Count-1);
@@ -45,14 +47,12 @@ namespace Translators
 
 		private void UseOperatorsBlock()
 		{
-			while (lexems[1].Command != "@implementation")
+			while (lexems[0].Command != "@implementation")
 			{
 				lexems.RemoveAt(0);
 			}
-			lexems.RemoveAt(0); // "\n"
 			lexems.RemoveAt(0); // "@implementation"
 			lexems.RemoveAt(0); // "\n"
-			//lexems.RemoveAt(lexems.Count-1); // "\n"
 			lexems.RemoveAt(lexems.Count-1); // "@end"
 		}
 
@@ -71,7 +71,6 @@ namespace Translators
 		{
 			CalculateExpression(poliz,1,poliz.Count-2);
 			poliz[0].Value = poliz[1].Value;
-			Out.Log(Out.State.LogInfo,"VALUE OF "+poliz[0].Value.ToString());
 		}
 
 		private void FinishCurrentPoliz()
@@ -83,6 +82,11 @@ namespace Translators
 				stack.RemoveAt(stack.Count-1);
 				this.poliz.Add(lastStack);
 			}
+			
+			LogLexems("Stack",stack);
+			LogLexems("Source",lexems);
+			LogLexems("Poliz",poliz);
+			Out.Log(Out.State.LogInfo,"");
 
 			ProcessPolizResult();
 
@@ -116,24 +120,6 @@ namespace Translators
 						FinishCurrentPoliz();
 					}
 
-					else if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
-				        operationList.LexemPriority(lexems[0]) && 
-					    !operationList.OpenScobe(lexems[0]))
-					{
-						Lexem lastStack = this.stack[stack.Count-1];
-						stack.RemoveAt(stack.Count-1);
-						this.poliz.Add(lastStack);
-					}
-
-					else if ((operationList.LexemPriority(this.stack[stack.Count-1]) < 
-					     operationList.LexemPriority(lexems[0]) || 
-					     operationList.OpenScobe(lexems[0])) &&
-					    !operationList.CloseScobe(lexems[0]))
-					{
-						this.stack.Add(lexems[0]);
-						this.lexems.RemoveAt(0);
-					}
-
 					else if (operationList.CloseScobe(lexems[0]))
 					{
 						this.lexems.RemoveAt(0);
@@ -144,6 +130,23 @@ namespace Translators
 							this.poliz.Add(lastStack);
 						}
 						stack.RemoveAt(stack.Count-1); // "(" "["
+					}
+
+					else if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
+				        operationList.LexemPriority(lexems[0]) && 
+					    !operationList.OpenScobe(lexems[0]))
+					{
+						Lexem lastStack = this.stack[stack.Count-1];
+						stack.RemoveAt(stack.Count-1);
+						this.poliz.Add(lastStack);
+					}
+
+					else if (operationList.LexemPriority(this.stack[stack.Count-1]) < 
+					     operationList.LexemPriority(lexems[0]) || 
+					     operationList.OpenScobe(lexems[0]))
+					{
+						this.stack.Add(lexems[0]);
+						this.lexems.RemoveAt(0);
 					}
 				}
 			}
@@ -170,7 +173,7 @@ namespace Translators
 			Out.LogOneLine(Out.State.LogInfo,name+": ");
 			foreach (Lexem polizString in list)
 			{
-				Out.LogOneLine(Out.State.LogInfo,polizString.Command+" ");
+				Out.LogOneLine(Out.State.LogInfo,polizString.Command.Replace("\n","ENTER")+" ");
 			}
 			Out.Log(Out.State.LogInfo,"");
 		}
@@ -193,7 +196,6 @@ namespace Translators
 					LogLexems("Poliz", this.poliz);
 				}
 			}
-			Out.Log(Out.State.LogInfo,"Result calculation is: "+poliz[0].Command+" = "+poliz[1].Value.ToString());
 		}
 		
 		private int resultCalculation(int operand1, int operand2, string calcOperator)
