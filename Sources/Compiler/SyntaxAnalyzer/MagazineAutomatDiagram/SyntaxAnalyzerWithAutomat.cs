@@ -16,16 +16,12 @@ namespace Translators
 		}
 
 		private List<Lexem> lexems;
-		public List<string> IDs;
-		public List<string> CONSTs;
 		public List<string> lexemsDict;
 		private int lexemsIterator;
 		public void AnalyzeLexems()
 		{
 			lexemsIterator = 0;
 			this.lexems = LexemList.Instance.Lexems;
-			this.IDs = LexemList.Instance.IDs;
-			this.CONSTs = LexemList.Instance.Consts;
 			this.lexemsDict = LexemList.Instance.Grammar;
 			StartAutomat();
 		}

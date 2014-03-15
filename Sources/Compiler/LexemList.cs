@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Translators
 {
-	
 	public class Lexem
 	{
 		public int LineNumber { get { return lineNumber; } }
@@ -23,12 +22,10 @@ namespace Translators
 		{
 			return this.key >= LexemList.Instance.Grammar.Count-2;
 		}
-		
 		public bool isID()
 		{
 			return this.key == LexemList.Instance.Grammar.Count-2;
 		}
-		
 		public bool isCONST()
 		{
 			return this.key == LexemList.Instance.Grammar.Count-1;
@@ -37,11 +34,56 @@ namespace Translators
 		{
 			return this.command == "\n";
 		}
+		 
+		public int Value 
+		{
+			set 
+			{
+				if (this.isID())
+				{
+					Variable variable = LexemList.Instance.VariableWithName(this.command);
+					variable.Value = value;
+				}
+				else
+				{
+					throw new Exception("Try to set value to non-ID");
+				}
+			}
+
+			get
+			{
+				if (this.isID())
+				{
+					Variable variable = LexemList.Instance.VariableWithName(this.command);
+					return variable.Value;
+				}
+				else if (this.isCONST())
+				{
+					return Convert.ToInt32(this.command);
+				}
+				else
+				{
+					throw new Exception("Try to get value from non-ID and non-CONST");
+				}
+			}
+		}
 	}
 
 	public class Variable
 	{
-	//	public
+		private static int iterator = 0;
+		private int adress = 0;
+		private string name = "";
+		public int Value = 0;
+
+		public int Adress { get { return adress; } }
+		public string Name { get { return name; } }
+		public Variable(string name)
+		{
+			this.name = name;
+			this.adress = Variable.iterator;
+			Variable.iterator++;
+		}
 	}
 
 	public class LexemList
@@ -56,19 +98,37 @@ namespace Translators
 
 
 		public List<string> Grammar { get { return grammar; } }
-		public List<string> IDs { get { return ids; } }
+		public List<Variable> IDs { get { return ids; } }
 		public List<string> Consts { get { return consts; } }
 		public List<Lexem>  Lexems { get { return lexems; } }
 
 		public void UpdateLexems(List<Lexem> lexems) 
 		{ this.lexems = lexems; }
 		public void UpdateIDs(List<string> IDs) 
-		{ this.ids = IDs; }
+		{
+			this.ids = new List<Variable>();
+			foreach (string id in IDs)
+			{
+				this.ids.Add(new Variable(id));
+			}
+		}
 		public void UpdateConsts(List<string> consts) 
 		{ this.consts = consts; }
 
+		public Variable VariableWithName(string name)
+		{
+			foreach (Variable id in this.IDs)
+			{
+				if (id.Name == name)
+				{
+					return id;
+				}
+			}
+			return null;
+		}
+
 		private List<string> grammar;
-		private List<string> ids = new List<string>();
+		private List<Variable> ids = new List<Variable>();
 		private List<string> consts = new List<string>();
 		private List<Lexem>  lexems = new List<Lexem>();
 		private void CreateLexemsGrammar()

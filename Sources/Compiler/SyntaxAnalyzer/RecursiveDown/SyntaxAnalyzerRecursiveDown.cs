@@ -18,15 +18,11 @@ namespace Translators
 		private SyntaxAnalyzerRecursiveDown() { }
 
 		public List<Lexem> lexems;
-		public List<string> IDs;
-		public List<string> CONSTs;
 		public List<string> lexemsDict;
         public void AnalyzeLexems()
         {
             int lexemsIterator = 0;
 			this.lexems = LexemList.Instance.Lexems;
-			this.IDs = LexemList.Instance.IDs;
-			this.CONSTs = LexemList.Instance.Consts;
 			this.lexemsDict = LexemList.Instance.Grammar;
 
             /* @interface */
