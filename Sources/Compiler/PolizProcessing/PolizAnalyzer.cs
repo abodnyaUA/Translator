@@ -72,7 +72,8 @@ namespace Translators
 				else 
 				{
 					if (operationList.LexemPriority(this.stack[stack.Count-1]) >= 
-				         operationList.LexemPriority(lexems[0]) && lexems[0].command != "(")
+				        operationList.LexemPriority(lexems[0]) && 
+					    !operationList.OpenScobe(lexems[0]))
 					{
 						Lexem lastStack = this.stack[stack.Count-1];
 						stack.RemoveAt(stack.Count-1);
@@ -80,23 +81,24 @@ namespace Translators
 					}
 
 					if ((operationList.LexemPriority(this.stack[stack.Count-1]) < 
-					    operationList.LexemPriority(lexems[0]) || lexems[0].command == "(")
-					    && lexems[0].command != ")")
+					     operationList.LexemPriority(lexems[0]) || 
+					     operationList.OpenScobe(lexems[0])) &&
+					    !operationList.CloseScobe(lexems[0]))
 					{
 						this.stack.Add(lexems[0]);
 						this.lexems.RemoveAt(0);
 					}
 
-					if (lexems[0].command == ")")
+					if (operationList.CloseScobe(lexems[0]))
 					{
 						this.lexems.RemoveAt(0);
-						while (stack[stack.Count-1].command != "(" && stack.Count >= 0)
+						while (!operationList.OpenScobe(stack[stack.Count-1]) && stack.Count >= 0)
 						{
 							Lexem lastStack = this.stack[stack.Count-1];
 							stack.RemoveAt(stack.Count-1);
 							this.poliz.Add(lastStack);
 						}
-						stack.RemoveAt(stack.Count-1); // "("
+						stack.RemoveAt(stack.Count-1); // "(" "["
 					}
 
 				}

@@ -31,6 +31,16 @@ namespace Translators
 			return int.MaxValue;
 		}
 
+		public bool OpenScobe(Lexem lexem)
+		{
+			return lexem.command == "(" || lexem.command == "[";
+		}
+		
+		public bool CloseScobe(Lexem lexem)
+		{
+			return lexem.command == ")" || lexem.command == "]";
+		}
+
 		public PolizOperarionsList()
 		{
 			operations.Add(PolizOperation.Operation("(",0));
