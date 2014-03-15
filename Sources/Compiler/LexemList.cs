@@ -6,9 +6,12 @@ namespace Translators
 	
 	public class Lexem
 	{
-		public int lineNumber;
-		public string command;
-		public int key;
+		public int LineNumber { get { return lineNumber; } }
+		public string Command { get { return command; } }
+		public int Key { get { return key; } }
+		private int lineNumber;
+		private string command;
+		private int key;
 		public Lexem(int line, string command, int key)
 		{
 			this.key = key;
@@ -30,6 +33,15 @@ namespace Translators
 		{
 			return this.key == LexemList.Instance.Grammar.Count-1;
 		}
+		public bool isSeparator()
+		{
+			return this.command == "\n";
+		}
+	}
+
+	public class Variable
+	{
+	//	public
 	}
 
 	public class LexemList

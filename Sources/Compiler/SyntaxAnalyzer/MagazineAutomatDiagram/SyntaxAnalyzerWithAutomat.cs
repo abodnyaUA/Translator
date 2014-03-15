@@ -30,11 +30,11 @@ namespace Translators
 			StartAutomat();
 		}
 
-		public string CurrentLexemValue() { return lexems[lexemsIterator].command; }
-		public int CurrentLexemKey() { return lexems[lexemsIterator].key; }
-		public int CurrentLineNumber() { return lexems[lexemsIterator].lineNumber; }
-		public bool isCurrentLexemID() { return lexems[lexemsIterator].key == lexemsDict.Count-2; }
-		public bool isCurrentLexemCONST() { return lexems[lexemsIterator].key == lexemsDict.Count-1; }
+		public string CurrentLexemValue() { return lexems[lexemsIterator].Command; }
+		public int CurrentLexemKey() { return lexems[lexemsIterator].Key; }
+		public int CurrentLineNumber() { return lexems[lexemsIterator].LineNumber; }
+		public bool isCurrentLexemID() { return lexems[lexemsIterator].isID(); }
+		public bool isCurrentLexemCONST() { return lexems[lexemsIterator].isCONST(); }
 
 		public uint CurrentState;
 

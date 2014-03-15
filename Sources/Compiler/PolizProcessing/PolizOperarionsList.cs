@@ -23,7 +23,7 @@ namespace Translators
 		{
 			foreach (PolizOperation polizOperation in this.operations)
 			{
-				if (polizOperation.operation == lexem.command)
+				if (polizOperation.operation == lexem.Command)
 				{
 					return polizOperation.priority;
 				}
@@ -33,12 +33,12 @@ namespace Translators
 
 		public bool OpenScobe(Lexem lexem)
 		{
-			return lexem.command == "(" || lexem.command == "[";
+			return lexem.Command == "(" || lexem.Command == "[";
 		}
 		
 		public bool CloseScobe(Lexem lexem)
 		{
-			return lexem.command == ")" || lexem.command == "]";
+			return lexem.Command == ")" || lexem.Command == "]";
 		}
 
 		private void AddOperations(int priority, params string[] operators)

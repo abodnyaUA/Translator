@@ -24,7 +24,7 @@ namespace Translators
 					return;
 				}
 			}
-			throw new LexemException(inputLexem.lineNumber,errorMessage);
+			throw new LexemException(inputLexem.LineNumber,errorMessage);
 		}
 	}
 }

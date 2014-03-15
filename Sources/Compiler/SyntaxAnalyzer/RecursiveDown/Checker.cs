@@ -27,7 +27,7 @@ namespace Translators
 		}
 		public static void Check(ref int lexemsIterator, int key, string success, string failure, IncrementMode incrementValue, Out.State logState)
 		{
-			if (SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].key == key)
+			if (SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].Key == key)
 			{
 				Out.Log(logState,success);
 				lexemsIterator+=(int)incrementValue;
@@ -35,7 +35,7 @@ namespace Translators
 			else
 			{
 				throw new LexemException(
-					SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].lineNumber,failure);
+					SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].LineNumber,failure);
 				
 			}
 		}
@@ -51,7 +51,7 @@ namespace Translators
 		}
 		public static void Check(ref int lexemsIterator, string command, string success, string failure, IncrementMode incrementValue, Out.State logState)
 		{
-			if (SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].command == command)
+			if (SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].Command == command)
 			{
 				Out.Log(logState,success);
 				lexemsIterator+=(int)incrementValue;
@@ -59,7 +59,7 @@ namespace Translators
 			else
 			{
 				throw new LexemException(
-					SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].lineNumber,failure);
+					SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].LineNumber,failure);
 				
 			}
 		}
@@ -91,7 +91,7 @@ namespace Translators
 			}
 			else
 			{
-				throw new LexemException(SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].lineNumber,
+				throw new LexemException(SyntaxAnalyzerRecursiveDown.sharedAnalyzer.lexems[lexemsIterator].LineNumber,
 				                                          failure);
 				
 			}

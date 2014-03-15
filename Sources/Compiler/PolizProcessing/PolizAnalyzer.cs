@@ -42,7 +42,7 @@ namespace Translators
 
 		private void UseOperatorsBlock()
 		{
-			while (lexems[1].command != "@implementation")
+			while (lexems[1].Command != "@implementation")
 			{
 				lexems.RemoveAt(0);
 			}
@@ -115,7 +115,7 @@ namespace Translators
 			Out.LogOneLine(Out.State.LogInfo,name+": ");
 			foreach (Lexem polizString in list)
 			{
-				Out.LogOneLine(Out.State.LogInfo,polizString.command+" ");
+				Out.LogOneLine(Out.State.LogInfo,polizString.Command+" ");
 			}
 			Out.Log(Out.State.LogInfo,"");
 		}

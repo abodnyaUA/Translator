@@ -64,7 +64,7 @@ namespace Translators
 			{
 				return true;
 			}
-			if (lexem.command == this.lexem)
+			if (lexem.Command == this.lexem)
 			{
 				return true;
 			}

@@ -36,8 +36,9 @@ namespace Translators
             
 			/* ID */
 			Checker.Check(ref lexemsIterator,lexemsDict.Count-2,
-			      "Name "+lexems[lexemsIterator].command+" accept",
-			      "Invalid @interface name: "+lexems[lexemsIterator].command + " ("+lexems[lexemsIterator].key+")");
+			              "Name "+lexems[lexemsIterator].Command+" accept",
+			              "Invalid @interface name: "+lexems[lexemsIterator].Command
+			              + " ("+lexems[lexemsIterator].Key+")");
 
 			/* ENTER */
 			Checker.Check(ref lexemsIterator,6,
@@ -72,7 +73,7 @@ namespace Translators
 
 		public bool AnalyzeInterface(ref int lexemsIterator)
         {
-            if (lexems[lexemsIterator].key == 1) //empty interface
+            if (lexems[lexemsIterator].Key == 1) //empty interface
             {
                 return true;
             }
@@ -85,20 +86,20 @@ namespace Translators
 
 				/* ID */
 				Checker.Check(ref lexemsIterator, lexemsDict.Count-2,
-				              "Confirm ID "+lexems[lexemsIterator].command,
+				              "Confirm ID "+lexems[lexemsIterator].Command,
 				              "Empty declaration",Out.State.LogInfo);
 
                 /* See next IDs */
-                while (lexems[lexemsIterator].key != 6) // ENTER
+				while (lexems[lexemsIterator].isSeparator()) // ENTER
                 {
-					if (lexems[lexemsIterator].key == 31 && lexems[lexemsIterator + 1].key == lexemsDict.Count-2) //,id
+					if (lexems[lexemsIterator].Key == 31 && lexems[lexemsIterator + 1].isID()) //,id
                     {
-						Out.Log(Out.State.LogInfo,"Confirm ID " + lexems[lexemsIterator+1].command);
+						Out.Log(Out.State.LogInfo,"Confirm ID " + lexems[lexemsIterator+1].Command);
                         lexemsIterator += 2;
                     }
                     else
                     {
-                        throw new LexemException(lexems[lexemsIterator].lineNumber,
+                        throw new LexemException(lexems[lexemsIterator].LineNumber,
                             "Invalid declaration");
                     }
                 }
@@ -106,7 +107,7 @@ namespace Translators
                 //Finishing
 				Checker.Check(ref lexemsIterator,6,"","Missed ENTER");
 
-            } while (lexems[lexemsIterator].key != 1); /* @implementation */
+            } while (lexems[lexemsIterator].Key != 1); /* @implementation */
             return true;
         }
 
@@ -118,54 +119,54 @@ namespace Translators
 
 		public void AnalyzeOperatorsBlock(ref int lexemsIterator, int endLexemKey)
 		{
-			if (lexems[lexemsIterator].key == endLexemKey) //empty implementation
+			if (lexems[lexemsIterator].Key == endLexemKey) //empty implementation
 			{
 				return;
 			}
 			do
 			{
-				Out.Log(Out.State.LogDebug,"Previous lexem: "+lexems[lexemsIterator-1].command);
-				Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogDebug,"Previous lexem: "+lexems[lexemsIterator-1].Command);
+				Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].Command);
 				AnalyzeOperator(ref lexemsIterator);
 				//Finishing
-				Checker.Check(ref lexemsIterator,6,"","Missed ENTER. Find operator: "+lexems[lexemsIterator].command);
+				Checker.Check(ref lexemsIterator,6,"","Missed ENTER. Find operator: "+lexems[lexemsIterator].Command);
 			}
-			while (lexems[lexemsIterator].key != endLexemKey);
+			while (lexems[lexemsIterator].Key != endLexemKey);
 		}
 
 		public bool AnalyzeOperator(ref int lexemsIterator)
 		{
-			Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogDebug,"Current lexem: "+lexems[lexemsIterator].Command);
 
-			if (lexems[lexemsIterator].command == "input") //input
+			if (lexems[lexemsIterator].Command == "input") //input
 			{
 				AnalyzeIO(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Input accepted");
 			}
-			else if (lexems[lexemsIterator].command == "output") //output
+			else if (lexems[lexemsIterator].Command == "output") //output
 			{
 				AnalyzeIO(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Output accepted");
 			}
-			else if (lexems[lexemsIterator].command == "for") //for
+			else if (lexems[lexemsIterator].Command == "for") //for
 			{
 				AnalyzeCycle(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Cycle 'for' accepted");
 			}
-			else if (lexems[lexemsIterator].command == "if") //if
+			else if (lexems[lexemsIterator].Command == "if") //if
 			{
 				AnalyzeCondition(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Condition accepted");
 			}
-			else if (lexems[lexemsIterator].key == lexemsDict.Count-2) //setter
+			else if (lexems[lexemsIterator].isID()) //setter
 			{
 				AnalyzeSetter(ref lexemsIterator);
 				Out.Log(Out.State.LogInfo,"Assignment accepted");
 			}
 			else
 			{
-				throw new LexemException(lexems[lexemsIterator].lineNumber,
-				                                          "Invalid operator "+lexems[lexemsIterator].command);
+				throw new LexemException(lexems[lexemsIterator].LineNumber,
+				                                          "Invalid operator "+lexems[lexemsIterator].Command);
 				
 			}
 			return true;
@@ -187,20 +188,20 @@ namespace Translators
             
             /* ID */
 			Checker.Check(ref lexemsIterator, lexemsDict.Count-2,
-			              "Confirm ID "+lexems[lexemsIterator].command,
+			              "Confirm ID "+lexems[lexemsIterator].Command,
 			              "IO functions can't be used without arguments");
 
             /* See next IDs */
-            while (lexems[lexemsIterator].key != 17) // )
+            while (lexems[lexemsIterator].Key != 17) // )
             {
-				if (lexems[lexemsIterator].key == 31 && lexems[lexemsIterator + 1].key == lexemsDict.Count-2) //,id
+				if (lexems[lexemsIterator].Key == 31 && lexems[lexemsIterator + 1].isID()) //,id
                 {
-					Out.Log(Out.State.LogVerbose,"Confirm ID "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Confirm ID "+lexems[lexemsIterator+1].Command);
                     lexemsIterator += 2;
                 }
                 else
                 {
-                    throw new LexemException(lexems[lexemsIterator].lineNumber,
+                    throw new LexemException(lexems[lexemsIterator].LineNumber,
                         "Invalid using the variables in function 'input'");
 
                 }
@@ -226,11 +227,11 @@ namespace Translators
 			lexemsIterator++;
 
 			Checker.Check(ref lexemsIterator,AnalyzeLogicalExpression,
-			              "ACCEPT LOGICAL EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command,
+			              "ACCEPT LOGICAL EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].Command,
 			              "Invalid Condition Operator",Checker.IncrementMode.IncrementOnce);
 			
 			Checker.Check(ref lexemsIterator,AnalyzeAction,
-			              "ACCEPT ACTION EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command,
+			              "ACCEPT ACTION EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].Command,
 			              "Invalid Condition Operator",Checker.IncrementMode.IncrementOnce);
 
 			Checker.Check(ref lexemsIterator,"else",
@@ -238,7 +239,7 @@ namespace Translators
 			              Checker.IncrementMode.DoubleIncrement);
 			
 			Checker.Check(ref lexemsIterator,AnalyzeAction,
-			              "ACCEPT ACTION EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].command,
+			              "ACCEPT ACTION EXPRESSION. NEXT LEXEM IS: "+lexems[lexemsIterator].Command,
 			              "Invalid Condition Operator",Checker.IncrementMode.IncrementOnce);
 			
 			Checker.Check(ref lexemsIterator,"endif",
@@ -251,24 +252,24 @@ namespace Translators
 			lexemsIterator++;
 
 			Checker.Check(ref lexemsIterator, AnalyzeSetter,
-			              "SETTER PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command,
+			              "SETTER PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].Command,
 			              "Invalid cycle. Error while analyze SETTER");
 
 			Checker.Check(ref lexemsIterator, "to","'to' accept","'to' missed");
 
 			Checker.Check(ref lexemsIterator, AnalyzeExpression,
-			              "EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command,
+			              "EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].Command,
 			              "Invalid cycle. Error while analyze EXPRESSION");
 			
 			Checker.Check(ref lexemsIterator, "step","'step' accept","'step' missed");
 			
 			Checker.Check(ref lexemsIterator, AnalyzeExpression,
-			              "EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command,
+			              "EXPRESSION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].Command,
 			              "Invalid cycle. Error while analyze EXPRESSION",
 			              Checker.IncrementMode.IncrementOnce);
 			
 			Checker.Check(ref lexemsIterator, AnalyzeAction,
-			              "ACTION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].command,
+			              "ACTION PASSED. CURRENT LEXEM IS "+lexems[lexemsIterator].Command,
 			              "Invalid cycle. Error while analyze ACTION",
 			              Checker.IncrementMode.IncrementOnce);
 			
@@ -278,7 +279,7 @@ namespace Translators
 
 		public bool AnalyzeAction(ref int lexemsIterator)
 		{
-			if (lexems[lexemsIterator].command == "{")
+			if (lexems[lexemsIterator].Command == "{")
 			{
 				lexemsIterator += 2; // {\n
 
@@ -298,43 +299,43 @@ namespace Translators
 		{
 			Out.Log(Out.State.LogVerbose,"Start analyze expression");
 
-			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].command);
-			if (lexems[lexemsIterator].command == "-") 
+			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].Command);
+			if (lexems[lexemsIterator].Command == "-") 
 			{
 				lexemsIterator++;
 				if (isTerm(ref lexemsIterator))
 				{
-					Out.Log(Out.State.LogVerbose,"Expression starts with '-': "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"Expression starts with '-': "+lexems[lexemsIterator].Command);
 					lexemsIterator ++;
 				}
 				else
 				{
-					Out.Log(Out.State.LogVerbose,"Expression doesn't start with '-': "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"Expression doesn't start with '-': "+lexems[lexemsIterator].Command);
 					lexemsIterator--;
 				}
 			} 
 			else Checker.Check(ref lexemsIterator,isTerm,
-				              "Expression starts normally: "+lexems[lexemsIterator].command,
+				              "Expression starts normally: "+lexems[lexemsIterator].Command,
 				              "Invalid expression",Checker.IncrementMode.IncrementOnce);
-			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].Command);
 
 
 			while (true)
 			{
 				Out.Log(Out.State.LogVerbose,"Continue analyze expression");
-				if (lexems[lexemsIterator].command == "-" || lexems[lexemsIterator].command == "+")
+				if (lexems[lexemsIterator].Command == "-" || lexems[lexemsIterator].Command == "+")
 				{
-					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
-					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].Command);
+					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].Command);
 					lexemsIterator++;
 					Checker.Check(ref lexemsIterator,isTerm,
-					              "Next term accepted: "+lexems[lexemsIterator].command,
-					              "Symbol "+lexems[lexemsIterator].command+" is invalid",
+					              "Next term accepted: "+lexems[lexemsIterator].Command,
+					              "Symbol "+lexems[lexemsIterator].Command+" is invalid",
 					              Checker.IncrementMode.IncrementOnce);
 				}
 				else
 				{
-					Out.Log(Out.State.LogVerbose,"+-Current lexem: "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"+-Current lexem: "+lexems[lexemsIterator].Command);
 					break;
 				}
 			}
@@ -354,26 +355,26 @@ namespace Translators
 				return false;
 			}
 
-			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  "And after that I see "+lexems[lexemsIterator+1].command);
-			if (lexems[lexemsIterator+1].command == "*" || lexems[lexemsIterator+1].command == "/")
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].Command+
+			                  "And after that I see "+lexems[lexemsIterator+1].Command);
+			if (lexems[lexemsIterator+1].Command == "*" || lexems[lexemsIterator+1].Command == "/")
 			{
 				Out.Log(Out.State.LogVerbose,"Using */. Increment operator");
 				lexemsIterator++;
 				while (true)
 				{
-					if (lexems[lexemsIterator].command == "*" || lexems[lexemsIterator].command == "/")
+					if (lexems[lexemsIterator].Command == "*" || lexems[lexemsIterator].Command == "/")
 					{
-						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].Command);
 						lexemsIterator++;
 						Checker.Check(ref lexemsIterator,isMultiplier,
-						              "Next multiplier accepted: "+lexems[lexemsIterator].command,
-						              "Symbol "+lexems[lexemsIterator].command+" is invalid",
+						              "Next multiplier accepted: "+lexems[lexemsIterator].Command,
+						              "Symbol "+lexems[lexemsIterator].Command+" is invalid",
 						              Checker.IncrementMode.IncrementOnce);
 					}
 					else
 					{
-						Out.Log(Out.State.LogVerbose,"*/Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"*/Current lexem: "+lexems[lexemsIterator].Command);
 						break;
 					}
 				}
@@ -399,27 +400,27 @@ namespace Translators
 				return false;
 			}
 
-			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  "And after that I see "+lexems[lexemsIterator+1].command);
-			if (lexems[lexemsIterator+1].command == "^")
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].Command+
+			                  "And after that I see "+lexems[lexemsIterator+1].Command);
+			if (lexems[lexemsIterator+1].Command == "^")
 			{
 				Out.Log(Out.State.LogVerbose,"Using ^. Increment iterator");
 				lexemsIterator++;
 				while (true)
 				{
-					if (lexems[lexemsIterator].command == "^")
+					if (lexems[lexemsIterator].Command == "^")
 					{
-						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].Command);
 						lexemsIterator++;
 						
 						Checker.Check(ref lexemsIterator,isExprResponce,
-						              "Next expressionResponse accepted: "+lexems[lexemsIterator].command,
-						              "Symbol "+lexems[lexemsIterator].command+" is invalid",
+						              "Next expressionResponse accepted: "+lexems[lexemsIterator].Command,
+						              "Symbol "+lexems[lexemsIterator].Command+" is invalid",
 						              Checker.IncrementMode.IncrementOnce);
 					}
 					else
 					{
-						Out.Log(Out.State.LogVerbose,"^Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"^Current lexem: "+lexems[lexemsIterator].Command);
 						break;
 					}
 				}
@@ -436,26 +437,26 @@ namespace Translators
 		public bool isExprResponce(ref int lexemsIterator)
 		{
 			int oldIterator = lexemsIterator;
-			while (lexems[lexemsIterator].command == " " || lexems[lexemsIterator].command == "") lexemsIterator++;
-			if (lexems[lexemsIterator].key == lexemsDict.Count-2)
+			while (lexems[lexemsIterator].Command == " " || lexems[lexemsIterator].Command == "") lexemsIterator++;
+			if (lexems[lexemsIterator].isID())
 			{
-				Out.Log(Out.State.LogVerbose,"Founded exprResponce is ID: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Founded exprResponce is ID: "+lexems[lexemsIterator].Command);
 			}
-			else if (lexems[lexemsIterator].key == lexemsDict.Count-1)
+			else if (lexems[lexemsIterator].isCONST())
 			{
-				Out.Log(Out.State.LogVerbose,"Founded exprResponce is CONST: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Founded exprResponce is CONST: "+lexems[lexemsIterator].Command);
 			}
-			else if (lexems[lexemsIterator].command == "(")
+			else if (lexems[lexemsIterator].Command == "(")
 			{
 				Out.Log(Out.State.LogVerbose,"() Open Scobes ()");
 				lexemsIterator++;
 				AnalyzeExpression(ref lexemsIterator);
-				Out.Log(Out.State.LogVerbose,"() Return from block with lexem "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"() Return from block with lexem "+lexems[lexemsIterator].Command);
 				Out.Log(Out.State.LogVerbose,"() Close Scobes ()");
 			}
 			else
 			{
-				Out.Log(Out.State.LogVerbose,"Wrong lexem: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Wrong lexem: "+lexems[lexemsIterator].Command);
 				lexemsIterator = oldIterator;
 				return false;
 			}
@@ -466,27 +467,27 @@ namespace Translators
 		{
 			Out.Log(Out.State.LogVerbose,"Start analyze logical expression");
 
-			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!Current lexem: "+lexems[lexemsIterator].Command);
 			Checker.Check(ref lexemsIterator,isLogicalExpressionLevel1,
-			              "Logical expression starts normally: "+lexems[lexemsIterator].command,
+			              "Logical expression starts normally: "+lexems[lexemsIterator].Command,
 			              "Invalid logical expression");
-			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"!!Current lexem: "+lexems[lexemsIterator].Command);
 
 			while (true)
 			{
 				Out.Log(Out.State.LogVerbose,"Continue analyze expression");
-				if (lexems[lexemsIterator].command == "or")
+				if (lexems[lexemsIterator].Command == "or")
 				{
-					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
-					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].command);
+					Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].Command);
+					Out.Log(Out.State.LogVerbose,"After operator lexem is "+lexems[lexemsIterator+1].Command);
 					lexemsIterator++;
 					Checker.Check(ref lexemsIterator,isLogicalExpressionLevel1,
-					              "Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].command+"\n",
-					              "Symbol "+lexems[lexemsIterator].command+" is invalid");
+					              "Next LogicalExpressionLevel1 accepted: "+lexems[lexemsIterator].Command+"\n",
+					              "Symbol "+lexems[lexemsIterator].Command+" is invalid");
 				}
 				else
 				{
-					Out.Log(Out.State.LogVerbose,"||Current lexem: "+lexems[lexemsIterator].command);
+					Out.Log(Out.State.LogVerbose,"||Current lexem: "+lexems[lexemsIterator].Command);
 					break;
 				}
 			}
@@ -507,26 +508,26 @@ namespace Translators
 				return false;
 			}
 
-			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].command+
-			                  "And after that I see "+lexems[lexemsIterator+1].command);
-			if (lexems[lexemsIterator].command == "and")
+			Out.Log(Out.State.LogVerbose,"Yeah. Let see what's next: "+lexems[lexemsIterator].Command+
+			                  "And after that I see "+lexems[lexemsIterator+1].Command);
+			if (lexems[lexemsIterator].Command == "and")
 			{
 				Out.Log(Out.State.LogVerbose,"I see you Use && after that. So I will inc iterator for you");
 				//lexemsIterator++;
 				while (true)
 				{
-					if (lexems[lexemsIterator].command == "and")
+					if (lexems[lexemsIterator].Command == "and")
 					{
-						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"Match operator "+lexems[lexemsIterator].Command);
 						lexemsIterator++;
 						Checker.Check(ref lexemsIterator,isLogicalExpressionLevel2,
-						              "Next LogicalExpressionLevel2 accepted: "+lexems[lexemsIterator].command+"\n",
-						              "Symbol "+lexems[lexemsIterator].command+" is invalid",
+						              "Next LogicalExpressionLevel2 accepted: "+lexems[lexemsIterator].Command+"\n",
+						              "Symbol "+lexems[lexemsIterator].Command+" is invalid",
 						              Checker.IncrementMode.IncrementOnce);
 					}
 					else
 					{
-						Out.Log(Out.State.LogVerbose,"&&Current lexem: "+lexems[lexemsIterator].command);
+						Out.Log(Out.State.LogVerbose,"&&Current lexem: "+lexems[lexemsIterator].Command);
 						break;
 					}
 				}
@@ -542,18 +543,18 @@ namespace Translators
 		
 		public bool isLogicalExpressionLevel2(ref int lexemsIterator)
 		{
-			while (lexems[lexemsIterator].command == "!")
+			while (lexems[lexemsIterator].Command == "!")
 			{
 				Out.Log(Out.State.LogVerbose,"Using '!'");
 				lexemsIterator++;
 			}
 
-			if (lexems[lexemsIterator].command == "[")
+			if (lexems[lexemsIterator].Command == "[")
 			{
 				Out.Log(Out.State.LogVerbose,"[] Open scobes []");
 				lexemsIterator++;
 				AnalyzeLogicalExpression(ref lexemsIterator);
-				Out.Log(Out.State.LogVerbose,"[] Return from block with lexem "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"[] Return from block with lexem "+lexems[lexemsIterator].Command);
 				Out.Log(Out.State.LogVerbose,"[] Close scobes []");
 				lexemsIterator++;
 			}
@@ -573,20 +574,20 @@ namespace Translators
 			};
 
 			AnalyzeExpression(ref lexemsIterator);
-			Out.Log(Out.State.LogVerbose,"....... 1.After analyze expression next lexem is: "+lexems[lexemsIterator].command);
-			if (connotials.Contains(lexems[lexemsIterator].command)) 
+			Out.Log(Out.State.LogVerbose,"....... 1.After analyze expression next lexem is: "+lexems[lexemsIterator].Command);
+			if (connotials.Contains(lexems[lexemsIterator].Command)) 
 			{
-				Out.Log(Out.State.LogVerbose,"Match connotial: "+lexems[lexemsIterator].command);
+				Out.Log(Out.State.LogVerbose,"Match connotial: "+lexems[lexemsIterator].Command);
 				lexemsIterator++;
 			}
 			else
 			{
-				throw new LexemException(lexems[lexemsIterator].lineNumber,
-				                                "Invalid Connotial "+lexems[lexemsIterator].command);
+				throw new LexemException(lexems[lexemsIterator].LineNumber,
+				                                "Invalid Connotial "+lexems[lexemsIterator].Command);
 				
 			}
 			AnalyzeExpression(ref lexemsIterator);
-			Out.Log(Out.State.LogVerbose,"....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].command);
+			Out.Log(Out.State.LogVerbose,"....... 2. After analyze expression next lexem is: "+lexems[lexemsIterator].Command);
 			return true;
 		}
 	}

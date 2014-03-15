@@ -196,7 +196,7 @@ namespace Translators
 			while (lexemsIterator < lexems.Count)
 			{
 				Out.Log(Out.State.LogVerbose,"On state "+currentState+
-				        ". Will Process lexem: "+lexems[lexemsIterator].command);
+				        ". Will Process lexem: "+lexems[lexemsIterator].Command);
 				ProcessLexemOnState(lexems[lexemsIterator],
 				                    ref lexemsIterator,ref currentState);
 				Out.Log(Out.State.LogInfo,"Did Process "+lexemsIterator+

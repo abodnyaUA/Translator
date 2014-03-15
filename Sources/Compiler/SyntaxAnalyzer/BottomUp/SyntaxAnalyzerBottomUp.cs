@@ -44,19 +44,19 @@ namespace Translators
 			{
 				if (lexem.isID())
 				{
-					lexems.Add("ID_"+lexem.command);
+					lexems.Add("ID_"+lexem.Command);
 				}
 				else if (lexem.isCONST())
 				{
-					lexems.Add("CONST_"+lexem.command);
+					lexems.Add("CONST_"+lexem.Command);
 				}
-				else if (lexem.command == "\n")
+				else if (lexem.Command == "\n")
 				{
 					lexems.Add("ENTER");
 				}
 				else
 				{
-					lexems.Add(lexem.command);	
+					lexems.Add(lexem.Command);	
 				}
 			}
 			lexems.Add("#");
