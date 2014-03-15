@@ -41,15 +41,24 @@ namespace Translators
 			return lexem.command == ")" || lexem.command == "]";
 		}
 
+		private void AddOperations(int priority, params string[] operators)
+		{
+			foreach (string oper in operators)
+			{
+				operations.Add(PolizOperation.Operation(oper,priority));
+			}
+		}
+
 		public PolizOperarionsList()
 		{
-			operations.Add(PolizOperation.Operation("(",0));
-			operations.Add(PolizOperation.Operation(")",1));
-			operations.Add(PolizOperation.Operation("+",1));
-			operations.Add(PolizOperation.Operation("-",1));
-			operations.Add(PolizOperation.Operation("*",2));
-			operations.Add(PolizOperation.Operation("/",2));
-			operations.Add(PolizOperation.Operation("^",3));
+			AddOperations(0,"(","[");
+			AddOperations(1,")","]","or");
+			AddOperations(2,"and");
+			AddOperations(3,"!");
+			AddOperations(4,">","<",">=","<=","equ","!=");
+			AddOperations(5,"+","-");
+			AddOperations(6,"*","/");
+			AddOperations(7,"^");
 		}
 	}
 }
