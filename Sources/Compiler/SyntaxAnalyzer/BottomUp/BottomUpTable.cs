@@ -215,18 +215,18 @@ namespace Translators
 		{
 			List<string> terminalsHeaders = new List<string>(terminals.Keys);
 			
-			Out.LogOneLine(Out.State.LogDebug,"\t");
+			Out.LogOneLine(Out.State.LogInfo,"\t");
 			for (int i=0;i<terminals.Count;i++)
 			{
-				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
-				Out.LogOneLine(Out.State.LogDebug,"\t");
+				Out.LogOneLine(Out.State.LogInfo,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogInfo,"\t");
 			}
-			Out.LogOneLine(Out.State.LogDebug,"\n");
+			Out.LogOneLine(Out.State.LogInfo,"\n");
 			
 			for (int i=0;i<terminals.Count;i++)
 			{
-				Out.LogOneLine(Out.State.LogDebug,terminalsHeaders[i]);
-				Out.LogOneLine(Out.State.LogDebug,"\t");
+				Out.LogOneLine(Out.State.LogInfo,terminalsHeaders[i]);
+				Out.LogOneLine(Out.State.LogInfo,"\t");
 				for (int j=0;j<terminals.Count;j++)
 				{
 					char connotial = ' ';
@@ -240,9 +240,9 @@ namespace Translators
 					string connotialString = "";
 					connotialString += connotial;
 					connotialString += "\t";
-					Out.LogOneLine(Out.State.LogDebug,connotialString);
+					Out.LogOneLine(Out.State.LogInfo,connotialString);
 				}
-				Out.LogOneLine(Out.State.LogDebug,"\n");
+				Out.LogOneLine(Out.State.LogInfo,"\n");
 			}
 		}
 

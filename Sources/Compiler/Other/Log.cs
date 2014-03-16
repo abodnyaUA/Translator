@@ -11,12 +11,13 @@ namespace Translators
 			LogVerbose
 		}
 
-		public static State LogState = State.LogDebug;
+		public static State LogState = State.LogInfo;
 		public static void LogOneLine(State LogState, string str)
 		{
 			if (LogState <= Out.LogState) 
 			{
-				Program.window.Console.Buffer.Text += str;
+				Gtk.Application.Invoke(delegate {
+					Program.window.Console.Buffer.Text += str; });
 				Out.Write(str);
 			}
 		}
@@ -24,7 +25,8 @@ namespace Translators
 		{
 			if (LogState <= Out.LogState) 
 			{
-				Program.window.Console.Buffer.Text += str + "\n";
+				Gtk.Application.Invoke(delegate {
+					Program.window.Console.Buffer.Text += str + "\n"; });
 				Out.WriteLine(str);
 			}
 		}

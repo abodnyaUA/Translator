@@ -44,9 +44,10 @@ namespace Translators
 			{
 				LogLexems("Poliz",poliz);
 			}
-
+			Out.LogState = Out.State.LogDebug;
 			CreateCompletePoliz();
 			LogLexems("Complete Poliz",this.completePoliz);
+			Out.LogState = Out.State.LogInfo;
 
 		}
 
@@ -164,7 +165,7 @@ namespace Translators
 			LogLexems("Stack",stack);
 			LogLexems("Source",lexems);
 			LogLexems("Poliz",poliz);
-			Out.Log(Out.State.LogInfo,"");
+			Out.Log(Out.State.LogDebug,"");
 		}
 		private void ProcessOperatorLexem()
 		{
@@ -242,25 +243,28 @@ namespace Translators
 		private List<Lexem> lexems;
 		private void LogLexems(string name, List<Lexem> list)
 		{
-			Out.LogOneLine(Out.State.LogInfo,name+": ");
-			foreach (Lexem polizString in list)
+			if (Out.LogState >= Out.State.LogDebug)
 			{
-				string str = "";
-				if (polizString.Key == PolizOperarionsList.kLexemKeyLabelStart)
+				Out.LogOneLine(Out.State.LogInfo,name+": ");
+				foreach (Lexem polizString in list)
 				{
-					str = "m"+polizString.Command;
+					string str = "";
+					if (polizString.Key == PolizOperarionsList.kLexemKeyLabelStart)
+					{
+						str = "m"+polizString.Command;
+					}
+					else if (polizString.Key == PolizOperarionsList.kLexemKeyLabelEnd)
+					{
+						str = "m"+polizString.Command+":";
+					}
+					else
+					{
+						str = polizString.Command.Replace("\n","ENTER");
+					}
+					Out.LogOneLine(Out.State.LogDebug,str+" ");
 				}
-				else if (polizString.Key == PolizOperarionsList.kLexemKeyLabelEnd)
-				{
-					str = "m"+polizString.Command+":";
-				}
-				else
-				{
-					str = polizString.Command.Replace("\n","ENTER");
-				}
-				Out.LogOneLine(Out.State.LogDebug,str+" ");
+				Out.Log(Out.State.LogDebug,"");
 			}
-			Out.Log(Out.State.LogDebug,"");
 		}
 
 		// Calculate expression //

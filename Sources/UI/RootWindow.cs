@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 namespace Translators
 {
@@ -8,6 +9,8 @@ namespace Translators
 		public Gtk.TextView Console { get { return ConsoleTextView; } }
 		public Gtk.ProgressBar ProgressBar { get { return CompileProgressBar; } }
 		private string FileName = "/home/abodnya/.translatorfile";
+
+		public string ChoosedFileName { get { return FileChooser.Filename; } }
 
 		public RootWindow () : base(Gtk.WindowType.Toplevel)
 		{
@@ -36,21 +39,15 @@ namespace Translators
 		{
 			if (FileChooser.Filename != "")
 			{
-				Compiler.sharedCompiler.CompileFile(FileChooser.Filename);
+				Thread calc = new Thread(new ThreadStart(
+					Compiler.sharedCompiler.CompileFile));
+				calc.Start();
 			}
 		}
 
 		protected void OpenFileEventHandler (object sender, EventArgs e)
 		{
 			File.WriteAllLines(FileName,new string[] { FileChooser.Filename } );
-		}
-
-		protected void PolizButtonHandler (object sender, EventArgs e)
-		{
-			if (FileChooser.Filename != "")
-			{
-				Compiler.sharedCompiler.AnalyzeForPoliz(FileChooser.Filename);
-			}
 		}
 	}
 }

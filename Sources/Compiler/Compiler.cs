@@ -5,12 +5,6 @@ using System.Text;
 
 namespace Translators
 {
-	public enum CompileMode 
-	{
-		NormalAnalyze,
-		PolizConverter
-	}
-
     class Compiler
     {
         private static Compiler _sharedCompiler = null;
@@ -21,8 +15,7 @@ namespace Translators
                 if (_sharedCompiler == null) _sharedCompiler = new Compiler();
                 return _sharedCompiler;
             }
-        }
-		public CompileMode AnalyzeMode;		
+        }	
 		public ISyntaxAnalyzer SyntaxAnalyzer;
 		public LexemList LexemList;
 
@@ -32,34 +25,35 @@ namespace Translators
 			LexemList = new LexemList();
 		}
 
-        public void CompileFile(string path)
+        public void CompileFile()
 		{
-			AnalyzeMode = CompileMode.NormalAnalyze;
-			Analyze(path);
-        }
-		public void AnalyzeForPoliz(string path)
-		{
-			AnalyzeMode = CompileMode.PolizConverter;
-			Analyze(path);
-		}
-
-		private void Analyze(string path)
-		{
-			Program.window.ProgressBar.Adjustment.Value = 0;
-			Program.window.Console.Buffer.Text = "";
-			Out.Log(Out.State.LogInfo,"======== Parse code ========");
-			List<List<string>> parsed = Parser.sharedParser.ParseFile(path);
-			Program.window.ProgressBar.Adjustment.Value += 25;
+			string path = Program.window.ChoosedFileName;
+			
+			Gtk.Application.Invoke(delegate {
+				Program.window.ProgressBar.Adjustment.Value = 0;
+				Program.window.Console.Buffer.Text = ""; });
 			try
 			{
+				Out.Log(Out.State.LogInfo,"======== Parse code ========");
+				List<List<string>> parsed = Parser.sharedParser.ParseFile(path);
+				Gtk.Application.Invoke(delegate {
+					Program.window.ProgressBar.Adjustment.Value += 25;
+				});
+
 				Out.Log(Out.State.LogInfo,"======== Lexem Analyzer ========");
 				LexemAnalyzer.sharedAnalyzer.AnalyzeWithDoubleList(parsed);
-				Program.window.ProgressBar.Adjustment.Value += 25;
+				Gtk.Application.Invoke(delegate {
+					Program.window.ProgressBar.Adjustment.Value += 25; });
 				
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
-				//SyntaxAnalyzer.AnalyzeLexems();
+				SyntaxAnalyzer.AnalyzeLexems();
+				Gtk.Application.Invoke(delegate {
+					Program.window.ProgressBar.Adjustment.Value += 25;	});		
+				
+				Out.Log(Out.State.LogInfo,"======== Poliz Analyzer ========");
 				PolizAnalyzer.sharedAnalyzer.AnalyzeLexems();
-				Program.window.ProgressBar.Adjustment.Value += 50;
+				Gtk.Application.Invoke(delegate {
+					Program.window.ProgressBar.Adjustment.Value += 25; });
 			}
 			catch (LexemException error)
 			{
