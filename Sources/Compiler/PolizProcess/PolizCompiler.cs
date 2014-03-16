@@ -25,7 +25,6 @@ namespace Translators
 		{
 			InputIDDialog dialog = (InputIDDialog)obj;
 			LastInputValue = dialog.Result();
-			//Out.Log(Out.State.ApplicationOutput, dialog.Result().ToString());
 		}
 
 		List<Lexem> poliz;
