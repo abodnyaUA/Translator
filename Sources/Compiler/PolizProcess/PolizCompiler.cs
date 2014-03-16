@@ -216,7 +216,7 @@ namespace Translators
 			case "<": result = operand1 < operand2; break;
 			case "!=": result = operand1 != operand2;  break;
 			case "equ": result = operand1 == operand2;  break;
-			case "and": result = operand1 == operand2;  break; // binary compare //
+			case "and": result = operand1 + operand2 == 2;  break; // binary compare //
 			case "or": result = operand1 + operand2 > 0; break;  // binary compare // 
 			}
 			return result ? 1 : 0;

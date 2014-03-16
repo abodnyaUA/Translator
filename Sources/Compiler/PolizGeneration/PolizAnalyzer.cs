@@ -26,6 +26,7 @@ namespace Translators
 			this.allPoliz.Add(new List<Lexem>());
 			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
 			UseOperatorsBlock();
+			htmlTable = new HTMLTable("Полиз","Стек","Входная цепочка");
 
 			this.labelIterator = 1;
 			while (lexems.Count > 0)
@@ -49,8 +50,8 @@ namespace Translators
 			}
 			CreateCompletePoliz();
 			LogLexems("Complete Poliz",this.completePoliz);
+			htmlTable.WriteToFile(Constants.HTMLTablePath);
 			//Out.LogState = Out.State.LogInfo;
-
 		}
 
 		private void UseOperatorsBlock()
@@ -153,6 +154,8 @@ namespace Translators
 					ProcessOperatorLexem();
 				}
 			}
+			
+			LogToHTMLTable();
 			LogLexems("Stack",stack);
 			LogLexems("Source",lexems);
 			LogLexems("Poliz",poliz);
@@ -227,29 +230,46 @@ namespace Translators
 
 		private List<Lexem> stack;
 		private List<Lexem> lexems;
+
+		/* Logging */
+		private HTMLTable htmlTable;
+		string ListToString(List<Lexem> list)
+		{
+			string str = "";
+			foreach (Lexem polizString in list)
+			{
+				if (polizString.Key == PolizOperarionsList.kLexemKeyLabelStart)
+				{
+					str += polizString.Command;
+				}
+				else if (polizString.Key == PolizOperarionsList.kLexemKeyLabelEnd)
+				{
+					str += polizString.Command+":";
+				}
+				else
+				{
+					str += polizString.Command.Replace("\n","ENTER");
+				}
+				str += " ";
+			}
+			return str;
+		}
+
+		private void LogToHTMLTable()
+		{
+			CreateCompletePoliz();
+			string stackLine = ListToString(this.stack);
+			string polizLine = ListToString(this.completePoliz);
+			string lexemsLine = ListToString(this.lexems);
+			htmlTable.AddLine(polizLine,stackLine,lexemsLine);
+		}
 		public void LogLexems(string name, List<Lexem> list)
 		{
 			if (Out.LogState >= Out.State.LogDebug)
 			{
 				Out.LogOneLine(Out.State.LogInfo,name+": ");
-				foreach (Lexem polizString in list)
-				{
-					string str = "";
-					if (polizString.Key == PolizOperarionsList.kLexemKeyLabelStart)
-					{
-						str = polizString.Command;
-					}
-					else if (polizString.Key == PolizOperarionsList.kLexemKeyLabelEnd)
-					{
-						str = polizString.Command+":";
-					}
-					else
-					{
-						str = polizString.Command.Replace("\n","ENTER");
-					}
-					Out.LogOneLine(Out.State.LogDebug,str+" ");
-				}
-				Out.Log(Out.State.LogDebug,"");
+				string str = ListToString(list);
+				Out.Log(Out.State.LogDebug,str);
 			}
 		}
 

@@ -11,7 +11,7 @@ namespace Translators
 		public string style = "table { font-size: 8pt;}";
 		public HTMLTable (params string[] lineHeaders)
 		{
-			htmlContent = "<html>\n<head>\n<style type=\"text/css\">\n" +
+			htmlContent = "<html>\n<head>\n<meta charset=\"UTF-8\">\n<style type=\"text/css\">\n" +
 				style + 
 				"\n</style>\n</head>\n" +
 					"<body>\n<table border=\"1\">\n<tr>";

@@ -33,7 +33,8 @@ namespace Translators
 
 		protected void TableButtonHandler (object o, EventArgs args)
 		{
-			SyntaxAnalyzerBottomUp.sharedAnalyzer.PrintTable();
+			//SyntaxAnalyzerBottomUp.sharedAnalyzer.PrintTable();
+			System.Diagnostics.Process.Start("/usr/bin/google-chrome",Constants.HTMLTablePath);
 		}
 
 		protected void CompileFileEventHandler (object o, EventArgs args)
