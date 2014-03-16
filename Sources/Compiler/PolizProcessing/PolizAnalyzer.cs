@@ -62,6 +62,7 @@ namespace Translators
 		}
 
 		/* Process completed polizes */
+		private Stack<int> labels = new Stack<int>();
 		private void FinishCurrentPoliz()
 		{
 			// Clear stack //
@@ -80,26 +81,28 @@ namespace Translators
 					Lexem UPL = new Lexem(lastStack.LineNumber,"УПЛ",
 					                      PolizOperarionsList.kLexemKeyUPL);
 					this.poliz.Add(UPL);
+					labels.Push(labelIterator);
+					labelIterator+=2;
 				}
 				else if (lastStack.Command == "else")
 				{
-					Lexem label1 = new Lexem(lastStack.LineNumber,(labelIterator+1).ToString(),
+					int iterator = labels.Peek();
+					Lexem label1 = new Lexem(lastStack.LineNumber,(iterator + 1).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelStart);
 					this.poliz.Add(label1);
 					Lexem BP = new Lexem(lastStack.LineNumber,"БП",
 					                     PolizOperarionsList.kLexemKeyBP);
 					this.poliz.Add(BP);
-					Lexem label2 = new Lexem(lastStack.LineNumber,labelIterator.ToString(),
+					Lexem label2 = new Lexem(lastStack.LineNumber,(iterator).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelEnd);
 					this.poliz.Add(label2);
-					labelIterator++;
 				}
 				else if (lastStack.Command == "endif")
 				{
-					Lexem label2 = new Lexem(lastStack.LineNumber,labelIterator.ToString(),
+					int iterator = labels.Pop();
+					Lexem label2 = new Lexem(lastStack.LineNumber,(iterator + 1).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelEnd);
 					this.poliz.Add(label2);
-					labelIterator++;
 				}
 				else 
 				{
