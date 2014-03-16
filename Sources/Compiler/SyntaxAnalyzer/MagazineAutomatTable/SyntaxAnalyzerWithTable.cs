@@ -82,43 +82,46 @@ namespace Translators
 				"Missed , or )");
 			// IF //
 			table.AddState(17,
-				new List<Transition>() {Transition.CallTransition("\n",31,18)},
-				"Missed ENTER");
+			     new List<Transition>() {Transition.DefaultTransition("then",18)},
+				"Missed then");
 			table.AddState(18,
-				new List<Transition>() {Transition.DefaultTransition("\n",19)},
+				new List<Transition>() {Transition.CallTransition("\n",31,19)},
 				"Missed ENTER");
 			table.AddState(19,
-				new List<Transition>() {Transition.DefaultTransition("else",20)},
-				"Missed else");
-			table.AddState(20,
-				new List<Transition>() {Transition.CallTransition("\n",31,21)},
+				new List<Transition>() {Transition.DefaultTransition("\n",20)},
 				"Missed ENTER");
+			table.AddState(20,
+				new List<Transition>() {Transition.DefaultTransition("else",21)},
+				"Missed else");
 			table.AddState(21,
-				new List<Transition>() {Transition.DefaultTransition("\n",22)},
+				new List<Transition>() {Transition.CallTransition("\n",31,22)},
 				"Missed ENTER");
 			table.AddState(22,
+				new List<Transition>() {Transition.DefaultTransition("\n",23)},
+				"Missed ENTER");
+			table.AddState(23,
 				new List<Transition>() {Transition.ExitTransition("endif")},
 				"Missed endif");
 			// FOR //
-			table.AddState(23,
-				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,24)},
-				"Missed variable-iterator");
 			table.AddState(24,
-				new List<Transition>() {Transition.CallTransition("=",41,25)},
-				"Missed =");
+				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,25)},
+				"Missed variable-iterator");
 			table.AddState(25,
-				new List<Transition>() {Transition.CallTransition("to",41,26)},
-				"Missed to");
+				new List<Transition>() {Transition.CallTransition("=",41,26)},
+				"Missed =");
 			table.AddState(26,
-				new List<Transition>() {Transition.CallTransition("step",41,27)},
-				"Missed step");
+				new List<Transition>() {Transition.CallTransition("to",41,27)},
+				"Missed to");
 			table.AddState(27,
-				new List<Transition>() {Transition.CallTransition("\n",31,28)},
-				"Missed ENTER");
+				new List<Transition>() {Transition.CallTransition("step",41,28)},
+				"Missed step");
 			table.AddState(28,
-				new List<Transition>() {Transition.DefaultTransition("\n",29)},
+				new List<Transition>() {Transition.CallTransition("\n",31,29)},
 				"Missed ENTER");
 			table.AddState(29,
+				new List<Transition>() {Transition.DefaultTransition("\n",30)},
+				"Missed ENTER");
+			table.AddState(30,
 				new List<Transition>() {Transition.ExitTransition("next")},
 				"Missed next");
 

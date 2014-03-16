@@ -51,8 +51,8 @@ namespace Translators
 
 		public PolizOperarionsList()
 		{
-			AddOperations(0,"(","[");
-			AddOperations(1,")","]");
+			AddOperations(0,"(","[","if");
+			AddOperations(1,")","]","then","else");
 			AddOperations(2,"=");
 			AddOperations(3,"or");
 			AddOperations(4,"and");
@@ -62,6 +62,11 @@ namespace Translators
 			AddOperations(8,"*","/");
 			AddOperations(9,"^");
 		}
+
+		public static int kLexemKeyLabelStart { get { return LexemList.Instance.Grammar.Count; } }
+		public static int kLexemKeyLabelEnd { get { return LexemList.Instance.Grammar.Count + 1; } }
+		public static int kLexemKeyUPL { get { return LexemList.Instance.Grammar.Count + 2; } }
+		public static int kLexemKeyBP { get { return LexemList.Instance.Grammar.Count + 3; } }
 	}
 }
 

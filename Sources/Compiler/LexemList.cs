@@ -153,6 +153,7 @@ namespace Translators
 			grammar.Add("step");
 			grammar.Add("next");
 			grammar.Add("if");
+			grammar.Add("then");
 			grammar.Add("else");
 			grammar.Add("endif");
 			grammar.Add("{");
