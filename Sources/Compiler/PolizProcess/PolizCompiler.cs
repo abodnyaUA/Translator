@@ -71,7 +71,7 @@ namespace Translators
 					{
 						Gtk.Application.Invoke(delegate {
 							InputIDDialog dialog = new InputIDDialog();
-							dialog.Title = "Input "+poliz[j].Command;
+							dialog.Title = "Введите значение "+poliz[j].Command;
 							dialog.Response += DidConfirmInputDialog;
 							dialog.Run();
 							dialog.Destroy();
