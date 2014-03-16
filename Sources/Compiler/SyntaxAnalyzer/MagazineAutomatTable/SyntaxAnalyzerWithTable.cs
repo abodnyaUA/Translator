@@ -167,6 +167,7 @@ namespace Translators
 										Transition.DefaultTransition("*",41),
 										Transition.DefaultTransition("/",41),
 										Transition.DefaultTransition("^",41),
+										Transition.DefaultTransition("root",41),
 										Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");
 			table.AddState(43,
