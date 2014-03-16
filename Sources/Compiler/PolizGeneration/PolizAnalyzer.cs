@@ -16,7 +16,6 @@ namespace Translators
 			}
 		}
 		private PolizAnalyzer () {	}
-
 		#endregion
 
 		#region Processing
@@ -47,7 +46,7 @@ namespace Translators
 			Out.LogState = Out.State.LogDebug;
 			CreateCompletePoliz();
 			LogLexems("Complete Poliz",this.completePoliz);
-			Out.LogState = Out.State.LogInfo;
+			//Out.LogState = Out.State.LogInfo;
 
 		}
 
@@ -71,12 +70,16 @@ namespace Translators
 			{
 				Lexem lastStack = this.stack[stack.Count-1];
 				stack.RemoveAt(stack.Count-1);
-				if (lastStack.Command == "if" || lastStack.Command == "{" || lastStack.Command == "}")
+				
+				if (lastStack.Command == "{" || lastStack.Command == "}")
+				{
+				}
+				else if (lastStack.Command == "if")
 				{
 				}
 				else if (lastStack.Command == "then")
 				{
-					Lexem label1 = new Lexem(lastStack.LineNumber,labelIterator.ToString(),
+					Lexem label1 = new Lexem(lastStack.LineNumber,"m"+labelIterator.ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelStart);
 					this.poliz.Add(label1);
 					Lexem UPL = new Lexem(lastStack.LineNumber,"УПЛ",
@@ -88,20 +91,20 @@ namespace Translators
 				else if (lastStack.Command == "else")
 				{
 					int iterator = labels.Peek();
-					Lexem label1 = new Lexem(lastStack.LineNumber,(iterator + 1).ToString(),
+					Lexem label1 = new Lexem(lastStack.LineNumber,"m"+(iterator + 1).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelStart);
 					this.poliz.Add(label1);
 					Lexem BP = new Lexem(lastStack.LineNumber,"БП",
 					                     PolizOperarionsList.kLexemKeyBP);
 					this.poliz.Add(BP);
-					Lexem label2 = new Lexem(lastStack.LineNumber,(iterator).ToString(),
+					Lexem label2 = new Lexem(lastStack.LineNumber,"m"+(iterator).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelEnd);
 					this.poliz.Add(label2);
 				}
 				else if (lastStack.Command == "endif")
 				{
 					int iterator = labels.Pop();
-					Lexem label2 = new Lexem(lastStack.LineNumber,(iterator + 1).ToString(),
+					Lexem label2 = new Lexem(lastStack.LineNumber,"m"+(iterator + 1).ToString(),
 					                         PolizOperarionsList.kLexemKeyLabelEnd);
 					this.poliz.Add(label2);
 				}
@@ -116,7 +119,7 @@ namespace Translators
 			LogLexems("Poliz",poliz);
 			Out.Log(Out.State.LogDebug,"");
 			
-			ProcessPolizResult();
+			//ProcessPolizResult();
 			
 			// Start new poliz //
 			if (lexems.Count > 0)
@@ -124,29 +127,6 @@ namespace Translators
 				allPoliz.Add(new List<Lexem>());
 				lexems.RemoveAt(0);
 			}
-		}
-		private void ProcessPolizResult()
-		{
-			if (this.poliz.Count > 2)
-			{
-				if (this.poliz[poliz.Count-1].Command == "=")
-				{
-					ProcessSetter();
-				}
-				else if (this.poliz[poliz.Count-1].Key == PolizOperarionsList.kLexemKeyUPL)
-				{
-					ProcessLogicalExpression();
-				}
-			}
-		}
-		private void ProcessLogicalExpression()
-		{
-			CalculateLogicalExpression(poliz,0,poliz.Count-3);
-		}
-		private void ProcessSetter()
-		{
-			CalculateExpression(poliz,1,poliz.Count-2);
-			poliz[0].Value = poliz[1].Value;
 		}
 
 		/* PreAnalyze */
@@ -182,17 +162,6 @@ namespace Translators
 			{
 				FinishCurrentPoliz();
 			}
-
-			/*else if (this.lexems[0].Command == "then")
-			{
-				this.lexems.RemoveAt(0);
-				while (!stack[stack.Count-1].Command.StartsWith("if"))
-				{
-					Lexem lastStack = this.stack[stack.Count-1];
-					stack.RemoveAt(stack.Count-1);
-					this.poliz.Add(lastStack);
-				}
-			}*/
 
 			// For expressions. Check ")" and "]" //
 			else if (operationList.CloseScobe(lexems[0]))
@@ -235,6 +204,7 @@ namespace Translators
 			}
 		}
 		private List<Lexem> completePoliz;
+		public List<Lexem> CompletePoliz { get { return completePoliz; } }
 		private void CreateCompletePoliz()
 		{
 			completePoliz = new List<Lexem>();
@@ -249,7 +219,7 @@ namespace Translators
 
 		private List<Lexem> stack;
 		private List<Lexem> lexems;
-		private void LogLexems(string name, List<Lexem> list)
+		public void LogLexems(string name, List<Lexem> list)
 		{
 			if (Out.LogState >= Out.State.LogDebug)
 			{
@@ -259,11 +229,11 @@ namespace Translators
 					string str = "";
 					if (polizString.Key == PolizOperarionsList.kLexemKeyLabelStart)
 					{
-						str = "m"+polizString.Command;
+						str = polizString.Command;
 					}
 					else if (polizString.Key == PolizOperarionsList.kLexemKeyLabelEnd)
 					{
-						str = "m"+polizString.Command+":";
+						str = polizString.Command+":";
 					}
 					else
 					{
@@ -273,94 +243,6 @@ namespace Translators
 				}
 				Out.Log(Out.State.LogDebug,"");
 			}
-		}
-
-		// Calculate expression //
-		HashSet<string> mathOperations = new HashSet<string>()
-		{ "+", "-", "*", "^", "/" };
-		private void CalculateExpression(List<Lexem> poliz, int start, int end)
-		{
-			for (int i = start; i <= end; i++)
-			{
-				if (mathOperations.Contains(poliz[i].Command)) //operator
-				{
-					Lexem result = new Lexem(poliz[start].LineNumber,"0",Lexem.kConstKey);
-					string operation = poliz[i].Command;
-					int operand1 = poliz[i-2].Value;
-					int operand2 = poliz[i-1].Value;
-					result.Value = resultCalculation(operand1,operand2,operation);
-					i -= 2;
-					end -= 2;
-					poliz.RemoveRange(i,3);
-					poliz.Insert(i,result);
-					LogLexems("Poliz", this.poliz);
-				}
-			}
-		}
-		private int resultCalculation(int operand1, int operand2, string calcOperator)
-		{
-			int result = 0;
-			switch (calcOperator)
-			{
-				case "+": result = operand1 + operand2; break;
-				case "*": result = operand1 * operand2; break;
-				case "/": result = operand1 / operand2; break;
-				case "^": result = (int) (Math.Pow (operand1,operand2)); break;
-				case "-": result = operand1 - operand2; break;
-			}
-			return result;
-		}
-
-		// Calculate logical expression //
-		HashSet<string> logicalOperations = new HashSet<string>()
-		{ ">", "<", ">=", "<=", "equ", "!=", "or", "and" };
-		private void CalculateLogicalExpression(List<Lexem> poliz, int start, int end)
-		{
-			// Convert all math expressions to single numbers //
-			for (int i = start; i <= end; i++)
-			{
-				if (logicalOperations.Contains(poliz[i].Command)) //operator
-				{
-					string operation = poliz[i].Command;
-					int lengthBefore = poliz.Count;
-
-					// Calculate Math expression //
-					CalculateExpression(poliz,start,i);
-					int lengthAfter = poliz.Count;
-
-					i -= (lengthBefore - lengthAfter);
-					end -= (lengthBefore - lengthAfter);
-
-					// Calculate logical expression
-					Lexem result = new Lexem(poliz[start].LineNumber,"0",Lexem.kConstKey);
-					int operand1 = poliz[i - 2].Value;
-					int operand2 = poliz[i - 1].Value;
-					result.Value = resultLogicalCalculation(operand1,operand2,operation);
-					
-					i -= 2;
-					end -= 2;
-
-					poliz.RemoveRange(i,3);
-					poliz.Insert(i,result);
-					LogLexems("Poliz", this.poliz);
-				}
-			}
-		}
-		private int resultLogicalCalculation(int operand1, int operand2, string operation)
-		{
-			bool result = false;
-			switch (operation)
-			{
-				case ">": result = operand1 > operand2; break;
-				case ">=": result = operand1 >= operand2; break;
-				case "<=": result = operand1 <= operand2; break;
-				case "<": result = operand1 < operand2; break;
-				case "!=": result = operand1 != operand2;  break;
-				case "equ": result = operand1 == operand2;  break;
-				case "and": result = operand1 == operand2;  break; // binary compare //
-				case "or": result = operand1 + operand2 > 0; break;  // binary compare // 
-			}
-			return result ? 1 : 0;
 		}
 
 		#endregion

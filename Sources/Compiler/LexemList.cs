@@ -103,7 +103,6 @@ namespace Translators
 		public static LexemList Instance 
 		{ get { return Compiler.sharedCompiler.LexemList; } set { } }
 
-
 		public List<string> Grammar { get { return grammar; } }
 		public List<Variable> IDs { get { return ids; } }
 		public List<string> Consts { get { return consts; } }
@@ -183,6 +182,15 @@ namespace Translators
 			grammar.Add("from");
 			grammar.Add("var");
 			grammar.Add("const");
+		}
+
+		public void PrintIDs()
+		{
+			Out.Log(Translators.Out.State.LogInfo,"Variable trace:");
+			foreach (Variable variable in this.ids)
+			{
+				Out.Log(Translators.Out.State.LogInfo,"ID: "+variable.Name+"; Adress: "+variable.Adress+"; Value: "+variable.Value);
+			}
 		}
 	}
 }

@@ -80,14 +80,15 @@
     <Compile Include="Sources\Prefix\AssemblyInfo.cs" />
     <Compile Include="Sources\UI\RootWindow.cs" />
     <Compile Include="gtk-gui\Translators.RootWindow.cs" />
-    <Compile Include="Sources\Compiler\PolizProcessing\PolizAnalyzer.cs" />
-    <Compile Include="Sources\Compiler\PolizProcessing\PolizOperation.cs" />
-    <Compile Include="Sources\Compiler\PolizProcessing\PolizOperarionsList.cs" />
     <Compile Include="Sources\Compiler\Other\HTMLTable.cs" />
     <Compile Include="Sources\Compiler\Other\Constants.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\RecursiveDown\SyntaxAnalyzerRecursiveDown.cs" />
     <Compile Include="Sources\Compiler\SyntaxAnalyzer\ISyntaxAnalyzer.cs" />
     <Compile Include="Sources\Compiler\LexemList.cs" />
+    <Compile Include="Sources\Compiler\PolizGeneration\PolizAnalyzer.cs" />
+    <Compile Include="Sources\Compiler\PolizGeneration\PolizOperation.cs" />
+    <Compile Include="Sources\Compiler\PolizGeneration\PolizOperarionsList.cs" />
+    <Compile Include="Sources\Compiler\PolizProcess\PolizCompiler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -105,7 +106,8 @@
     <Folder Include="Sources\Compiler\SyntaxAnalyzer\BottomUp\" />
     <Folder Include="Resources\Icons\" />
     <Folder Include="Resources\Samples\" />
-    <Folder Include="Sources\Compiler\PolizProcessing\" />
+    <Folder Include="Sources\Compiler\PolizGeneration\" />
+    <Folder Include="Sources\Compiler\PolizProcess\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Samples\TextFile1.txt" />
