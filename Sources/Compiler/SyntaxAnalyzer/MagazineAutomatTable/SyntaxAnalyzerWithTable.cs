@@ -58,7 +58,7 @@ namespace Translators
 			table.AddState(11,
 				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,12),
 										Transition.DefaultTransition("input",14),
-										Transition.DefaultTransition("output",14),
+										Transition.DefaultTransition("output",104),
 										Transition.CallTransition("if",51,17),
 										Transition.DefaultTransition("for",23)},
 				"Invalid Operator");
@@ -69,7 +69,8 @@ namespace Translators
 			table.AddState(13,
 				new List<Transition>() {Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");
-			// INPUT / OUTPUT //
+
+			// INPUT //
 			table.AddState(14,
 				new List<Transition>() {Transition.DefaultTransition("(",15)},
 				"Missed (");
@@ -80,6 +81,19 @@ namespace Translators
 				new List<Transition>() {Transition.DefaultTransition(",",15),
 										Transition.ExitTransition(")")},
 				"Missed , or )");
+
+			// OUTPUT //
+			table.AddState(104,
+			               new List<Transition>() {Transition.DefaultTransition("(",105)},
+			"Missed (");
+			table.AddState(105,
+			               new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,106),
+												   Transition.DefaultTransition(Transition.LexemCONST,106)},
+			"Missed variable");
+			table.AddState(106,
+			               new List<Transition>() {Transition.DefaultTransition(",",105),
+				Transition.ExitTransition(")")},
+			"Missed , or )");
 			// IF //
 			table.AddState(17,
 			     new List<Transition>() {Transition.DefaultTransition("then",18)},

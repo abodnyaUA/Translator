@@ -10,7 +10,8 @@ namespace Translators
 		public Gtk.ProgressBar ProgressBar { get { return CompileProgressBar; } }
 		private string FileName = "/home/abodnya/.translatorfile";
 
-		public string ChoosedFileName { get { return FileChooser.Filename; } }
+		private string sourceName = null;
+		public string ChoosedFileName { get { return sourceName; } }
 
 		public RootWindow () : base(Gtk.WindowType.Toplevel)
 		{
@@ -39,6 +40,7 @@ namespace Translators
 		{
 			if (FileChooser.Filename != "")
 			{
+				sourceName = FileChooser.Filename;
 				Thread calc = new Thread(new ThreadStart(
 					Compiler.sharedCompiler.CompileFile));
 				calc.Start();

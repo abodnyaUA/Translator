@@ -82,6 +82,7 @@ namespace Translators
 			result.Add('|');
 			result.Add('!');
 			result.Add(';');
+			result.Add('"');
             return result;
         }
 
@@ -136,6 +137,17 @@ namespace Translators
 				string lexem = lexemsArray[i];
 				if (lexem != "") 
 				{
+					if (lexem == "\"")
+					{
+						lexem = "";
+						do
+						{
+							lexem += lexemsArray[i]+"_";
+							i++;
+						}
+						while (lexemsArray[i] != "\"");
+						lexem += lexemsArray[i];
+					}
 					lexems.Add(lexem);
 				}
 			}

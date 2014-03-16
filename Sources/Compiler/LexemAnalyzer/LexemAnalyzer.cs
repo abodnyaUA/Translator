@@ -117,7 +117,11 @@ namespace Translators
                     {
                         // Check for const
                         bool con = true;
-                        foreach (char ch in value)
+						if (value[0] == '"' && value[value.Length-1] == '"')
+						{
+							con = true;
+						}
+						else foreach (char ch in value)
                         {
                             if (ch < '0' || ch > '9')
                             {

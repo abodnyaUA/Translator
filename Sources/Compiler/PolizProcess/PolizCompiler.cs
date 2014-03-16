@@ -47,7 +47,19 @@ namespace Translators
 				{
 					for (int j = 0; j < i; j++)
 					{
-						Out.Log(Out.State.ApplicationOutput,poliz[j].Command+" = "+poliz[j].Value);
+						if (poliz[j].Command[0] == '"')
+						{
+							Out.Log(Out.State.ApplicationOutput,poliz[j].Command.
+							        Replace("\"","").Replace("_"," ").Replace("   "," ").Remove(0,1));
+						}
+						else if (poliz[j].isCONST())
+						{
+							Out.Log(Out.State.ApplicationOutput,poliz[j].Command);
+						}
+						else
+						{
+							Out.Log(Out.State.ApplicationOutput,poliz[j].Command+" = "+poliz[j].Value);
+						}
 					}
 					poliz.RemoveRange(0,i+1);
 					i = -1;
