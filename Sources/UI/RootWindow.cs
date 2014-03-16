@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using Gtk;
 
 namespace Translators
 {
@@ -33,8 +34,21 @@ namespace Translators
 
 		protected void TableButtonHandler (object o, EventArgs args)
 		{
-			//SyntaxAnalyzerBottomUp.sharedAnalyzer.PrintTable();
-			System.Diagnostics.Process.Start("/usr/bin/google-chrome",Constants.HTMLTablePath);
+			if (LexemList.Instance.Lexems.Count > 0)
+			{
+				System.Diagnostics.Process.Start("/usr/bin/google-chrome",Constants.HTMLTablePath);
+			}
+			else
+			{
+				Gtk.Dialog dialog = new Gtk.Dialog("Ошибочка",this,Gtk.DialogFlags.Modal);
+				Label text = new Label();
+				text.Text = "Сначала скомпилируйте файл";
+				dialog.VBox.Add(text);
+				dialog.AddButton ("Close", ResponseType.Close);
+				dialog.ShowAll();
+				dialog.Run();
+				dialog.Destroy();
+			}
 		}
 
 		protected void CompileFileEventHandler (object o, EventArgs args)
