@@ -43,7 +43,10 @@ namespace Translators
 			{
 				LogLexems("Poliz",poliz);
 			}
-			Out.LogState = Out.State.LogDebug;
+			if (Out.LogState != Out.State.ApplicationOutput)
+			{
+			 	Out.LogState = Out.State.LogDebug;
+			}
 			CreateCompletePoliz();
 			LogLexems("Complete Poliz",this.completePoliz);
 			//Out.LogState = Out.State.LogInfo;
@@ -161,6 +164,11 @@ namespace Translators
 			if (lexems[0].isSeparator())
 			{
 				FinishCurrentPoliz();
+			}
+
+			else if (lexems[0].Command == ",")
+			{
+				this.lexems.RemoveAt(0);
 			}
 
 			// For expressions. Check ")" and "]" //

@@ -89,6 +89,8 @@
     <Compile Include="Sources\Compiler\PolizGeneration\PolizOperation.cs" />
     <Compile Include="Sources\Compiler\PolizGeneration\PolizOperarionsList.cs" />
     <Compile Include="Sources\Compiler\PolizProcess\PolizCompiler.cs" />
+    <Compile Include="gtk-gui\Translators.InputIDDialog.cs" />
+    <Compile Include="Sources\UI\InputIDDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

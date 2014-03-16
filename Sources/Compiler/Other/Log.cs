@@ -6,12 +6,14 @@ namespace Translators
 	public class Out
 	{
 		public enum State {
+			ApplicationError,
+			ApplicationOutput,
 			LogInfo,
 			LogDebug,
 			LogVerbose
 		}
 
-		public static State LogState = State.LogInfo;
+		public static State LogState = State.ApplicationOutput;
 		public static void LogOneLine(State LogState, string str)
 		{
 			if (LogState <= Out.LogState) 

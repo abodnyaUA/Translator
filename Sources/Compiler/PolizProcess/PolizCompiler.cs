@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using Gtk;
 
 namespace Translators
 {
@@ -18,9 +20,18 @@ namespace Translators
 		private PolizCompiler () {	}
 		#endregion
 
+		public int LastInputValue;
+		void DidConfirmInputDialog (object obj, ResponseArgs args)
+		{
+			InputIDDialog dialog = (InputIDDialog)obj;
+			LastInputValue = dialog.Result();
+			//Out.Log(Out.State.ApplicationOutput, dialog.Result().ToString());
+		}
+
 		List<Lexem> poliz;
 		public void Compile()
 		{
+			LastInputValue = int.MaxValue;
 			this.poliz = PolizAnalyzer.sharedAnalyzer.CompletePoliz;
 			for (int i = 0; i < this.poliz.Count; i++)
 			{
@@ -30,6 +41,38 @@ namespace Translators
 					CalculateExpression(poliz,1,i-1);
 					poliz[0].Value = poliz[1].Value;
 					poliz.RemoveRange(0,3);
+					i = -1;
+				}
+
+				else if (poliz[i].Command == "output")
+				{
+					for (int j = 0; j < i; j++)
+					{
+						Out.Log(Out.State.ApplicationOutput,poliz[j].Command+" = "+poliz[j].Value);
+					}
+					poliz.RemoveRange(0,i+1);
+					i = -1;
+				}
+				
+				else if (poliz[i].Command == "input")
+				{
+					for (int j = 0; j < i; j++)
+					{
+						Gtk.Application.Invoke(delegate {
+							InputIDDialog dialog = new InputIDDialog();
+							dialog.Title = "Input "+poliz[j].Command;
+							dialog.Response += DidConfirmInputDialog;
+							dialog.Run();
+							dialog.Destroy();
+						});
+						while (LastInputValue == int.MaxValue)
+						{
+							Thread.Sleep(100);
+						}
+						poliz[j].Value = LastInputValue;
+						LastInputValue = int.MaxValue;
+					}
+					poliz.RemoveRange(0,i+1);
 					i = -1;
 				}
 

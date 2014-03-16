@@ -37,35 +37,32 @@ namespace Translators
 				Out.Log(Out.State.LogInfo,"======== Parse code ========");
 				List<List<string>> parsed = Parser.sharedParser.ParseFile(path);
 				Gtk.Application.Invoke(delegate {
-					Program.window.ProgressBar.Adjustment.Value += 20; });
+					Program.window.ProgressBar.Adjustment.Value += 25; });
 
 				Out.Log(Out.State.LogInfo,"======== Lexem Analyzer ========");
 				LexemAnalyzer.sharedAnalyzer.AnalyzeWithDoubleList(parsed);
 				Gtk.Application.Invoke(delegate {
-					Program.window.ProgressBar.Adjustment.Value += 20; });
+					Program.window.ProgressBar.Adjustment.Value += 25; });
 				
 				Out.Log(Out.State.LogInfo,"======== Syntax Analyzer ========");
 				SyntaxAnalyzer.AnalyzeLexems();
 				Gtk.Application.Invoke(delegate {
-					Program.window.ProgressBar.Adjustment.Value += 20;	});		
+					Program.window.ProgressBar.Adjustment.Value += 25;	});		
 				
 				Out.Log(Out.State.LogInfo,"======== Poliz Analyzer ========");
 				PolizAnalyzer.sharedAnalyzer.AnalyzeLexems();
 				Gtk.Application.Invoke(delegate {
-					Program.window.ProgressBar.Adjustment.Value += 20; });	
+					Program.window.ProgressBar.Adjustment.Value += 25; });	
 				
 				Out.Log(Out.State.LogInfo,"======== Poliz Compiler ========");
 				PolizCompiler.sharedCompiler.Compile();
-				Gtk.Application.Invoke(delegate {
-					Program.window.ProgressBar.Adjustment.Value += 20; });
-
 
 				Out.Log(Out.State.LogInfo,"======== Application Result ========");
 				LexemList.PrintIDs();
 			}
 			catch (LexemException error)
 			{
-				Out.Log(Out.State.LogInfo,"\n"+error.UserInfo);
+				Out.Log(Out.State.ApplicationError,"\n"+error.UserInfo);
 			}
 		}
     }
