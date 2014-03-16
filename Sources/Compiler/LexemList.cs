@@ -66,7 +66,14 @@ namespace Translators
 				}
 				else if (this.isCONST())
 				{
-					return Convert.ToInt32(this.command);
+					if (this.command[0] != '"')
+					{
+						return Convert.ToInt32(this.command);
+					}
+					else
+					{
+						throw new LexemException(this.LineNumber,"Can't set string as value of variable");
+					}
 				}
 				else
 				{

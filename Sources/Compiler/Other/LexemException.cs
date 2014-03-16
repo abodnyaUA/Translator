@@ -7,7 +7,7 @@ namespace Translators
 	{
 		public LexemException(int lineNumber, string comment)
 		{
-			string line = Parser.sharedParser.RealLines[lineNumber-1];
+			string line = Parser.sharedParser.RealLines[lineNumber];
 			userInfo = "Line " + lineNumber + ": " + line + "\n" + 
 					   "Error: " + comment;
 		}
