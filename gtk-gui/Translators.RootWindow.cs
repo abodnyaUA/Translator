@@ -119,6 +119,7 @@ namespace Translators
 			this.ConsoleTextView = new global::Gtk.TextView ();
 			this.ConsoleTextView.CanFocus = true;
 			this.ConsoleTextView.Name = "ConsoleTextView";
+			this.ConsoleTextView.WrapMode = ((global::Gtk.WrapMode)(2));
 			this.GtkScrolledWindow.Add (this.ConsoleTextView);
 			this.vbox1.Add (this.GtkScrolledWindow);
 			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));

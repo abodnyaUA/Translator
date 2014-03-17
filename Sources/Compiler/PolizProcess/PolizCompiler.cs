@@ -133,7 +133,9 @@ namespace Translators
 				}
 			}
 			PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
-			Out.Log(Out.State.LogInfo,"Compilation finished success");
+			Out.Log(Out.State.ApplicationOutput,"\n" +
+				"============================\n" +
+				"Compilation finished success");
 		}
 		
 		// Calculate expression //
