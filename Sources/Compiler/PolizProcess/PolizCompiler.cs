@@ -135,7 +135,9 @@ namespace Translators
 			PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
 			Out.Log(Out.State.ApplicationOutput,"\n" +
 				"============================\n" +
-				"Приложение отработало корректно");
+				"Приложение отработало корректно\n" +
+				"Результаты вычислений приблизительные, поскольку программа " +
+				"работает только с целыми числами");
 		}
 		
 		// Calculate expression //
