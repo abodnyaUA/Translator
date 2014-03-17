@@ -106,6 +106,30 @@ namespace Translators
                             break;
                         }
                     }
+					if (value == "-" && !Lexems[Lexems.Count-1].isIDorCONST())
+					{
+						int wasDeclaratedIndex = -1;
+						for (int j = 0; j < CONSTs.Count; j++)
+						{
+							if ("0" == CONSTs[j])
+							{
+								wasDeclaratedIndex = j;
+								break;
+							}
+						}
+						// It hasn't declarated.
+						if (wasDeclaratedIndex == -1)
+						{
+							CONSTs.Add("0");
+							Lexems.Add(new Lexem(i, "0", dict.Count-1));
+							Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
+						}
+						else
+						{
+							Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
+							Lexems.Add(new Lexem(i, "0", dict.Count-1));
+						}
+					}
                     //It's table's lexem
                     if (find != -1)
                     {
