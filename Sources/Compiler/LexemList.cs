@@ -120,6 +120,7 @@ namespace Translators
 		public void UpdateIDs(List<string> IDs) 
 		{
 			this.ids = new List<Variable>();
+			IDs.RemoveAt(0); // Remove AppName
 			foreach (string id in IDs)
 			{
 				this.ids.Add(new Variable(id));
