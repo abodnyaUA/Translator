@@ -57,16 +57,151 @@ namespace Translators
             }
         }
 
+		private bool isConst(string value)
+		{
+			bool con = true;
+			if (value[0] == '"' && value[value.Length-1] == '"')
+			{
+				con = true;
+			}
+			else foreach (char ch in value)
+			{
+				if (ch < '0' || ch > '9')
+				{
+					con = false;
+					break;
+				}
+			}
+			return con;
+		}
+		private void AnalyzeConst(int line, string value)
+		{
+			// Tabel base //
+			Out.LogOneLine(Out.State.LogInfo,
+			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
+			for (int j = 0; j < 18 - value.Length; j++) 
+				Out.LogOneLine(Out.State.LogInfo," ");
+
+			// Check earlier definition //
+			int wasDeclaratedIndex = -1;
+			for (int j = 0; j < CONSTs.Count; j++)
+			{
+				if (value == CONSTs[j])
+				{
+					wasDeclaratedIndex = j;
+					break;
+				}
+			}
+			// It hasn't declarated.
+			if (wasDeclaratedIndex == -1)
+			{
+				CONSTs.Add(value);
+				Lexems.Add(new Lexem(line, value, dict.Count-1));
+				Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
+			}
+			else
+			{
+				Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
+				Lexems.Add(new Lexem(line, value, dict.Count-1));
+			}
+		}
+		private void AnalyzeID(int line, string value)
+		{
+			// Table base //
+			Out.LogOneLine(Out.State.LogInfo,
+			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
+			for (int j = 0; j < 18 - value.Length; j++) 
+				Out.LogOneLine(Out.State.LogInfo," ");
+
+			// Validate ID name //
+			if (!((value[0] >= 'a' && value[0] <= 'z') ||
+			      (value[0] >= 'A' && value[0] <= 'Z')))
+			{
+				Out.Log(Out.State.LogInfo,"");
+				LexemException error1 = new LexemException((line+1),"Invalid simbol '" + value[0]+"'");
+				throw error1;
+			}
+			for (int c = 1; c < value.Length; c++)
+			{
+				if (!((value[c] >= 'a' && value[c] <= 'z') ||
+				      (value[c] >= 'A' && value[c] <= 'Z') ||
+				      (value[c] >= '0' && value[c] <= '9')))
+				{
+					Out.Log(Out.State.LogInfo,"");
+					LexemException error1 = new LexemException((line+1),"Invalid simbol '"+value[c]+"'");
+					throw error1;
+				}
+			}
+			// It's interface zone ? Then it's mabe new id
+			if (InterfaceWasDeclarated && !ImplementationWasDeclarated)
+			{
+				int wasDeclaratedIndex = -1;
+				for (int j = 0; j < IDs.Count; j++)
+				{
+					if (value == IDs[j])
+					{
+						wasDeclaratedIndex = j;
+						break;
+					}
+				}
+				// It hasn't declarated.
+				if (wasDeclaratedIndex != -1)
+				{
+					Out.Log(Out.State.LogInfo,"");
+					throw new LexemException((line+1),"Variable " + value + " has declarated");
+				}
+				else
+				{
+					// Declaration zone //
+					IDs.Add(value);
+					Lexems.Add(new Lexem(line, value, dict.Count - 2));
+					Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
+				}
+			}
+			// No? It was declarated?
+			else
+			{
+				// Find in declarations
+				int wasDeclaratedIndex = -1;
+				for (int j = 0; j < IDs.Count; j++)
+				{
+					if (value == IDs[j])
+					{
+						wasDeclaratedIndex = j;
+						break;
+					}
+				}
+				// It hasn't declarated.
+				if (wasDeclaratedIndex == -1)
+				{
+					Out.Log(Out.State.LogInfo,"");
+					LexemException error2 = new LexemException((line+1),"Variable " + value + " hasn't declarated");
+					throw error2;
+				}
+				// Fuuuh. I've find it.
+				else
+				{
+					Lexems.Add(new Lexem(line, value, dict.Count - 2));
+					Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
+				}
+			}
+		}
+
+		private List<string> IDs;
+		private List<string> CONSTs;
+		private List<Lexem> Lexems;
+		private List<string> dict;
+
         // Parse doubleArray //
         public void AnalyzeWithDoubleList(List<List<string>> parsedList)
 		{
 			InterfaceWasDeclarated = false;
 			ImplementationWasDeclarated = false;
 			EndWasDeclarated = false;
-			List<string> IDs = new List<string>();
-			List<string> CONSTs = new List<string>();
-			List<Lexem> Lexems = new List<Lexem>();
-			List<string> dict = LexemList.Instance.Grammar;
+			this.IDs = new List<string>();
+			this.CONSTs = new List<string>();
+			this.Lexems = new List<Lexem>();
+			this.dict = LexemList.Instance.Grammar;
 
 			Out.Log(Out.State.LogInfo,"Line  Command         Key\tID\tConst");
             // line cycle
@@ -88,10 +223,6 @@ namespace Translators
 					if (Lexems.Count == 0 && lexem == "\n") continue;
 
 					//Continue
-						Out.LogOneLine(Out.State.LogInfo,
-							(i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
-                    for (int j = 0; j < 18 - lexem.Length; j++) 
-							Out.LogOneLine(Out.State.LogInfo," ");
                     // Try find lexem in Lexem's Table
                     int find = -1;
                     string value = lexem.Replace(" ","");
@@ -108,151 +239,30 @@ namespace Translators
                     }
 					if (value == "-" && !Lexems[Lexems.Count-1].isIDorCONST())
 					{
-						int wasDeclaratedIndex = -1;
-						for (int j = 0; j < CONSTs.Count; j++)
-						{
-							if ("0" == CONSTs[j])
-							{
-								wasDeclaratedIndex = j;
-								break;
-							}
-						}
-						// It hasn't declarated.
-						if (wasDeclaratedIndex == -1)
-						{
-							CONSTs.Add("0");
-							Lexems.Add(new Lexem(i, "0", dict.Count-1));
-							Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
-						}
-						else
-						{
-							Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
-							Lexems.Add(new Lexem(i, "0", dict.Count-1));
-						}
+						AnalyzeConst(i,"0");
 					}
                     //It's table's lexem
                     if (find != -1)
-                    {
+                    {						
+						Out.LogOneLine(Out.State.LogInfo,
+						               (i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
+						for (int j = 0; j < 18 - lexem.Length; j++) 
+							Out.LogOneLine(Out.State.LogInfo," ");
 						Out.Log(Out.State.LogInfo,""+(find + 1));
                         Lexems.Add(new Lexem(i,value,find));
                     }
                     // No? Don't worry. May be it's ID or CONST
                     else
                     {
-                        // Check for const
-                        bool con = true;
-						if (value[0] == '"' && value[value.Length-1] == '"')
-						{
-							con = true;
-						}
-						else foreach (char ch in value)
-                        {
-                            if (ch < '0' || ch > '9')
-                            {
-                                con = false;
-                                break;
-                            }
-                        }
                         // It's const?
-                        if (con)
+                        if (isConst(value))
                         {
-                            int wasDeclaratedIndex = -1;
-                            for (int j = 0; j < CONSTs.Count; j++)
-                            {
-                                if (value == CONSTs[j])
-                                {
-                                    wasDeclaratedIndex = j;
-                                    break;
-                                }
-                            }
-                            // It hasn't declarated.
-                            if (wasDeclaratedIndex == -1)
-                            {
-                                CONSTs.Add(value);
-                                Lexems.Add(new Lexem(i, value, dict.Count-1));
-                                Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + CONSTs.Count);
-                            }
-                            else
-                            {
-								Out.Log(Out.State.LogInfo,dict.Count + "\t\t" + (wasDeclaratedIndex+1));
-								Lexems.Add(new Lexem(i, value, dict.Count-1));
-                            }
+							AnalyzeConst(i,value);
                         }
                         // No? Okay, May be ID
                         else
                         {
-                            if (!((value[0] >= 'a' && value[0] <= 'z') ||
-                                          (value[0] >= 'A' && value[0] <= 'Z')))
-                            {
-								Out.Log(Out.State.LogInfo,"");
-                                LexemException error1 = new LexemException((i+1),"Invalid simbol '" + value[0]+"'");
-                                throw error1;
-                            }
-                            for (int c = 1; c < value.Length; c++)
-                            {
-                                if (!((value[c] >= 'a' && value[c] <= 'z') ||
-                                       (value[c] >= 'A' && value[c] <= 'Z') ||
-                                       (value[c] >= '0' && value[c] <= '9')))
-                                {
-									Out.Log(Out.State.LogInfo,"");
-                                    LexemException error1 = new LexemException((i+1),"Invalid simbol '"+value[c]+"'");
-                                    throw error1;
-                                }
-                            }
-                            // It's interface zone ? Then it's mabe new id
-							if (InterfaceWasDeclarated && !ImplementationWasDeclarated)
-                            {
-                                int wasDeclaratedIndex = -1;
-                                for (int j = 0; j < IDs.Count; j++)
-                                {
-                                    if (value == IDs[j])
-                                    {
-                                        wasDeclaratedIndex = j;
-                                        break;
-                                    }
-                                }
-                                // It hasn't declarated.
-                                if (wasDeclaratedIndex != -1)
-                                {
-									Out.Log(Out.State.LogInfo,"");
-                                	throw new LexemException((i+1),"Variable " + value + " has declarated");
-                                }
-                                else
-                                {
-                                    // Declaration zone //
-                                    
-                                    IDs.Add(value);
-                                    Lexems.Add(new Lexem(i, value, dict.Count - 2));
-									Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
-                                }
-                            }
-                            // No? It was declarated?
-                            else
-                            {
-                                // Find in declarations
-                                int wasDeclaratedIndex = -1;
-                                for (int j = 0; j < IDs.Count; j++)
-                                {
-                                    if (value == IDs[j])
-                                    {
-                                        wasDeclaratedIndex = j;
-                                        break;
-                                    }
-                                }
-                                // It hasn't declarated.
-                                if (wasDeclaratedIndex == -1)
-                                {
-									Out.Log(Out.State.LogInfo,"");
-                                    LexemException error2 = new LexemException((i+1),"Variable " + value + " hasn't declarated");
-                                    throw error2;
-                                }
-                                // Fuuuh. I've find it.
-                                else
-                                {
-                                    Lexems.Add(new Lexem(i, value, dict.Count - 2));
-									Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
-                                }
-                            }
+							AnalyzeID(i,value);
                         }
                     }
                 } // Lexems Cycle
