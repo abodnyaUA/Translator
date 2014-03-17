@@ -1,0 +1,43 @@
+@interface App1;
+
+int ,a,b,v
+@implementation 
+
+for a from 5+8*5+6-(2635*6/b-a) to 4589*521*523+454*v step 152/52*a/v 
+
+a = v endset
+input(,a)
+output(,a)
+b = 795 * 85^7 endset
+next
+if [5 + (8 - 9) * 5 > 5 +5 * 8 / (5 * 7 + 9) - b * a + b and 8 > 5] and 5 + 8 - 8 / a < 5
+
+b = 5 endset
+else
+  a = 6 endset
+endif
+if a +85 - (85^45)*b > 74*8-b/a
+
+input (,a)
+b = 18 endset
+else
+b = 19 endset
+output(,b)
+endif
+if [85 - b+a equ 15] and [a < 6 and [b > 8 or a != 8]]
+
+input (,a)
+b = 18 endset
+else
+b = 19 endset
+output(,b)
+endif
+if a < 0 and b > 0 or 5 equ 6 or 5 < 8 and 6 > 8
+
+input (,a)
+b = 18 endset
+else
+b = 19 endset
+output(,b)
+endif
+@end

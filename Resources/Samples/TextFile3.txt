@@ -1,0 +1,12 @@
+@interface App1;
+
+int ,a,b,v
+@implementation 
+
+if b < 5]
+
+b = 5 endset
+else
+  a = 6 endset
+endif
+@end

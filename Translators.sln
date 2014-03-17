@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translators", "Translators.csproj", "{200DDF5A-1847-422A-B2DC-A6D743CDDFDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{200DDF5A-1847-422A-B2DC-A6D743CDDFDE}.Debug|x86.ActiveCfg = Debug|x86
+		{200DDF5A-1847-422A-B2DC-A6D743CDDFDE}.Debug|x86.Build.0 = Debug|x86
+		{200DDF5A-1847-422A-B2DC-A6D743CDDFDE}.Release|x86.ActiveCfg = Release|x86
+		{200DDF5A-1847-422A-B2DC-A6D743CDDFDE}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Translators.csproj
+	EndGlobalSection
+EndGlobal

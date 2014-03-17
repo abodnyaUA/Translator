@@ -1,0 +1,25 @@
+@interface PolizTest
+	int arg, result
+@implementation
+output("Данная программа считает квадрат числа")
+input(arg)
+result = arg * arg
+output(arg,result)
+if result > 25 then
+{
+	if result < 100 then
+	{
+		output("result > 25 and < 100")
+	}
+	else
+	{
+		output("result >= 100")
+	}
+	endif
+}
+else
+{
+	output("result <= 25")
+}
+endif
+@end

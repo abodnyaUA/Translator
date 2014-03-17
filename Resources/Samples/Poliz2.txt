@@ -1,0 +1,42 @@
+@interface PolizTest
+	int a,b,c,q,d
+@implementation
+b = 85 - 5
+c = 86
+if a > 5 then
+{
+b = 8
+c = 75 + 85 / 9 - (8+8)^2
+d = 2
+}
+else
+c = 6
+endif
+d = 78 
+a = 1
+if a equ 1 then
+{
+	if b equ 2 then
+	{
+		if c equ 3 then
+		{
+			c = 4
+		}
+		else
+		{
+			d = 5
+		}
+		endif
+	}
+	else
+	{
+		b = 6
+	}
+	endif
+}
+else
+{
+	a = 7
+}
+endif
+@end

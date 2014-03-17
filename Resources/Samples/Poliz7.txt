@@ -1,0 +1,7 @@
+@interface PolizTest
+	int value, result
+	int a,b,c,d
+@implementation
+output("Some 2 cool application",5)
+output(a)
+@end

@@ -1,0 +1,8 @@
+@interface PolizTest
+	int value, result
+@implementation
+input(value)
+result = value * value
+output(value)
+output(result)
+@end

@@ -1,0 +1,34 @@
+﻿<Properties GitUserInfo="UsingMD">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Sources/Compiler/PolizProcessing/PolizAnalyzer.cs">
+    <Files>
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" Line="214" Column="7" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/BottomUpTable.cs" Line="266" Column="5" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/Grammar.cs" Line="107" Column="37" />
+      <File FileName="Sources/Compiler/Compiler.cs" Line="63" Column="25" />
+      <File FileName="Sources/UI/RootWindow.cs" Line="52" Column="44" />
+      <File FileName="Sources/Prefix/Program.cs" Line="14" Column="24" />
+      <File FileName="Sources/Compiler/LexemAnalyzer/Parser.cs" Line="9" Column="2" />
+      <File FileName="Sources/Compiler/LexemAnalyzer/LexemAnalyzer.cs" Line="62" Column="17" />
+      <File FileName="Sources/Compiler/Other/Log.cs" Line="10" Column="14" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatDiagram/SyntaxAnalyzerWithAutomat.cs" Line="15" Column="5" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/SyntaxAnalyzerWithTable.cs" Line="191" Column="4" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/Transition.cs" Line="101" Column="4" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/State.cs" Line="14" Column="25" />
+      <File FileName="Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" Line="96" Column="8" />
+      <File FileName="Sources/Compiler/PolizProcessing/PolizOperarionsList.cs" Line="53" Column="4" />
+      <File FileName="Sources/Compiler/PolizProcessing/PolizOperation.cs" Line="16" Column="26" />
+    </Files>
+    <Pads>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" line="32" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

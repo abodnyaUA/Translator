@@ -1,0 +1,25 @@
+@interface PolizTest
+	int x1,y1,x2,y2, result
+@implementation
+output("Данная программа считает растояние между двумя точками")
+input(x1,y1,x2,y2)
+output(x1,y1,x2,y2)
+if x1 equ x2 and y1 equ y2 then
+{
+	output("Точки должны быть разными!")
+}
+else
+{
+	result = ((x1 - x2) ^ 2 + (y1 - y2) ^ 2) root 2
+	if result equ 0 then
+	{
+		output("Расстояние слишком маленькое")
+	}
+	else
+	{
+		output("Расстояние высчитано успешно",result)
+	}
+	endif
+}
+endif
+@end

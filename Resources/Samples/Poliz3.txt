@@ -1,0 +1,5 @@
+@interface PolizTest
+	int a,b,c,q,d
+@implementation
+a = 5 + 2 * (8 + (7 - 12) ^ 3 - (85 +96)) * 2
+@end
