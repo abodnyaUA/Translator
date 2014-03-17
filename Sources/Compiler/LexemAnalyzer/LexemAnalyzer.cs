@@ -108,12 +108,8 @@ namespace Translators
 				Lexems.Add(new Lexem(line, value, dict.Count-1));
 			}
 		}
-		private void AnalyzeID(int line, string value)
+		private void ValidateID(int line, string value)
 		{
-			// Table base //
-			PrintBaseTableLine(line,value);
-
-			// Validate ID name //
 			if (!((value[0] >= 'a' && value[0] <= 'z') ||
 			      (value[0] >= 'A' && value[0] <= 'Z')))
 			{
@@ -132,59 +128,93 @@ namespace Translators
 					throw error1;
 				}
 			}
+		}
+		private void InsertNewID(int line, string value)
+		{
+			int wasDeclaratedIndex = -1;
+			for (int j = 0; j < IDs.Count; j++)
+			{
+				if (value == IDs[j])
+				{
+					wasDeclaratedIndex = j;
+					break;
+				}
+			}
+			// It hasn't declarated.
+			if (wasDeclaratedIndex != -1)
+			{
+				Out.Log(Out.State.LogInfo,"");
+				throw new LexemException((line+1),"Variable " + value + " has declarated");
+			}
+			else
+			{
+				// Declaration zone //
+				IDs.Add(value);
+				Lexems.Add(new Lexem(line, value, dict.Count - 2));
+				Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
+			}
+		}
+		private void ProcessExistID(int line, string value)
+		{
+			// Find in declarations
+			int wasDeclaratedIndex = -1;
+			for (int j = 0; j < IDs.Count; j++)
+			{
+				if (value == IDs[j])
+				{
+					wasDeclaratedIndex = j;
+					break;
+				}
+			}
+			// It hasn't declarated.
+			if (wasDeclaratedIndex == -1)
+			{
+				Out.Log(Out.State.LogInfo,"");
+				LexemException error2 = new LexemException((line+1),"Variable " + value + " hasn't declarated");
+				throw error2;
+			}
+			// Fuuuh. I've find it.
+			else
+			{
+				Lexems.Add(new Lexem(line, value, dict.Count - 2));
+				Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
+			}
+		}
+		private void AnalyzeID(int line, string value)
+		{
+			// Table base //
+			PrintBaseTableLine(line,value);
+
+			// Validate ID name //
+			ValidateID(line,value);
+
 			// It's interface zone ? Then it's mabe new id
 			if (InterfaceWasDeclarated && !ImplementationWasDeclarated)
 			{
-				int wasDeclaratedIndex = -1;
-				for (int j = 0; j < IDs.Count; j++)
-				{
-					if (value == IDs[j])
-					{
-						wasDeclaratedIndex = j;
-						break;
-					}
-				}
-				// It hasn't declarated.
-				if (wasDeclaratedIndex != -1)
-				{
-					Out.Log(Out.State.LogInfo,"");
-					throw new LexemException((line+1),"Variable " + value + " has declarated");
-				}
-				else
-				{
-					// Declaration zone //
-					IDs.Add(value);
-					Lexems.Add(new Lexem(line, value, dict.Count - 2));
-					Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
-				}
+				InsertNewID(line, value);
 			}
 			// No? It was declarated?
 			else
 			{
-				// Find in declarations
-				int wasDeclaratedIndex = -1;
-				for (int j = 0; j < IDs.Count; j++)
+				ProcessExistID(line, value);
+			}
+		}
+		private int IndexOfOperation(int line, string value)
+		{
+			// Try find lexem in Lexem's Table
+			int find = int.MaxValue;
+			for (int j = 0; j < dict.Count; j++)
+			{
+				// Find it. Great
+				if (value.Equals(dict[j]))
 				{
-					if (value == IDs[j])
-					{
-						wasDeclaratedIndex = j;
-						break;
-					}
-				}
-				// It hasn't declarated.
-				if (wasDeclaratedIndex == -1)
-				{
-					Out.Log(Out.State.LogInfo,"");
-					LexemException error2 = new LexemException((line+1),"Variable " + value + " hasn't declarated");
-					throw error2;
-				}
-				// Fuuuh. I've find it.
-				else
-				{
-					Lexems.Add(new Lexem(line, value, dict.Count - 2));
-					Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
+					// Check it for global
+					checkForGlobalCommands(value,line);
+					find = j;
+					break;
 				}
 			}
+			return find;
 		}
 
 		private List<string> IDs;
@@ -221,32 +251,21 @@ namespace Translators
                 {
 					//First lexem shouldn't be ENTER
 					if (Lexems.Count == 0 && lexem == "\n") continue;
-
+					
+					string value = lexem.Replace(" ","");
 					//Continue
-                    // Try find lexem in Lexem's Table
-                    int find = -1;
-                    string value = lexem.Replace(" ","");
-                    for (int j = 0; j < dict.Count; j++)
-                    {
-                        // Find it. Great
-                        if (value.Equals(dict[j]))
-                        {
-                            // Check it for global
-                            checkForGlobalCommands(value,i);
-                            find = j;
-                            break;
-                        }
-                    }
+                    
 					if (value == "-" && !Lexems[Lexems.Count-1].isIDorCONST())
 					{
 						AnalyzeConst(i,"0");
 					}
                     //It's table's lexem
-                    if (find != -1)
+					int lexemIndex = IndexOfOperation(i,value);
+                    if (int.MaxValue != lexemIndex)
                     {						
 						PrintBaseTableLine(i,value);
-						Out.Log(Out.State.LogInfo,""+(find + 1));
-                        Lexems.Add(new Lexem(i,value,find));
+						Out.Log(Out.State.LogInfo,""+(lexemIndex + 1));
+						Lexems.Add(new Lexem(i,value,lexemIndex));
                     }
                     // No? Don't worry. May be it's ID or CONST
                     else
