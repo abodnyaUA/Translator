@@ -60,7 +60,7 @@ namespace Translators
 			AddOperations(6,">","<",">=","<=","equ","!=");
 			AddOperations(7,"+","-");
 			AddOperations(8,"*","/");
-			AddOperations(9,"^");
+			AddOperations(9,"^","root");
 		}
 
 		public static int kLexemKeyLabelStart { get { return LexemList.Instance.Grammar.Count; } }

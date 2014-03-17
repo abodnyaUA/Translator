@@ -15,7 +15,7 @@ else
 	if D equ 0 then
 	{
 		output("Найден один корень квадратного уравнения")
-		x = (-b + (D root 2)) / (2 * a)
+		x = (-b + D root 2) / (2 * a)
 		output(x)
 	}
 	else
