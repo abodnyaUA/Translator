@@ -76,6 +76,7 @@ namespace Translators
 							dialog.Run();
 							dialog.Destroy();
 						});
+						// Synchronize threads. Better use Mutex or Semaphore //
 						while (LastInputValue == int.MaxValue)
 						{
 							Thread.Sleep(100);
@@ -131,6 +132,8 @@ namespace Translators
 					i = -1;
 				}
 			}
+			PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
+			Out.Log(Out.State.LogInfo,"Compilation finished success");
 		}
 		
 		// Calculate expression //

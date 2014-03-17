@@ -57,6 +57,13 @@ namespace Translators
             }
         }
 
+		private void PrintBaseTableLine(int line, string value)
+		{
+			Out.LogOneLine(Out.State.LogInfo,
+			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
+			for (int j = 0; j < 18 - value.Length; j++) 
+				Out.LogOneLine(Out.State.LogInfo," ");
+		}
 		private bool isConst(string value)
 		{
 			bool con = true;
@@ -77,11 +84,7 @@ namespace Translators
 		private void AnalyzeConst(int line, string value)
 		{
 			// Tabel base //
-			Out.LogOneLine(Out.State.LogInfo,
-			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
-			for (int j = 0; j < 18 - value.Length; j++) 
-				Out.LogOneLine(Out.State.LogInfo," ");
-
+			PrintBaseTableLine(line,value);
 			// Check earlier definition //
 			int wasDeclaratedIndex = -1;
 			for (int j = 0; j < CONSTs.Count; j++)
@@ -108,10 +111,7 @@ namespace Translators
 		private void AnalyzeID(int line, string value)
 		{
 			// Table base //
-			Out.LogOneLine(Out.State.LogInfo,
-			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
-			for (int j = 0; j < 18 - value.Length; j++) 
-				Out.LogOneLine(Out.State.LogInfo," ");
+			PrintBaseTableLine(line,value);
 
 			// Validate ID name //
 			if (!((value[0] >= 'a' && value[0] <= 'z') ||
@@ -244,10 +244,7 @@ namespace Translators
                     //It's table's lexem
                     if (find != -1)
                     {						
-						Out.LogOneLine(Out.State.LogInfo,
-						               (i < 9 ? "0" : "") + (i + 1) + "  " + (lexem == "\n" ? "ENTER" : lexem));
-						for (int j = 0; j < 18 - lexem.Length; j++) 
-							Out.LogOneLine(Out.State.LogInfo," ");
+						PrintBaseTableLine(i,value);
 						Out.Log(Out.State.LogInfo,""+(find + 1));
                         Lexems.Add(new Lexem(i,value,find));
                     }
