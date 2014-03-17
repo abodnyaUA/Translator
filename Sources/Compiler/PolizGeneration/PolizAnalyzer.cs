@@ -22,8 +22,7 @@ namespace Translators
 		public void AnalyzeLexems()
 		{
 			this.stack = new List<Lexem>();
-			this.allPoliz = new List<List<Lexem>>();
-			this.allPoliz.Add(new List<Lexem>());
+			this.poliz = new List<Lexem>();
 			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
 			UseOperatorsBlock();
 			htmlTable = new HTMLTable("Полиз","Стек","Входная цепочка");
@@ -35,21 +34,12 @@ namespace Translators
 			}
 
 			FinishCurrentPoliz();
-
-			if (this.poliz.Count == 0)
-			{
-				allPoliz.RemoveAt(allPoliz.Count-1);
-			}
-			foreach (List<Lexem> poliz in this.allPoliz)
-			{
-				LogLexems("Poliz",poliz);
-			}
+		
 			if (Out.LogState != Out.State.ApplicationOutput)
 			{
 			 	Out.LogState = Out.State.LogDebug;
 			}
-			CreateCompletePoliz();
-			LogLexems("Complete Poliz",this.completePoliz);
+			LogLexems("Complete Poliz",this.poliz);
 			htmlTable.WriteToFile(Constants.HTMLTablePath);
 			//Out.LogState = Out.State.LogInfo;
 		}
@@ -75,10 +65,7 @@ namespace Translators
 				Lexem lastStack = this.stack[stack.Count-1];
 				stack.RemoveAt(stack.Count-1);
 				
-				if (lastStack.Command == "{" || lastStack.Command == "}")
-				{
-				}
-				else if (lastStack.Command == "if")
+				if (lastStack.Command == "{" || lastStack.Command == "}" || lastStack.Command == "if")
 				{
 				}
 				else if (lastStack.Command == "then")
@@ -122,13 +109,10 @@ namespace Translators
 			LogLexems("Source",lexems);
 			LogLexems("Poliz",poliz);
 			Out.Log(Out.State.LogDebug,"");
-			
-			//ProcessPolizResult();
-			
-			// Start new poliz //
+
+			// Remove "\n" //
 			if (lexems.Count > 0)
 			{
-				allPoliz.Add(new List<Lexem>());
 				lexems.RemoveAt(0);
 			}
 		}
@@ -206,27 +190,8 @@ namespace Translators
 		}
 
 		public PolizOperarionsList operationList = new PolizOperarionsList();
-		private List<List<Lexem>> allPoliz;
-		private List<Lexem> poliz 
-		{
-			get 
-			{
-				return allPoliz[allPoliz.Count - 1];
-			}
-		}
-		private List<Lexem> completePoliz;
-		public List<Lexem> CompletePoliz { get { return completePoliz; } }
-		private void CreateCompletePoliz()
-		{
-			completePoliz = new List<Lexem>();
-			foreach (List<Lexem> poliz in this.allPoliz)
-			{
-				foreach (Lexem lexem in poliz)
-				{
-					completePoliz.Add(lexem);
-				}
-			}
-		}
+		private List<Lexem> poliz;
+		public List<Lexem> Poliz { get { return poliz; } }
 
 		private List<Lexem> stack;
 		private List<Lexem> lexems;
@@ -257,9 +222,8 @@ namespace Translators
 
 		private void LogToHTMLTable()
 		{
-			CreateCompletePoliz();
 			string stackLine = ListToString(this.stack);
-			string polizLine = ListToString(this.completePoliz);
+			string polizLine = ListToString(this.poliz);
 			string lexemsLine = ListToString(this.lexems);
 			htmlTable.AddLine(polizLine,stackLine,lexemsLine);
 		}

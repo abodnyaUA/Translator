@@ -31,7 +31,7 @@ namespace Translators
 		public void Compile()
 		{
 			LastInputValue = int.MaxValue;
-			this.poliz = PolizAnalyzer.sharedAnalyzer.CompletePoliz;
+			this.poliz = PolizAnalyzer.sharedAnalyzer.Poliz;
 			for (int i = 0; i < this.poliz.Count; i++)
 			{
 				PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
