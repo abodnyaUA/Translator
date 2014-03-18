@@ -1,25 +1,38 @@
 ﻿<Properties GitUserInfo="UsingMD">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Sources/Compiler/PolizProcessing/PolizAnalyzer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Sources/Compiler/LexemAnalyzer/LexemAnalyzer.cs">
     <Files>
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" Line="214" Column="7" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/BottomUpTable.cs" Line="266" Column="5" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/Grammar.cs" Line="107" Column="37" />
-      <File FileName="Sources/Compiler/Compiler.cs" Line="63" Column="25" />
-      <File FileName="Sources/UI/RootWindow.cs" Line="52" Column="44" />
-      <File FileName="Sources/Prefix/Program.cs" Line="14" Column="24" />
-      <File FileName="Sources/Compiler/LexemAnalyzer/Parser.cs" Line="9" Column="2" />
-      <File FileName="Sources/Compiler/LexemAnalyzer/LexemAnalyzer.cs" Line="62" Column="17" />
-      <File FileName="Sources/Compiler/Other/Log.cs" Line="10" Column="14" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatDiagram/SyntaxAnalyzerWithAutomat.cs" Line="15" Column="5" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/SyntaxAnalyzerWithTable.cs" Line="191" Column="4" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/Transition.cs" Line="101" Column="4" />
-      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/State.cs" Line="14" Column="25" />
-      <File FileName="Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" Line="96" Column="8" />
-      <File FileName="Sources/Compiler/PolizProcessing/PolizOperarionsList.cs" Line="53" Column="4" />
-      <File FileName="Sources/Compiler/PolizProcessing/PolizOperation.cs" Line="16" Column="26" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" Line="268" Column="3" />
+      <File FileName="Sources/Compiler/PolizGeneration/PolizAnalyzer.cs" Line="41" Column="5" />
+      <File FileName="Sources/Compiler/Other/HTMLTable.cs" Line="21" Column="4" />
+      <File FileName="Sources/Compiler/LexemList.cs" Line="16" Column="19" />
+      <File FileName="Sources/Compiler/PolizProcess/PolizCompiler.cs" Line="124" Column="24" />
+      <File FileName="Sources/UI/RootWindow.cs" Line="45" Column="32" />
+      <File FileName="Sources/Compiler/Other/Log.cs" Line="21" Column="38" />
+      <File FileName="Sources/Compiler/SyntaxAnalyzer/MagazineAutomatTable/SyntaxAnalyzerWithTable.cs" Line="171" Column="33" />
+      <File FileName="Sources/Compiler/Other/LexemException.cs" Line="9" Column="4" />
+      <File FileName="Sources/Compiler/LexemAnalyzer/LexemAnalyzer.cs" Line="245" Column="37" />
+      <File FileName="Sources/Compiler/PolizGeneration/PolizOperarionsList.cs" Line="41" Column="56" />
     </Files>
     <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Translators" expanded="True">
+            <Node name="UserInterface" expanded="True" />
+            <Node name="Resources" expanded="True" />
+            <Node name="Sources" expanded="True">
+              <Node name="Compiler" expanded="True">
+                <Node name="LexemAnalyzer" expanded="True">
+                  <Node name="LexemAnalyzer.cs" selected="True" />
+                </Node>
+                <Node name="SyntaxAnalyzer" expanded="True">
+                  <Node name="MagazineAutomatTable" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
       </Pad>
@@ -27,7 +40,19 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" line="32" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/SyntaxAnalyzer/BottomUp/SyntaxAnalyzerBottomUp.cs" line="29" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" line="87" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" line="351" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" line="326" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" line="133" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcessing/PolizAnalyzer.cs" line="330" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="116" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="103" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="124" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="65" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="168" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="217" />
+      <Breakpoint file="/home/abodnya/Developer/Projects/Translator/Sources/Compiler/PolizProcess/PolizCompiler.cs" line="229" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

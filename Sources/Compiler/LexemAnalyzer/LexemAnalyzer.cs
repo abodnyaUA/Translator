@@ -17,11 +17,13 @@ namespace Translators
         }
 		private LexemAnalyzer() { }
 
+		// Checking right section //
         private bool InterfaceWasDeclarated = false;
         private bool ImplementationWasDeclarated = false;
         private bool EndWasDeclarated = false;
 
-        private void checkForGlobalCommands(string value, int line)
+		// Additional usefull methods //
+        private void CheckForGlobalCommands(string value, int line)
         {
             if (value == "@interface")
             {
@@ -30,7 +32,9 @@ namespace Translators
 					throw new LexemException(line,"Invalide declaration @interface");
                 }
                 else
+				{
                     InterfaceWasDeclarated = true;
+				}
             }
             if (value == "@implementation")
             {
@@ -39,31 +43,26 @@ namespace Translators
 					throw new LexemException(line,"Invalide declaration @implementation");
                 }
                 else
+				{
                     ImplementationWasDeclarated = true;
+				}
             }
             if (value == "@end")
             {
                 if (!InterfaceWasDeclarated || !ImplementationWasDeclarated || EndWasDeclarated)
                 {
                     throw new LexemException(line,"Invalide declaration @end");
-
                 }
                 else
+				{
                     EndWasDeclarated = true;
+				}
             }
             if (value == "int" && ImplementationWasDeclarated)
             {
                 throw new LexemException(line,"Variables can be declarated only in @interface section");
             }
         }
-
-		private void PrintBaseTableLine(int line, string value)
-		{
-			Out.LogOneLine(Out.State.LogInfo,
-			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
-			for (int j = 0; j < 18 - value.Length; j++) 
-				Out.LogOneLine(Out.State.LogInfo," ");
-		}
 		private bool isConst(string value)
 		{
 			bool con = true;
@@ -81,10 +80,10 @@ namespace Translators
 			}
 			return con;
 		}
-		private void AnalyzeConst(int line, string value)
+		private void AnalyzeConst(string value)
 		{
 			// Tabel base //
-			PrintBaseTableLine(line,value);
+			PrintBaseTableLine(value);
 			// Check earlier definition //
 			int wasDeclaratedIndex = -1;
 			for (int j = 0; j < CONSTs.Count; j++)
@@ -108,14 +107,13 @@ namespace Translators
 				Lexems.Add(new Lexem(line, value, dict.Count-1));
 			}
 		}
-		private void ValidateID(int line, string value)
+		private void ValidateID(string value)
 		{
 			if (!((value[0] >= 'a' && value[0] <= 'z') ||
 			      (value[0] >= 'A' && value[0] <= 'Z')))
 			{
 				Out.Log(Out.State.LogInfo,"");
-				LexemException error1 = new LexemException((line+1),"Invalid simbol '" + value[0]+"'");
-				throw error1;
+				throw new LexemException((line+1),"Invalid symbol '" + value[0]+"'");
 			}
 			for (int c = 1; c < value.Length; c++)
 			{
@@ -124,12 +122,11 @@ namespace Translators
 				      (value[c] >= '0' && value[c] <= '9')))
 				{
 					Out.Log(Out.State.LogInfo,"");
-					LexemException error1 = new LexemException((line+1),"Invalid simbol '"+value[c]+"'");
-					throw error1;
+					throw new LexemException((line+1),"Invalid symbol '"+value[c]+"'");
 				}
 			}
 		}
-		private void InsertNewID(int line, string value)
+		private void InsertNewID(string value)
 		{
 			int wasDeclaratedIndex = -1;
 			for (int j = 0; j < IDs.Count; j++)
@@ -144,7 +141,7 @@ namespace Translators
 			if (wasDeclaratedIndex != -1)
 			{
 				Out.Log(Out.State.LogInfo,"");
-				throw new LexemException((line+1),"Variable " + value + " has declarated");
+				throw new LexemException((line+1),"Variable " + value + " has declarated earlier");
 			}
 			else
 			{
@@ -154,7 +151,7 @@ namespace Translators
 				Out.Log(Out.State.LogInfo,dict.Count - 1 + "\t" + IDs.Count);
 			}
 		}
-		private void ProcessExistID(int line, string value)
+		private void ProcessExistID(string value)
 		{
 			// Find in declarations
 			int wasDeclaratedIndex = -1;
@@ -180,26 +177,26 @@ namespace Translators
 				Out.Log(Out.State.LogInfo, dict.Count - 1 + "\t" + (wasDeclaratedIndex + 1));
 			}
 		}
-		private void AnalyzeID(int line, string value)
+		private void AnalyzeID(string value)
 		{
 			// Table base //
-			PrintBaseTableLine(line,value);
+			PrintBaseTableLine(value);
 
 			// Validate ID name //
-			ValidateID(line,value);
+			ValidateID(value);
 
 			// It's interface zone ? Then it's mabe new id
 			if (InterfaceWasDeclarated && !ImplementationWasDeclarated)
 			{
-				InsertNewID(line, value);
+				InsertNewID(value);
 			}
 			// No? It was declarated?
 			else
 			{
-				ProcessExistID(line, value);
+				ProcessExistID(value);
 			}
 		}
-		private int IndexOfOperation(int line, string value)
+		private int IndexOfOperation(string value)
 		{
 			// Try find lexem in Lexem's Table
 			int find = int.MaxValue;
@@ -209,7 +206,7 @@ namespace Translators
 				if (value.Equals(dict[j]))
 				{
 					// Check it for global
-					checkForGlobalCommands(value,line);
+					CheckForGlobalCommands(value,line);
 					find = j;
 					break;
 				}
@@ -217,12 +214,14 @@ namespace Translators
 			return find;
 		}
 
+		// Main containers //
 		private List<string> IDs;
 		private List<string> CONSTs;
 		private List<Lexem> Lexems;
 		private List<string> dict;
+		private int line;
 
-        // Parse doubleArray //
+        // Main Function: Parse doubleArray //
         public void AnalyzeWithDoubleList(List<List<string>> parsedList)
 		{
 			InterfaceWasDeclarated = false;
@@ -235,19 +234,19 @@ namespace Translators
 
 			Out.Log(Out.State.LogInfo,"Line  Command         Key\tID\tConst");
             // line cycle
-            for (int i = 0; i < parsedList.Count; i++)
+			for (this.line = 0; this.line < parsedList.Count; this.line++)
             {
-				// Check empty line
+				// Check empty line. Some magic.
 				bool validLine = true;
 				try
 				{
-					if (parsedList[i][0] == "\n" 
-					    && i == parsedList.Count-1 
-					    && parsedList[i].Count == 1) validLine = false;
+					if (parsedList[this.line][0] == "\n" 
+					    && this.line == parsedList.Count-1 
+					    && parsedList[this.line].Count == 1) validLine = false;
 				} catch (Exception) {}
                 // Lexems in line cycle
 				if (validLine)
-                foreach (string lexem in parsedList[i])
+				foreach (string lexem in parsedList[this.line])
                 {
 					//First lexem shouldn't be ENTER
 					if (Lexems.Count == 0 && lexem == "\n") continue;
@@ -257,15 +256,15 @@ namespace Translators
                     
 					if (value == "-" && !Lexems[Lexems.Count-1].isIDorCONST())
 					{
-						AnalyzeConst(i,"0");
+						AnalyzeConst("0");
 					}
                     //It's table's lexem
-					int lexemIndex = IndexOfOperation(i,value);
+					int lexemIndex = IndexOfOperation(value);
                     if (int.MaxValue != lexemIndex)
                     {						
-						PrintBaseTableLine(i,value);
+						PrintBaseTableLine(value);
 						Out.Log(Out.State.LogInfo,""+(lexemIndex + 1));
-						Lexems.Add(new Lexem(i,value,lexemIndex));
+						Lexems.Add(new Lexem(this.line,value,lexemIndex));
                     }
                     // No? Don't worry. May be it's ID or CONST
                     else
@@ -273,12 +272,12 @@ namespace Translators
                         // It's const?
                         if (isConst(value))
                         {
-							AnalyzeConst(i,value);
+							AnalyzeConst(value);
                         }
                         // No? Okay, May be ID
                         else
                         {
-							AnalyzeID(i,value);
+							AnalyzeID(value);
                         }
                     }
                 } // Lexems Cycle
@@ -287,11 +286,18 @@ namespace Translators
 			LexemList.Instance.UpdateIDs(IDs);
 			LexemList.Instance.UpdateLexems(Lexems);
 
-			outputTables(IDs,CONSTs,Lexems);
+			PrintTables();
         }
-        /// Parse doubleArray //
 
-        public void outputTables(List<string> IDs, List<string> CONSTs, List<Lexem> Lexems)
+		// Print Table //
+		private void PrintBaseTableLine(string value)
+		{
+			Out.LogOneLine(Out.State.LogInfo,
+			               (line < 9 ? "0" : "") + (line + 1) + "  " + (value == "\n" ? "ENTER" : value));
+			for (int j = 0; j < 18 - value.Length; j++) 
+				Out.LogOneLine(Out.State.LogInfo," ");
+		}
+        public void PrintTables()
         {
 			Out.Log(Out.State.LogInfo,"IDs:");
 			Out.Log(Out.State.LogInfo,"Num  ID");
