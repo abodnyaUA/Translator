@@ -8,18 +8,20 @@ namespace Translators
 		public static int kIDKey { get { return LexemList.Instance.Grammar.Count-2; } }
 		public static int kConstKey { get { return LexemList.Instance.Grammar.Count-1; } }
 
-		public int LineNumber { get { return lineNumber; } }
-		public string Command { get { return command; } }
-		public int Key { get { return key; } }
-		private int lineNumber;
-		private string command;
-		private int key;
 		public Lexem(int line, string command, int key)
 		{
 			this.key = key;
 			this.lineNumber = line;
 			this.command = command;
 		}
+
+		public int LineNumber { get { return lineNumber; } }
+		public string Command { get { return command; } }
+		public int Key { get { return key; } }
+		
+		private int lineNumber;
+		private string command;
+		private int key;
 		
 		public bool isIDorCONST()
 		{
@@ -88,6 +90,7 @@ namespace Translators
 		private static int iterator = 0;
 		private int adress = 0;
 		private string name = "";
+
 		public int Value = 0;
 
 		public int Adress { get { return adress; } }
@@ -108,7 +111,7 @@ namespace Translators
 		}
 
 		public static LexemList Instance 
-		{ get { return Compiler.sharedCompiler.LexemList; } set { } }
+		{ get { return Compiler.sharedCompiler.LexemList; } }
 
 		public List<string> Grammar { get { return grammar; } }
 		public List<Variable> IDs { get { return ids; } }
@@ -116,7 +119,9 @@ namespace Translators
 		public List<Lexem>  Lexems { get { return lexems; } }
 
 		public void UpdateLexems(List<Lexem> lexems) 
-		{ this.lexems = lexems; }
+		{ 
+			this.lexems = lexems; 
+		}
 		public void UpdateIDs(List<string> IDs) 
 		{
 			this.ids = new List<Variable>();
@@ -127,7 +132,9 @@ namespace Translators
 			}
 		}
 		public void UpdateConsts(List<string> consts) 
-		{ this.consts = consts; }
+		{ 
+			this.consts = consts; 
+		}
 
 		public Variable VariableWithName(string name)
 		{

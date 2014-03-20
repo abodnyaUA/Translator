@@ -6,9 +6,9 @@ namespace Translators
 	{
 		enum StackUsing {UsePop, UsePush, NoUse};
 
-		public static string LexemID 	= "__ID__";
-		public static string LexemCONST = "__CONST__";
-		public static string NoLexem 	= null;
+		public static string LexemID 	{ get { return "__ID__"; } }
+		public static string LexemCONST { get { return  "__CONST__"; } }
+		public static string NoLexem 	{ get { return  null; } }
 
 		private string lexem;
 		private int nextState;

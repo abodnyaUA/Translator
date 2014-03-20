@@ -20,7 +20,7 @@ namespace Translators
 		private PolizCompiler () {	}
 		#endregion
 
-		public int LastInputValue;
+		private int LastInputValue;
 		void DidConfirmInputDialog (object obj, ResponseArgs args)
 		{
 			InputIDDialog dialog = (InputIDDialog)obj;

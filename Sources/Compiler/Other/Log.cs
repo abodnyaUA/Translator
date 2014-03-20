@@ -33,12 +33,12 @@ namespace Translators
 			}
 		}
 		
-		public static void WriteLine(String fmt, params Object[] args)
+		private static void WriteLine(String fmt, params Object[] args)
 		{
 			Out.Write(fmt);
 			Out.Write("\n");
 		}
-		public static void Write(String fmt, params Object[] args)
+		private static void Write(String fmt, params Object[] args)
 		{
 			string op;
 			if (fmt == null)

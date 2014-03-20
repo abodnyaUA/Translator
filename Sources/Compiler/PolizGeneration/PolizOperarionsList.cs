@@ -11,7 +11,7 @@ namespace Translators
 			bool exist = false;
 			foreach (PolizOperation polizOperation in this.operations)
 			{
-				if (polizOperation.operation == operation)
+				if (polizOperation.Operation == operation)
 				{
 					exist = true;
 				}
@@ -23,9 +23,9 @@ namespace Translators
 		{
 			foreach (PolizOperation polizOperation in this.operations)
 			{
-				if (polizOperation.operation == lexem.Command)
+				if (polizOperation.Operation == lexem.Command)
 				{
-					return polizOperation.priority;
+					return polizOperation.Priority;
 				}
 			}
 			return int.MaxValue;
@@ -45,7 +45,7 @@ namespace Translators
 		{
 			foreach (string oper in operators)
 			{
-				operations.Add(PolizOperation.Operation(oper,priority));
+				operations.Add(PolizOperation.NewOperation(oper,priority));
 			}
 		}
 

@@ -65,9 +65,7 @@ namespace Translators
 				Lexem lastStack = this.stack[stack.Count-1];
 				stack.RemoveAt(stack.Count-1);
 				
-				if (lastStack.Command == "{" || lastStack.Command == "}" || lastStack.Command == "if")
-				{
-				}
+				if (lastStack.Command == "{" || lastStack.Command == "}" || lastStack.Command == "if"){}
 				else if (lastStack.Command == "then")
 				{
 					Lexem label1 = new Lexem(lastStack.LineNumber,"m"+labelIterator.ToString(),
@@ -153,6 +151,7 @@ namespace Translators
 				FinishCurrentPoliz();
 			}
 
+			// Remove "," for output and input operations
 			else if (lexems[0].Command == ",")
 			{
 				this.lexems.RemoveAt(0);
@@ -231,9 +230,8 @@ namespace Translators
 		{
 			if (Out.LogState >= Out.State.LogDebug)
 			{
-				Out.LogOneLine(Out.State.LogInfo,name+": ");
 				string str = ListToString(list);
-				Out.Log(Out.State.LogDebug,str);
+				Out.Log(Out.State.LogInfo,name+": "+str);
 			}
 		}
 

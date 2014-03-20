@@ -4,13 +4,14 @@ namespace Translators
 {
 	public class PolizOperation
 	{
-		public string operation;
-		public int priority;
-		public PolizOperation()
-		{
-		}
+		private PolizOperation() { }
 
-		static public PolizOperation Operation(string opearation, int priority)
+		private string operation;
+		private int priority;
+		public string Operation { get { return operation; } }
+		public int Priority { get { return priority; } }
+
+		static public PolizOperation NewOperation(string opearation, int priority)
 		{
 			PolizOperation polizOperation = new PolizOperation();
 			polizOperation.operation = opearation;
