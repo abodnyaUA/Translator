@@ -51,8 +51,8 @@ namespace Translators
 
 		public PolizOperarionsList()
 		{
-			AddOperations(0,"(","[","if","output","input");
-			AddOperations(1,")","]","then","else");
+			AddOperations(0,"(","[","{","if","for","output","input");
+			AddOperations(1,")","]","}","then","else","step","to","do","next");
 			AddOperations(2,"=");
 			AddOperations(3,"or");
 			AddOperations(4,"and");

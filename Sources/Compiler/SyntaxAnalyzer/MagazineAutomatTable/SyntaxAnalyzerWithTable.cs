@@ -130,6 +130,9 @@ namespace Translators
 				new List<Transition>() {Transition.CallTransition("step",41,28)},
 				"Missed step");
 			table.AddState(28,
+			    new List<Transition>() {Transition.DefaultTransition("do",208)},
+			"Missed ENTER");
+			table.AddState(208,
 				new List<Transition>() {Transition.CallTransition("\n",31,29)},
 				"Missed ENTER");
 			table.AddState(29,

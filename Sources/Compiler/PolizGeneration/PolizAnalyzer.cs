@@ -24,6 +24,7 @@ namespace Translators
 			this.stack = new List<Lexem>();
 			this.poliz = new List<Lexem>();
 			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
+			this.isCycle = false;
 			UseOperatorsBlock();
 			htmlTable = new HTMLTable("Полиз","Стек","Входная цепочка");
 
@@ -57,6 +58,8 @@ namespace Translators
 
 		/* Process completed polizes */
 		private Stack<int> labels = new Stack<int>();
+		private List<int> cyclePointer = new List<int>(2);
+		private bool isCycle;
 		private void FinishCurrentPoliz()
 		{
 			// Clear stack //
@@ -154,6 +157,28 @@ namespace Translators
 			// Remove "," for output and input operations
 			else if (lexems[0].Command == ",")
 			{
+				this.lexems.RemoveAt(0);
+			}
+
+			// Cycle //
+			else if (lexems[0].Command == "for")
+			{
+				int iterator = this.labelIterator;
+				this.labels.Push(iterator);
+				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator+2).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator+1).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.stack.Add(lexems[0]);
+				this.labelIterator += 3;
+				this.isCycle = true;
+				this.lexems.RemoveAt(0);
+			}
+			else if (lexems[0].Command == "=" && this.isCycle == true)
+			{
+				this.isCycle = false;
 				this.lexems.RemoveAt(0);
 			}
 

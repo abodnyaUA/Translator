@@ -165,6 +165,7 @@ namespace Translators
 			grammar.Add("for");
 			grammar.Add("to");
 			grammar.Add("step");
+			grammar.Add("do");
 			grammar.Add("next");
 			grammar.Add("if");
 			grammar.Add("then");
