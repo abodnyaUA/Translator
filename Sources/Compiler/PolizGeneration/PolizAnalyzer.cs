@@ -176,10 +176,16 @@ namespace Translators
 				this.isCycle = true;
 				this.lexems.RemoveAt(0);
 			}
+
 			else if (lexems[0].Command == "=" && this.isCycle == true)
 			{
 				this.isCycle = false;
 				this.lexems.RemoveAt(0);
+			}
+
+			else if (lexems[0].Command == "step")
+			{
+
 			}
 
 			// For expressions. Check ")" and "]" //

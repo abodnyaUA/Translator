@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Translators
-{
+{	
 	public class PolizOperarionsList
 	{
 		private List<PolizOperation> operations = new List<PolizOperation>();

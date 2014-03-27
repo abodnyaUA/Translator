@@ -90,17 +90,8 @@ namespace Translators
 					bool ok = CalculateLogicalExpression(commandIterator,i-2);
 					if (false == ok) // false. go to "else" block
 					{
-						string destination = poliz[i-1].Command;
-						while (destination != poliz[i].Command)
-						{
-							i++;
-							PolizAnalyzer.sharedAnalyzer.LogLexems(
-								"Poliz", this.poliz);
-						}
-					}
-					else
-					{
-
+						string destinationLabel = poliz[i-1].Command;
+						i = LabelFinder.PositionCloseLabel(poliz,destinationLabel);
 					}
 					commandIterator = i+1;
 				}
@@ -108,17 +99,9 @@ namespace Translators
 				else if (poliz[commandIterator].Key == PolizOperarionsList.kLexemKeyLabelStart &&
 				         poliz[commandIterator + 1].Key == PolizOperarionsList.kLexemKeyBP) // unused "else" block
 				{
-					string destination = poliz[commandIterator].Command;
-					i += 3;
-					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
-					while (destination != poliz[i].Command)
-					{
-						i++;
-						PolizAnalyzer.sharedAnalyzer.LogLexems("PoliZ", this.poliz);
-					}
-					i++;
-					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
-					commandIterator = i;
+					string destinationLabel = poliz[commandIterator].Command;
+					i  = LabelFinder.PositionCloseLabel(poliz, destinationLabel);
+					commandIterator = i+1;
 				}
 
 				else if (poliz[i].Key == PolizOperarionsList.kLexemKeyLabelEnd) // endif
