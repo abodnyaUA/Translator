@@ -60,7 +60,7 @@ namespace Translators
 										Transition.DefaultTransition("input",14),
 										Transition.DefaultTransition("output",104),
 										Transition.CallTransition("if",51,17),
-										Transition.DefaultTransition("for",23)},
+										Transition.DefaultTransition("for",24)},
 				"Invalid Operator");
 			// SETTER //
 			table.AddState(12,
@@ -124,11 +124,11 @@ namespace Translators
 				new List<Transition>() {Transition.CallTransition("=",41,26)},
 				"Missed =");
 			table.AddState(26,
-				new List<Transition>() {Transition.CallTransition("to",41,27)},
-				"Missed to");
-			table.AddState(27,
-				new List<Transition>() {Transition.CallTransition("step",41,28)},
+				new List<Transition>() {Transition.CallTransition("step",41,27)},
 				"Missed step");
+			table.AddState(27,
+				new List<Transition>() {Transition.CallTransition("to",41,28)},
+				"Missed to");
 			table.AddState(28,
 			    new List<Transition>() {Transition.DefaultTransition("do",208)},
 			"Missed ENTER");

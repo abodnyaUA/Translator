@@ -24,7 +24,7 @@ namespace Translators
 			this.stack = new List<Lexem>();
 			this.poliz = new List<Lexem>();
 			this.lexems = new List<Lexem>(LexemList.Instance.Lexems);
-			this.isCycle = false;
+			//this.isCycle = false;
 			UseOperatorsBlock();
 			htmlTable = new HTMLTable("Полиз","Стек","Входная цепочка");
 
@@ -58,12 +58,10 @@ namespace Translators
 
 		/* Process completed polizes */
 		private Stack<int> labels = new Stack<int>();
-		private List<int> cyclePointer = new List<int>(2);
-		private bool isCycle;
 		private void FinishCurrentPoliz()
 		{
 			// Clear stack //
-			while (stack.Count > 0)
+			while (stack.Count > 0 && stack[stack.Count-1].Command != "for")
 			{
 				Lexem lastStack = this.stack[stack.Count-1];
 				stack.RemoveAt(stack.Count-1);
@@ -129,15 +127,15 @@ namespace Translators
 			}
 			else
 			{
-				if (this.stack.Count == 0)
+				/*if (this.stack.Count == 0)
 				{
 					this.stack.Add(lexems[0]);
 					this.lexems.RemoveAt(0);
 				}
 				else 
-				{
+				{*/
 					ProcessOperatorLexem();
-				}
+				//}
 			}
 			
 			LogToHTMLTable();
@@ -146,6 +144,8 @@ namespace Translators
 			LogLexems("Poliz",poliz);
 			Out.Log(Out.State.LogDebug,"");
 		}
+
+		private Lexem cycleIterator;
 		private void ProcessOperatorLexem()
 		{
 			// If separator (\n), start writing new poliz //
@@ -163,29 +163,128 @@ namespace Translators
 			// Cycle //
 			else if (lexems[0].Command == "for")
 			{
-				int iterator = this.labelIterator;
-				this.labels.Push(iterator);
-				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator+2).ToString(),
-				                         PolizOperarionsList.kLexemKeyLabelStart));
-				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator+1).ToString(),
-				                         PolizOperarionsList.kLexemKeyLabelStart));
-				this.stack.Add(new Lexem(lexems[0].LineNumber,"m"+(iterator).ToString(),
-				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.labels.Push(this.labelIterator);
+
 				this.stack.Add(lexems[0]);
 				this.labelIterator += 3;
-				this.isCycle = true;
-				this.lexems.RemoveAt(0);
-			}
 
+				//this.isCycle = true;
+				this.lexems.RemoveAt(0);
+
+				cycleIterator = this.lexems[0];
+			}
+			/*
 			else if (lexems[0].Command == "=" && this.isCycle == true)
 			{
 				this.isCycle = false;
 				this.lexems.RemoveAt(0);
-			}
+			}*/
 
 			else if (lexems[0].Command == "step")
 			{
+				while (stack[stack.Count-1].Command != "for")
+				{
+					Lexem lastStack = this.stack[stack.Count-1];
+					stack.RemoveAt(stack.Count-1);
+					this.poliz.Add(lastStack);
+				}
 
+				int line = lexems[0].LineNumber;
+				int iterator = labels.Peek();
+
+				this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+				this.poliz.Add(new Lexem(line,"1",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
+				this.poliz.Add(new Lexem(line,"m"+(iterator).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelEnd));
+				this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+
+				this.lexems.RemoveAt(0);
+			}
+
+			else if (lexems[0].Command == "to")
+			{
+				while (stack[stack.Count-1].Command != "for")
+				{
+					Lexem lastStack = this.stack[stack.Count-1];
+					stack.RemoveAt(stack.Count-1);
+					this.poliz.Add(lastStack);
+				}
+				
+				int line = lexems[0].LineNumber;
+				int iterator = labels.Peek();
+
+				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
+				this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+				this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"m"+(iterator+1).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.poliz.Add(new Lexem(line,"УПЛ",PolizOperarionsList.kLexemKeyUPL));
+				this.poliz.Add(cycleIterator);
+				this.poliz.Add(new Lexem(line,"1",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+				this.poliz.Add(new Lexem(line,"+",LexemList.Instance.KeyForOperator("+")));
+				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
+				this.poliz.Add(new Lexem(line,"m"+(iterator+1).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelEnd));
+				this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+				this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
+				this.poliz.Add(cycleIterator);
+				
+				this.lexems.RemoveAt(0);
+			}
+
+			else if (lexems[0].Command == "do")
+			{
+				while (stack[stack.Count-1].Command != "for")
+				{
+					Lexem lastStack = this.stack[stack.Count-1];
+					stack.RemoveAt(stack.Count-1);
+					this.poliz.Add(lastStack);
+				}
+				
+				int line = lexems[0].LineNumber;
+				int iterator = labels.Peek();
+
+				this.poliz.Add(new Lexem(line,"-",LexemList.Instance.KeyForOperator("-")));
+				this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+				this.poliz.Add(new Lexem(line,"*",LexemList.Instance.KeyForOperator("*")));
+				this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"<=",LexemList.Instance.KeyForOperator("<=")));
+				this.poliz.Add(new Lexem(line,"m"+(iterator+2).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.poliz.Add(new Lexem(line,"УПЛ",PolizOperarionsList.kLexemKeyUPL));
+
+				this.lexems.RemoveAt(0);
+			}
+
+			else if (lexems[0].Command == "next")
+			{
+				while (stack[stack.Count-1].Command != "for")
+				{
+					Lexem lastStack = this.stack[stack.Count-1];
+					stack.RemoveAt(stack.Count-1);
+					this.poliz.Add(lastStack);
+				}
+				stack.RemoveAt(stack.Count-1); // for
+				
+				int line = lexems[0].LineNumber;
+				int iterator = labels.Pop();
+				
+				this.poliz.Add(new Lexem(line,"m"+(iterator).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelStart));
+				this.poliz.Add(new Lexem(line,"БП",PolizOperarionsList.kLexemKeyBP));
+				this.poliz.Add(new Lexem(line,"m"+(iterator+2).ToString(),
+				                         PolizOperarionsList.kLexemKeyLabelEnd));
+
+				this.lexems.RemoveAt(0);
+			}
+
+			else if (this.stack.Count == 0)
+			{
+				this.stack.Add(lexems[0]);
+				this.lexems.RemoveAt(0);
 			}
 
 			// For expressions. Check ")" and "]" //

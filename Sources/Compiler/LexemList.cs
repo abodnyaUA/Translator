@@ -114,7 +114,7 @@ namespace Translators
 		{ get { return Compiler.sharedCompiler.LexemList; } }
 
 		public List<string> Grammar { get { return grammar; } }
-		public List<Variable> IDs { get { return ids; } }
+		public HashSet<Variable> IDs { get { return ids; } }
 		public List<string> Consts { get { return consts; } }
 		public List<Lexem>  Lexems { get { return lexems; } }
 
@@ -124,13 +124,18 @@ namespace Translators
 		}
 		public void UpdateIDs(List<string> IDs) 
 		{
-			this.ids = new List<Variable>();
+			this.ids = new HashSet<Variable>();
 			IDs.RemoveAt(0); // Remove AppName
 			foreach (string id in IDs)
 			{
 				this.ids.Add(new Variable(id));
 			}
+
+			// For cycles //
+			this.ids.Add(new Variable("r1"));
+			this.ids.Add(new Variable("r2"));
 		}
+
 		public void UpdateConsts(List<string> consts) 
 		{ 
 			this.consts = consts; 
@@ -149,7 +154,7 @@ namespace Translators
 		}
 
 		private List<string> grammar;
-		private List<Variable> ids = new List<Variable>();
+		private HashSet<Variable> ids = new HashSet<Variable>();
 		private List<string> consts = new List<string>();
 		private List<Lexem>  lexems = new List<Lexem>();
 		private void CreateLexemsGrammar()
@@ -201,12 +206,24 @@ namespace Translators
 			grammar.Add("const");
 		}
 
+		public int KeyForOperator(string oper)
+		{
+			int index = this.grammar.FindIndex((string op) => {
+				return op == oper;
+			});
+			return index;
+		}
+
 		public void PrintIDs()
 		{
 			Out.Log(Translators.Out.State.LogInfo,"Variable trace:");
 			foreach (Variable variable in this.ids)
 			{
-				Out.Log(Translators.Out.State.LogInfo,"ID: "+variable.Name+"; Adress: "+variable.Adress+"; Value: "+variable.Value);
+				if (variable.Name != "r1" && variable.Name != "r2")
+				{
+					Out.Log(Translators.Out.State.LogInfo,"ID: "+variable.Name+
+					        "; Adress: "+variable.Adress+"; Value: "+variable.Value);
+				}
 			}
 		}
 	}
