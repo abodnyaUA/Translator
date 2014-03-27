@@ -31,21 +31,20 @@ namespace Translators
 		public void Compile()
 		{
 			LastInputValue = int.MaxValue;
+			int commandIterator = 0;
 			this.poliz = PolizAnalyzer.sharedAnalyzer.Poliz;
 			for (int i = 0; i < this.poliz.Count; i++)
 			{
 				PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
 				if (poliz[i].Command == "=")
 				{
-					CalculateExpression(poliz,1,i-1);
-					poliz[0].Value = poliz[1].Value;
-					poliz.RemoveRange(0,3);
-					i = -1;
+					poliz[commandIterator].Value = CalculateExpression(commandIterator+1,i-1);
+					commandIterator = i+1;
 				}
 
 				else if (poliz[i].Command == "output")
 				{
-					for (int j = 0; j < i; j++)
+					for (int j = commandIterator; j < i; j++)
 					{
 						if (poliz[j].Command[0] == '"')
 						{
@@ -61,13 +60,12 @@ namespace Translators
 							Out.Log(Out.State.ApplicationOutput,poliz[j].Command+" = "+poliz[j].Value);
 						}
 					}
-					poliz.RemoveRange(0,i+1);
-					i = -1;
+					commandIterator = i+1;
 				}
 				
 				else if (poliz[i].Command == "input")
 				{
-					for (int j = 0; j < i; j++)
+					for (int j = commandIterator; j < i; j++)
 					{
 						Gtk.Application.Invoke(delegate {
 							InputIDDialog dialog = new InputIDDialog();
@@ -84,52 +82,49 @@ namespace Translators
 						poliz[j].Value = LastInputValue;
 						LastInputValue = int.MaxValue;
 					}
-					poliz.RemoveRange(0,i+1);
-					i = -1;
+					commandIterator = i+1;
 				}
 
 				else if (poliz[i].Key == PolizOperarionsList.kLexemKeyUPL) // if
 				{
-					CalculateLogicalExpression(poliz,0,i-2);
-					if (poliz[0].Value == 0) // false. go to "else" block
+					bool ok = CalculateLogicalExpression(commandIterator,i-2);
+					if (false == ok) // false. go to "else" block
 					{
-						string destination = poliz[1].Command;
-						poliz.RemoveRange(0,3);
-						while (destination != poliz[0].Command)
+						string destination = poliz[i-1].Command;
+						while (destination != poliz[i].Command)
 						{
-							poliz.RemoveAt(0);
-							PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
+							i++;
+							PolizAnalyzer.sharedAnalyzer.LogLexems(
+								"Poliz", this.poliz);
 						}
-						poliz.RemoveAt(0); // closed label. "else" block
-						PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
 					}
 					else
 					{
-						poliz.RemoveRange(0,3);
+
 					}
-					i = -1;
+					commandIterator = i+1;
 				}
 
-				else if (poliz[0].Key == PolizOperarionsList.kLexemKeyLabelStart &&
-				         poliz[1].Key == PolizOperarionsList.kLexemKeyBP) // unused "else" block
+				else if (poliz[commandIterator].Key == PolizOperarionsList.kLexemKeyLabelStart &&
+				         poliz[commandIterator + 1].Key == PolizOperarionsList.kLexemKeyBP) // unused "else" block
 				{
-					string destination = poliz[0].Command;
-					poliz.RemoveRange(0,3);
+					string destination = poliz[commandIterator].Command;
+					i += 3;
 					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
-					while (destination != poliz[0].Command)
+					while (destination != poliz[i].Command)
 					{
-						poliz.RemoveAt(0);
+						i++;
 						PolizAnalyzer.sharedAnalyzer.LogLexems("PoliZ", this.poliz);
 					}
-					poliz.RemoveAt(0);
+					i++;
 					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
-					i = -1;
+					commandIterator = i;
 				}
 
 				else if (poliz[i].Key == PolizOperarionsList.kLexemKeyLabelEnd) // endif
 				{
-					poliz.RemoveAt(i);
-					i = -1;
+					i++;
+					commandIterator = i;
 				}
 			}
 			PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
@@ -143,8 +138,9 @@ namespace Translators
 		// Calculate expression //
 		HashSet<string> mathOperations = new HashSet<string>()
 		{ "+", "-", "*", "^", "/", "root" };
-		private void CalculateExpression(List<Lexem> poliz, int start, int end)
+		private int CalculateExpression(int start, int end)
 		{
+			List<Lexem> poliz = new List<Lexem>(this.poliz);
 			for (int i = start; i <= end; i++)
 			{
 				if (mathOperations.Contains(poliz[i].Command)) //operator
@@ -158,9 +154,10 @@ namespace Translators
 					end -= 2;
 					poliz.RemoveRange(i,3);
 					poliz.Insert(i,result);
-					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
+					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", poliz);
 				}
 			}
+			return poliz[start].Value;
 		}
 		private int resultCalculation(int operand1, int operand2, string calcOperator)
 		{
@@ -180,8 +177,9 @@ namespace Translators
 		// Calculate logical expression //
 		HashSet<string> logicalOperations = new HashSet<string>()
 		{ ">", "<", ">=", "<=", "equ", "!=", "or", "and" };
-		private void CalculateLogicalExpression(List<Lexem> poliz, int start, int end)
+		private bool CalculateLogicalExpression(int start, int end)
 		{
+			List<Lexem> poliz = new List<Lexem>(this.poliz);
 			// Convert all math expressions to single numbers //
 			for (int i = start; i <= end; i++)
 			{
@@ -191,7 +189,7 @@ namespace Translators
 					int lengthBefore = poliz.Count;
 					
 					// Calculate Math expression //
-					CalculateExpression(poliz,start,i);
+					CalculateExpression(start,i);
 					int lengthAfter = poliz.Count;
 					
 					i -= (lengthBefore - lengthAfter);
@@ -211,6 +209,7 @@ namespace Translators
 					PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
 				}
 			}
+			return poliz[start].Value == 1;
 		}
 		private int resultLogicalCalculation(int operand1, int operand2, string operation)
 		{
