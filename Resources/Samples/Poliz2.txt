@@ -3,10 +3,11 @@
 @implementation
 b = 85 - 5
 c = 86
-if a > 5 then
+if 1 equ 1 and [[a equ 0] or a > 5]  then
 {
 	b = 8
-	c = 75 + 85 / 9 - (8+8)^2
+	c = 75 + 85 / 9 - (8+8 - 85 / (5 + 2 * 5)) * 2
+	output(c)
 	d = 2
 }
 else
