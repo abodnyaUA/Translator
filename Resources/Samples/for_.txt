@@ -1,0 +1,10 @@
+for i := a step h to c do A;
+
+1) i := a
+2) if i < c then A else goto 5
+3) i += h
+4) goto 2
+5) :
+
+if:
+<условие> m1 УПЛ <true блок> m2 БП m1: <false блок> m2:

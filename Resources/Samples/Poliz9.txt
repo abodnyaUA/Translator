@@ -1,0 +1,15 @@
+@interface PolizTest
+	int i, j
+@implementation
+for i = 1 step 1 to 10 do
+{
+	for j = 1 step 1 to 10 do
+	{
+		if j + i equ 6 then
+			output("    ", i,j)
+		endif
+	}
+	next
+}
+next
+@end
