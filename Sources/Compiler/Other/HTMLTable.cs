@@ -8,16 +8,35 @@ namespace Translators
 		private string htmlContent;
 		public int columsCount = 0;
 		public int rowsCount = 1;
-		public string style = "table { font-size: 8pt;}";
-		public HTMLTable (params string[] lineHeaders)
+		public string style = 
+			"table " +
+			"{ " +
+			  "left: 0em; " +
+			  "border-collapse: collapse; " +
+			  "width: 100%; " +
+			  "height: 100%;" +
+			  "font-size: 8pt;" +
+			  "font-family: Helvetica" +
+			"} " +
+			"td.head" +
+			"{" +
+			  "background: #F7F7F7;" +
+			"}" +
+			"td " +
+			"{ " +
+			  "border: 1px solid #DDD; " +
+			  "min-width: 120px; " +
+			  "padding: 5px;" +
+			"}";
+		public HTMLTable(params string[] lineHeaders)
 		{
 			htmlContent = "<html>\n<head>\n<meta charset=\"UTF-8\">\n<style type=\"text/css\">\n" +
 				style + 
 				"\n</style>\n</head>\n" +
-					"<body>\n<table border=\"1\">\n<tr>";
+					"<body>\n<table>\n<tr>";
 			foreach (string lineHeader in lineHeaders)
 			{
-				htmlContent += "<td>" + lineHeader + "</td>\n";
+				htmlContent += "<td class=\"head\"><b>" + lineHeader + "</b></td>\n";
 				columsCount++;
 			}
 			htmlContent += "</tr>";
