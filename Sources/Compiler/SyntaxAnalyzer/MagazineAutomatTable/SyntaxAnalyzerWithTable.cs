@@ -105,8 +105,9 @@ namespace Translators
 				new List<Transition>() {Transition.DefaultTransition("\n",20)},
 				"Missed ENTER");
 			table.AddState(20,
-				new List<Transition>() {Transition.DefaultTransition("else",21)},
-				"Missed else");
+				new List<Transition>() {Transition.DefaultTransition("else",21),
+										Transition.ExitTransition("endif")},
+				"Missed else or endif");
 			table.AddState(21,
 				new List<Transition>() {Transition.CallTransition("\n",31,22)},
 				"Missed ENTER");

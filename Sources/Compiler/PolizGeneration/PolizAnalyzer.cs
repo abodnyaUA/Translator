@@ -94,9 +94,19 @@ namespace Translators
 				else if (lastStack.Command == "endif")
 				{
 					int iterator = labels.Pop();
-					Lexem label2 = new Lexem(lastStack.LineNumber,"m"+(iterator + 1).ToString(),
-					                         PolizOperarionsList.kLexemKeyLabelEnd);
-					this.poliz.Add(label2);
+
+					int position = LabelFinder.PositionOpenLabel(poliz,"m"+(iterator+1).ToString());
+
+					if (position == -1) // without "else"
+					{
+						this.poliz.Add(new Lexem(lastStack.LineNumber,"m"+(iterator).ToString(),
+					                         PolizOperarionsList.kLexemKeyLabelEnd));
+					}
+					else // with "else"
+					{
+						this.poliz.Add(new Lexem(lastStack.LineNumber,"m"+(iterator + 1).ToString(),
+						                         PolizOperarionsList.kLexemKeyLabelEnd));
+					}
 				}
 				else 
 				{
@@ -127,15 +137,7 @@ namespace Translators
 			}
 			else
 			{
-				/*if (this.stack.Count == 0)
-				{
-					this.stack.Add(lexems[0]);
-					this.lexems.RemoveAt(0);
-				}
-				else 
-				{*/
-					ProcessOperatorLexem();
-				//}
+				ProcessOperatorLexem();
 			}
 			
 			LogToHTMLTable();
@@ -168,17 +170,10 @@ namespace Translators
 				this.stack.Add(lexems[0]);
 				this.labelIterator += 3;
 
-				//this.isCycle = true;
 				this.lexems.RemoveAt(0);
 
 				cycleIterator = this.lexems[0];
 			}
-			/*
-			else if (lexems[0].Command == "=" && this.isCycle == true)
-			{
-				this.isCycle = false;
-				this.lexems.RemoveAt(0);
-			}*/
 
 			else if (lexems[0].Command == "step")
 			{
