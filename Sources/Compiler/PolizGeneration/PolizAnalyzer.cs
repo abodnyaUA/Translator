@@ -217,11 +217,12 @@ namespace Translators
 				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
 				this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
 				this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
+				this.poliz.Add(new Lexem(line,"equ",LexemList.Instance.KeyForOperator("equ")));
 				this.poliz.Add(new Lexem(line,"m"+(iterator+1).ToString(),
 				                         PolizOperarionsList.kLexemKeyLabelStart));
 				this.poliz.Add(new Lexem(line,"УПЛ",PolizOperarionsList.kLexemKeyUPL));
 				this.poliz.Add(cycleIterator);
-				this.poliz.Add(new Lexem(line,"1",Lexem.kConstKey));
+				this.poliz.Add(cycleIterator);
 				this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
 				this.poliz.Add(new Lexem(line,"+",LexemList.Instance.KeyForOperator("+")));
 				this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));

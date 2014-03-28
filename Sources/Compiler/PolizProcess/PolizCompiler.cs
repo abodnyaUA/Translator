@@ -38,7 +38,12 @@ namespace Translators
 				PolizAnalyzer.sharedAnalyzer.LogLexems("Poliz", this.poliz);
 				if (poliz[i].Command == "=")
 				{
-					poliz[commandIterator].Value = CalculateExpression(commandIterator+1,i-1);
+					Out.Log(Out.State.LogDebug, "Will change value for ID "+poliz[commandIterator].Command+
+					        " (old value "+poliz[commandIterator].Value+")");
+					poliz[commandIterator].Value = CalculateExpression(new List<Lexem>(this.poliz),
+					                                                   commandIterator+1,i-1);
+					Out.Log(Out.State.LogDebug, "Did change value for ID "+poliz[commandIterator].Command+
+					        " (new value "+poliz[commandIterator].Value+")");
 					commandIterator = i+1;
 				}
 
@@ -121,9 +126,8 @@ namespace Translators
 		// Calculate expression //
 		HashSet<string> mathOperations = new HashSet<string>()
 		{ "+", "-", "*", "^", "/", "root" };
-		private int CalculateExpression(int start, int end)
+		private int CalculateExpression(List<Lexem> poliz, int start, int end)
 		{
-			List<Lexem> poliz = new List<Lexem>(this.poliz);
 			for (int i = start; i <= end; i++)
 			{
 				if (mathOperations.Contains(poliz[i].Command)) //operator
@@ -172,7 +176,7 @@ namespace Translators
 					int lengthBefore = poliz.Count;
 					
 					// Calculate Math expression //
-					CalculateExpression(start,i);
+					CalculateExpression(poliz,start,i);
 					int lengthAfter = poliz.Count;
 					
 					i -= (lengthBefore - lengthAfter);
