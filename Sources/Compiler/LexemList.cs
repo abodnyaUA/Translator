@@ -120,6 +120,14 @@ namespace Translators
 
 		public void UpdateLexems(List<Lexem> lexems) 
 		{ 
+			for (int i = 0; i < lexems.Count - 1; i++)
+			{
+				if (lexems[i].isSeparator() && lexems[i+1].isSeparator())
+				{
+					lexems.RemoveAt(i);
+					i--;
+				}
+			}
 			this.lexems = lexems; 
 		}
 		public void UpdateIDs(List<string> IDs) 

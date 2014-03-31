@@ -1,56 +1,68 @@
 @interface PolizTest
 	int a,b,c,x,x1,x2,D
 @implementation
-output("Данная программа считает квадратное уравнение")
-input(a,b,c)
-D = b*b - 4*a*c
-output("Уравнение: a*x^2 + b*x + c = 0",a,b,c,"")
-if a equ 0 then
-{
-	if b equ 0 then
+	// Input values & Display info //
+	output("Данная программа считает квадратное уравнение")
+	input(a,b,c)
+	D = b*b - 4*a*c
+	output("Уравнение: a*x^2 + b*x + c = 0",a,b,c,"")
+	// b * x + c = 0
+	if a equ 0 then
 	{
-		if c equ 0 then
-			output("Бесконечное множество решений")
-		else
-			output("Уравнение составлено неправильно!")
-		endif
-	}
-	else
-	{
-		if c equ 0 then
-			x = 0
-		else
-			x = -c / b
-		endif
-		output("Найден один корень линейного уравнения",x)
-	}
-	endif
-}
-else
-{
-	if D < 0 then
-	{
-		output("Уравнение не имеет корней")
-	}
-	else
-	{
-		output(D)
-		if D equ 0 then
+		// c = 0
+		if b equ 0 then
 		{
-			output("Найден один корень квадратного уравнения")
-			x = (-b + D root 2) / (2 * a)
-			output(x)
+			// Check c = 0. Infinitive
+			if c equ 0 then
+				output("Бесконечное множество решений")
+			// False expression
+			else
+				output("Уравнение составлено неправильно!")
+			endif
 		}
+		// b * x + c = 0; b != 0
 		else
 		{
-			output("Найдено два корня квадратного уравнения")
-			x1 = (-b + (D root 2)) / (2 * a)
-			x2 = (-b - (D root 2)) / (2 * a)
-			output(x1,x2)
+			// b * x = 0
+			if c equ 0 then
+				x = 0
+			// b * x = -c
+			else
+				x = -c / b
+			endif
+			output("Найден один корень линейного уравнения",x)
 		}
 		endif
 	}
+	// All coeficients are normal
+	else
+	{
+		// Discriminant is invalid
+		if D < 0 then
+		{
+			output("Уравнение не имеет корней")
+		}
+		else
+		{
+			output(D)
+			// One root
+			if D equ 0 then
+			{
+				output("Найден один корень квадратного уравнения")
+				x = (-b + D root 2) / (2 * a)
+				output(x)
+			}
+			// Two roots
+			else
+			{
+				output("Найдено два корня квадратного уравнения")
+				x1 = (-b + (D root 2)) / (2 * a)
+				x2 = (-b - (D root 2)) / (2 * a)
+				output(x1,x2)
+			}
+			endif
+		}
+		endif
+	}
 	endif
-}
-endif
 @end
