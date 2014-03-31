@@ -140,8 +140,8 @@ namespace Translators
 			}
 
 			// For cycles //
-			this.ids.Add(new Variable("r1"));
-			this.ids.Add(new Variable("r2"));
+			this.ids.Add(new Variable("$r1"));
+			this.ids.Add(new Variable("$r2"));
 		}
 
 		public void UpdateConsts(List<string> consts) 

@@ -199,12 +199,12 @@ namespace Translators
 			int line = lexems[0].LineNumber;
 			int iterator = labels.Peek();
 			
-			this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r1",Lexem.kIDKey));
 			this.poliz.Add(new Lexem(line,"1",Lexem.kConstKey));
 			this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
 			this.poliz.Add(new Lexem(line,"m"+(iterator).ToString(),
 			                         PolizOperarionsList.kLexemKeyLabelEnd));
-			this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r2",Lexem.kIDKey));
 			
 			this.lexems.RemoveAt(0);
 		}
@@ -221,7 +221,7 @@ namespace Translators
 			int iterator = labels.Peek();
 			
 			this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
-			this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r1",Lexem.kIDKey));
 			this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
 			this.poliz.Add(new Lexem(line,"equ",LexemList.Instance.KeyForOperator("equ")));
 			this.poliz.Add(new Lexem(line,"m"+(iterator+1).ToString(),
@@ -229,12 +229,12 @@ namespace Translators
 			this.poliz.Add(new Lexem(line,"УПЛ",PolizOperarionsList.kLexemKeyUPL));
 			this.poliz.Add(cycleIterator);
 			this.poliz.Add(cycleIterator);
-			this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r2",Lexem.kIDKey));
 			this.poliz.Add(new Lexem(line,"+",LexemList.Instance.KeyForOperator("+")));
 			this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
 			this.poliz.Add(new Lexem(line,"m"+(iterator+1).ToString(),
 			                         PolizOperarionsList.kLexemKeyLabelEnd));
-			this.poliz.Add(new Lexem(line,"r1",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r1",Lexem.kIDKey));
 			this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
 			this.poliz.Add(new Lexem(line,"=",LexemList.Instance.KeyForOperator("=")));
 			this.poliz.Add(cycleIterator);
@@ -254,7 +254,7 @@ namespace Translators
 			int iterator = labels.Peek();
 			
 			this.poliz.Add(new Lexem(line,"-",LexemList.Instance.KeyForOperator("-")));
-			this.poliz.Add(new Lexem(line,"r2",Lexem.kIDKey));
+			this.poliz.Add(new Lexem(line,"$r2",Lexem.kIDKey));
 			this.poliz.Add(new Lexem(line,"*",LexemList.Instance.KeyForOperator("*")));
 			this.poliz.Add(new Lexem(line,"0",Lexem.kConstKey));
 			this.poliz.Add(new Lexem(line,"<=",LexemList.Instance.KeyForOperator("<=")));
