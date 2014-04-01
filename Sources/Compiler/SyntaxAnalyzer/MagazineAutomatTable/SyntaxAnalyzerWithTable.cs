@@ -58,13 +58,13 @@ namespace Translators
 			table.AddState(11,
 				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,12),
 										Transition.DefaultTransition("input",14),
-										Transition.DefaultTransition("output",104),
-										Transition.CallTransition("if",51,17),
-										Transition.DefaultTransition("for",24)},
+										Transition.DefaultTransition("output",17),
+										Transition.CallTransition("if",61,20),
+										Transition.DefaultTransition("for",27)},
 				"Invalid Operator");
 			// SETTER //
 			table.AddState(12,
-				new List<Transition>() {Transition.CallTransition("=",41,13)},
+				new List<Transition>() {Transition.CallTransition("=",51,13)},
 				"Missed =");
 			table.AddState(13,
 				new List<Transition>() {Transition.ExitTransition(Transition.NoLexem)},
@@ -83,122 +83,122 @@ namespace Translators
 				"Missed , or )");
 
 			// OUTPUT //
-			table.AddState(104,
-			               new List<Transition>() {Transition.DefaultTransition("(",105)},
+			table.AddState(17,
+			    new List<Transition>() {Transition.DefaultTransition("(",18)},
 			"Missed (");
-			table.AddState(105,
-			               new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,106),
-												   Transition.DefaultTransition(Transition.LexemCONST,106)},
+			table.AddState(18,
+			    new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,19),
+										Transition.DefaultTransition(Transition.LexemCONST,19)},
 			"Missed variable");
-			table.AddState(106,
-			               new List<Transition>() {Transition.DefaultTransition(",",105),
-				Transition.ExitTransition(")")},
+			table.AddState(19,
+			    new List<Transition>() {Transition.DefaultTransition(",",18),
+				  					    Transition.ExitTransition(")")},
 			"Missed , or )");
 			// IF //
-			table.AddState(17,
-			     new List<Transition>() {Transition.DefaultTransition("then",18)},
-				"Missed then");
-			table.AddState(18,
-				new List<Transition>() {Transition.CallTransition("\n",31,19)},
-				"Missed ENTER");
-			table.AddState(19,
-				new List<Transition>() {Transition.DefaultTransition("\n",20)},
-				"Missed ENTER");
 			table.AddState(20,
-				new List<Transition>() {Transition.DefaultTransition("else",21),
-										Transition.ExitTransition("endif")},
-				"Missed else or endif");
+			     new List<Transition>() {Transition.DefaultTransition("then",21)},
+				"Missed then");
 			table.AddState(21,
-				new List<Transition>() {Transition.CallTransition("\n",31,22)},
+				new List<Transition>() {Transition.CallTransition("\n",41,22)},
 				"Missed ENTER");
 			table.AddState(22,
 				new List<Transition>() {Transition.DefaultTransition("\n",23)},
 				"Missed ENTER");
 			table.AddState(23,
+				new List<Transition>() {Transition.DefaultTransition("else",24),
+										Transition.ExitTransition("endif")},
+				"Missed else or endif");
+			table.AddState(24,
+				new List<Transition>() {Transition.CallTransition("\n",41,25)},
+				"Missed ENTER");
+			table.AddState(25,
+				new List<Transition>() {Transition.DefaultTransition("\n",26)},
+				"Missed ENTER");
+			table.AddState(26,
 				new List<Transition>() {Transition.ExitTransition("endif")},
 				"Missed endif");
 			// FOR //
-			table.AddState(24,
-				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,25)},
-				"Missed variable-iterator");
-			table.AddState(25,
-				new List<Transition>() {Transition.CallTransition("=",41,26)},
-				"Missed =");
-			table.AddState(26,
-				new List<Transition>() {Transition.CallTransition("step",41,27)},
-				"Missed step");
 			table.AddState(27,
-				new List<Transition>() {Transition.CallTransition("to",41,28)},
-				"Missed to");
+				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,28)},
+				"Missed variable-iterator");
 			table.AddState(28,
-			    new List<Transition>() {Transition.DefaultTransition("do",208)},
-			"Missed ENTER");
-			table.AddState(208,
-				new List<Transition>() {Transition.CallTransition("\n",31,29)},
-				"Missed ENTER");
+				new List<Transition>() {Transition.CallTransition("=",51,29)},
+				"Missed =");
 			table.AddState(29,
-				new List<Transition>() {Transition.DefaultTransition("\n",30)},
-				"Missed ENTER");
+				new List<Transition>() {Transition.CallTransition("step",51,30)},
+				"Missed step");
 			table.AddState(30,
+				new List<Transition>() {Transition.CallTransition("to",51,31)},
+				"Missed to");
+			table.AddState(31,
+			    new List<Transition>() {Transition.DefaultTransition("do",32)},
+			"Missed ENTER");
+			table.AddState(32,
+				new List<Transition>() {Transition.CallTransition("\n",41,33)},
+				"Missed ENTER");
+			table.AddState(33,
+				new List<Transition>() {Transition.DefaultTransition("\n",34)},
+				"Missed ENTER");
+			table.AddState(34,
 				new List<Transition>() {Transition.ExitTransition("next")},
 				"Missed next");
 
 			// Half-automat Operators block //
-			table.AddState(31,
-				new List<Transition>() {Transition.DefaultTransition("{",32),
-									    Transition.CallTransition(Transition.NoLexem,11,34)},
+			table.AddState(41,
+				new List<Transition>() {Transition.DefaultTransition("{",42),
+									    Transition.CallTransition(Transition.NoLexem,11,44)},
 				"Missed { or OPERATOR");
-			table.AddState(32,
-				new List<Transition>() {Transition.DefaultTransition("\n",33)},
+			table.AddState(42,
+				new List<Transition>() {Transition.DefaultTransition("\n",43)},
 				"Missed ENTER");
-			table.AddState(33,
+			table.AddState(43,
 				new List<Transition>() {Transition.ExitTransition("}"),
-										Transition.CallTransition(Transition.NoLexem,11,32)},
+										Transition.CallTransition(Transition.NoLexem,11,42)},
 				"Missed } or OPERATOR");
-			table.AddState(34,
+			table.AddState(44,
 				new List<Transition>() {Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");
 
 			// Half-automat Arifmetic Expression
-			table.AddState(41,
-				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,42),
-										Transition.DefaultTransition(Transition.LexemCONST,42),
-										Transition.CallTransition("(",41,43)},
+			table.AddState(51,
+				new List<Transition>() {Transition.DefaultTransition(Transition.LexemID,52),
+										Transition.DefaultTransition(Transition.LexemCONST,52),
+										Transition.CallTransition("(",51,53)},
 				"Missed ID, CONST or (");
-			table.AddState(42,
-				new List<Transition>() {Transition.DefaultTransition("+",41),
-										Transition.DefaultTransition("-",41),
-										Transition.DefaultTransition("*",41),
-										Transition.DefaultTransition("/",41),
-										Transition.DefaultTransition("^",41),
-										Transition.DefaultTransition("root",41),
+			table.AddState(52,
+				new List<Transition>() {Transition.DefaultTransition("+",51),
+										Transition.DefaultTransition("-",51),
+										Transition.DefaultTransition("*",51),
+										Transition.DefaultTransition("/",51),
+										Transition.DefaultTransition("^",51),
+										Transition.DefaultTransition("root",51),
 										Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");
-			table.AddState(43,
-				new List<Transition>() {Transition.DefaultTransition(")",42)},
+			table.AddState(53,
+				new List<Transition>() {Transition.DefaultTransition(")",52)},
 				"Missed )");
 
 			// Half-operator Logical Expression //
-			table.AddState(51,
-				new List<Transition>() {Transition.DefaultTransition("!",51),
-										Transition.CallTransition("[",51,52),
-										Transition.CallTransition(Transition.NoLexem,41,54)},
+			table.AddState(61,
+				new List<Transition>() {Transition.DefaultTransition("!",61),
+										Transition.CallTransition("[",61,62),
+										Transition.CallTransition(Transition.NoLexem,51,64)},
 				"[APPLICATION'S BUG]");
-			table.AddState(52,
-				new List<Transition>() {Transition.DefaultTransition("]",53)},
+			table.AddState(62,
+				new List<Transition>() {Transition.DefaultTransition("]",63)},
 				"Missed ]");
-			table.AddState(53,
-				new List<Transition>() {Transition.DefaultTransition("and",51),
-										Transition.DefaultTransition("or",51),
+			table.AddState(63,
+				new List<Transition>() {Transition.DefaultTransition("and",61),
+										Transition.DefaultTransition("or",61),
 										Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");
-			table.AddState(54,
-				new List<Transition>() {Transition.CallTransition(">",41,53),
-										Transition.CallTransition("<",41,53),
-										Transition.CallTransition(">=",41,53),
-										Transition.CallTransition("<=",41,53),
-										Transition.CallTransition("!=",41,53),
-										Transition.CallTransition("equ",41,53)},
+			table.AddState(64,
+				new List<Transition>() {Transition.CallTransition(">",51,63),
+										Transition.CallTransition("<",51,63),
+										Transition.CallTransition(">=",51,63),
+										Transition.CallTransition("<=",51,63),
+										Transition.CallTransition("!=",51,63),
+										Transition.CallTransition("equ",51,63)},
 				"Missed >, <, >=, <=, !=, or equ");
 		}		
 
