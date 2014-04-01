@@ -7,6 +7,9 @@ using System.IO;
 
 namespace Translators
 {
+	/// <summary>
+	/// Parser. Parse string file and generate List of strings, according to predefined separators
+	/// </summary>
     class Parser
     {
         private static Parser _sharedParser = null;
@@ -18,11 +21,23 @@ namespace Translators
                 return _sharedParser;
             }
         }
-        private Parser()
-        { }
-		
+        private Parser() { }
+
+		/// <summary>
+		/// Original lines of source code 
+		/// </summary>
 		private List<string> realLines = new List<string>();
 		public  List<string> RealLines { get { return realLines; } }
+
+		/// <summary>
+		/// Reads the file, handle commentaries and save its original lines to array
+		/// </summary>
+		/// <returns>
+		/// The file's content without commentaries.
+		/// </returns>
+		/// <param name='path'>
+		/// Path.
+		/// </param>
 		public string ReadFile(string path)
         {
             String list = "";
@@ -45,6 +60,15 @@ namespace Translators
             return list;
         }
 
+		/// <summary>
+		/// Remove tabs from string.
+		/// </summary>
+		/// <returns>
+		/// String without tabs.
+		/// </returns>
+		/// <param name='sourceString'>
+		/// Source string.
+		/// </param>
 		private string StringByRemoveTabs(string sourceString)
 		{
 			try
@@ -86,6 +110,18 @@ namespace Translators
             return result;
         }
 
+		/// <summary>
+		/// Splits source by separators
+		/// </summary>
+		/// <returns>
+		/// Splitted List of lexem-strings
+		/// </returns>
+		/// <param name='source'>
+		/// File's content
+		/// </param>
+		/// <param name='separators'>
+		/// Separators array.
+		/// </param>
 		public List<string> SplitBySpace(string source, List<char>separators)
 		{
 			source = source.Replace('\t',' ');
@@ -158,6 +194,15 @@ namespace Translators
 			return lexems;
 		}
 
+		/// <summary>
+		/// Process List of lexem-strings and make double-list from it according to ENTER
+		/// </summary>
+		/// <returns>
+		/// Double list of lexem-strings
+		/// </returns>
+		/// <param name='source'>
+		/// Full lexem list
+		/// </param>
         public List<List<string>> LexemsListWithLines(List<string> source)
         {
             List<List<string>> result = new List<List<string>>();
@@ -181,6 +226,15 @@ namespace Translators
             return result;
         }
 
+		/// <summary>
+		/// General public method. Parse file and return parsed lexem-strings
+		/// </summary>
+		/// <returns>
+		/// The file.
+		/// </returns>
+		/// <param name='path'>
+		/// Path of source file.
+		/// </param>
         public List<List<string>> ParseFile(string path)
         {
             string sourceCode = ReadFile(path);

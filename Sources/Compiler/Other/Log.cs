@@ -42,11 +42,17 @@ namespace Translators
 		{
 			string op;
 			if (fmt == null)
+			{
 				op = String.Empty;
+			}
 			else if (args == null || args.Length == 0)
+			{
 				op = fmt;
+			}
 			else
+			{
 				op = String.Format(fmt, args);
+			}
 			Trace.Write(op);
 			Console.Write(op);
 		}

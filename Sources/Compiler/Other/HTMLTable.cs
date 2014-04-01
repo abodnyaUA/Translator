@@ -47,6 +47,12 @@ namespace Translators
 			return new HTMLTable(lineHeaders);
 		}
 
+		/// <summary>
+		/// Adds the line to html table.
+		/// </summary>
+		/// <param name='lineContent'>
+		/// Line content.
+		/// </param>
 		public void AddLine(params string[] lineContent)
 		{
 			if (lineContent.Length > columsCount)
@@ -66,6 +72,12 @@ namespace Translators
 			}
 		}
 
+		/// <summary>
+		/// Writes HTML content to file.
+		/// </summary>
+		/// <param name='filepath'>
+		/// Filepath of html file.
+		/// </param>
 		public void WriteToFile(string filepath)
 		{
 			string htmlTable = htmlContent + "</table>\n</body>\n</html>";

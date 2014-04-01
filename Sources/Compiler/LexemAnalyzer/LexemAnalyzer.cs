@@ -23,6 +23,15 @@ namespace Translators
         private bool EndWasDeclarated = false;
 
 		// Additional usefull methods //
+		/// <summary>
+		/// Checks lexem-string for global commands.
+		/// </summary>
+		/// <param name='value'>
+		/// Lexem-string.
+		/// </param>
+		/// <param name='line'>
+		/// Line number.
+		/// </param>
         private void CheckForGlobalCommands(string value, int line)
         {
             if (value == "@interface")
@@ -63,6 +72,7 @@ namespace Translators
                 throw new LexemException(line,"Variables can be declarated only in @interface section");
             }
         }
+		// Check is lexem-string 'const' lexem
 		private bool isConst(string value)
 		{
 			bool con = true;
@@ -80,6 +90,8 @@ namespace Translators
 			}
 			return con;
 		}
+
+		// Analyzing //
 		private void AnalyzeConst(string value)
 		{
 			// Tabel base //

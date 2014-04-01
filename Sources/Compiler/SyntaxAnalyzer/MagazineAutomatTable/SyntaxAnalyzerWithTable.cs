@@ -202,6 +202,18 @@ namespace Translators
 				"Missed >, <, >=, <=, !=, or equ");
 		}		
 
+		/// <summary>
+		/// Processes the lexem on state.
+		/// </summary>
+		/// <param name='lexem'>
+		/// Lexem.
+		/// </param>
+		/// <param name='lexemIterator'>
+		/// Lexem iterator.
+		/// </param>
+		/// <param name='stateNumber'>
+		/// State number.
+		/// </param>
 		public void ProcessLexemOnState(Lexem lexem, ref int lexemIterator, 
 		                                ref int stateNumber)
 		{
@@ -209,6 +221,9 @@ namespace Translators
 			state.Run(lexem,ref stateNumber, ref lexemIterator);
 		}
 
+		/// <summary>
+		/// Fetch Lexem list from LexemList class and validate theirs syntax
+		/// </summary>
 		public void AnalyzeLexems()
 		{
 			List<Lexem> lexems = LexemList.Instance.Lexems;
@@ -226,7 +241,6 @@ namespace Translators
 			}
 			Out.Log(Out.State.LogInfo,"Finish analyze");
 		}
-
 	}
 }
 
