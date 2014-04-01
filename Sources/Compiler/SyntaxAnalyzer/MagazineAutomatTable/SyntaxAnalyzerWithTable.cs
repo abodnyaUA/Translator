@@ -171,6 +171,7 @@ namespace Translators
 										Transition.DefaultTransition("*",51),
 										Transition.DefaultTransition("/",51),
 										Transition.DefaultTransition("^",51),
+										Transition.DefaultTransition("%",51),
 										Transition.DefaultTransition("root",51),
 										Transition.ExitTransition(Transition.NoLexem)},
 				"[APPLICATION'S BUG]");

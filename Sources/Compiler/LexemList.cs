@@ -199,6 +199,7 @@ namespace Translators
 			grammar.Add("+");
 			grammar.Add("-");
 			grammar.Add("/");
+			grammar.Add("%");
 			grammar.Add("*");
 			grammar.Add("^");
 			grammar.Add("root");

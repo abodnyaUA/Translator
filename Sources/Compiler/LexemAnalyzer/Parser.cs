@@ -106,6 +106,7 @@ namespace Translators
 			result.Add('|');
 			result.Add('!');
 			result.Add(';');
+			result.Add('%');
 			result.Add('"');
             return result;
         }

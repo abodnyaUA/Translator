@@ -60,7 +60,7 @@ namespace Translators
 			AddOperations(5,"!");
 			AddOperations(6,">","<",">=","<=","equ","!=");
 			AddOperations(7,"+","-");
-			AddOperations(8,"*","/");
+			AddOperations(8,"*","/","%");
 			AddOperations(9,"^","root");
 		}
 

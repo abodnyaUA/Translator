@@ -125,7 +125,7 @@ namespace Translators
 		
 		// Calculate expression //
 		HashSet<string> mathOperations = new HashSet<string>()
-		{ "+", "-", "*", "^", "/", "root" };
+		{ "+", "-", "*", "^", "/", "%", "root" };
 		private int CalculateExpression(List<Lexem> poliz, int start, int end)
 		{
 			for (int i = start; i <= end; i++)
@@ -156,6 +156,7 @@ namespace Translators
 			case "/": result = operand1 / operand2; break;
 			case "^": result = (int) (Math.Pow (operand1,operand2)); break;
 			case "-": result = operand1 - operand2; break;
+			case "%": result = operand1 % operand2; break;
 			case "root": result = (int) (Math.Pow (operand1,1.0/operand2));; break;
 			}
 			return result;
