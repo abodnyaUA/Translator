@@ -208,10 +208,7 @@ namespace Translators
 			grammar.Add("or");
 			grammar.Add("[");
 			grammar.Add("]");
-			grammar.Add(";");
-			grammar.Add("endset");
-			grammar.Add("from");
-			grammar.Add("var");
+			grammar.Add("id");
 			grammar.Add("const");
 		}
 

@@ -1,5 +1,5 @@
 @interface PolizTest
-	int a,b,c,q,d
+	int a,b,c
 @implementation
 a = -5
 if 1 equ 1 then

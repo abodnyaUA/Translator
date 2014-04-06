@@ -1,15 +1,9 @@
 @interface PolizTest
-	int i, j
+	int i
 @implementation
 for i = 1 step 1 to 5 do
 {
-	for j = 5 step 1 to 10 do
-	{
-		if j % 2 equ 1 and i % 2 equ 0 then
-			output("    ", i,j)
-		endif
-	}
-	next
+	output(i)
 }
 next
 @end

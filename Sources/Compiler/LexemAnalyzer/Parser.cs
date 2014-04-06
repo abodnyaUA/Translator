@@ -81,7 +81,7 @@ namespace Translators
 			return sourceString;
 		}
 
-        public List<char> Separators()
+        private List<char> Separators()
         {
             List<char> result = new List<char>();
             result.Add('\n');
@@ -123,7 +123,7 @@ namespace Translators
 		/// <param name='separators'>
 		/// Separators array.
 		/// </param>
-		public List<string> SplitBySpace(string source, List<char>separators)
+		private List<string> SplitBySpace(string source, List<char>separators)
 		{
 			source = source.Replace('\t',' ');
 			HashSet<char> separtatorsSet = new HashSet<char>();
@@ -204,7 +204,7 @@ namespace Translators
 		/// <param name='source'>
 		/// Full lexem list
 		/// </param>
-        public List<List<string>> LexemsListWithLines(List<string> source)
+        private List<List<string>> LexemsListWithLines(List<string> source)
         {
             List<List<string>> result = new List<List<string>>();
             result.Insert(0, new List<string>());
