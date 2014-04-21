@@ -13,7 +13,7 @@ namespace Translators
 		private global::Gtk.ProgressBar CompileProgressBar;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.TextView ConsoleTextView;
-		
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -34,7 +34,7 @@ namespace Translators
 			this.hbox1.Name = "hbox1";
 			this.hbox1.Spacing = 6;
 			// Container child hbox1.Gtk.Box+BoxChild
-			this.FileChooser = new global::Gtk.FileChooserButton (global::Mono.Unix.Catalog.GetString ("Оберіть файл"), ((global::Gtk.FileChooserAction)(0)));
+			this.FileChooser = new global::Gtk.FileChooserButton (global::Mono.Unix.Catalog.GetString ("Select a File"), ((global::Gtk.FileChooserAction)(0)));
 			this.FileChooser.Name = "FileChooser";
 			this.hbox1.Add (this.FileChooser);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.FileChooser]));
@@ -53,64 +53,40 @@ namespace Translators
 			this.button2.CanFocus = true;
 			this.button2.Name = "button2";
 			this.button2.UseUnderline = true;
-			// Container child button2.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w3 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w4 = new global::Gtk.HBox ();
-			w4.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w5 = new global::Gtk.Image ();
-			w5.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-media-play", global::Gtk.IconSize.Menu);
-			w4.Add (w5);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w7 = new global::Gtk.Label ();
-			w7.LabelProp = global::Mono.Unix.Catalog.GetString ("Compile");
-			w7.UseUnderline = true;
-			w4.Add (w7);
-			w3.Add (w4);
-			this.button2.Add (w3);
+			this.button2.Label = global::Mono.Unix.Catalog.GetString ("Compile");
+			global::Gtk.Image w3 = new global::Gtk.Image ();
+			w3.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-media-play", global::Gtk.IconSize.Menu);
+			this.button2.Image = w3;
 			this.hbox2.Add (this.button2);
-			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button2]));
-			w11.Position = 0;
-			w11.Expand = false;
-			w11.Fill = false;
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button2]));
+			w4.Position = 0;
+			w4.Expand = false;
+			w4.Fill = false;
 			// Container child hbox2.Gtk.Box+BoxChild
 			this.button3 = new global::Gtk.Button ();
 			this.button3.CanFocus = true;
 			this.button3.Name = "button3";
 			this.button3.UseUnderline = true;
-			// Container child button3.Gtk.Container+ContainerChild
-			global::Gtk.Alignment w12 = new global::Gtk.Alignment (0.5F, 0.5F, 0F, 0F);
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			global::Gtk.HBox w13 = new global::Gtk.HBox ();
-			w13.Spacing = 2;
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Image w14 = new global::Gtk.Image ();
-			w14.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "stock_dialog-info", global::Gtk.IconSize.Menu);
-			w13.Add (w14);
-			// Container child GtkHBox.Gtk.Container+ContainerChild
-			global::Gtk.Label w16 = new global::Gtk.Label ();
-			w16.LabelProp = global::Mono.Unix.Catalog.GetString ("Info");
-			w16.UseUnderline = true;
-			w13.Add (w16);
-			w12.Add (w13);
-			this.button3.Add (w12);
+			this.button3.Label = global::Mono.Unix.Catalog.GetString ("Info");
+			global::Gtk.Image w5 = new global::Gtk.Image ();
+			w5.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "stock_dialog-info", global::Gtk.IconSize.Menu);
+			this.button3.Image = w5;
 			this.hbox2.Add (this.button3);
-			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button3]));
-			w20.Position = 1;
-			w20.Expand = false;
-			w20.Fill = false;
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.button3]));
+			w6.Position = 1;
+			w6.Expand = false;
+			w6.Fill = false;
 			// Container child hbox2.Gtk.Box+BoxChild
 			this.CompileProgressBar = new global::Gtk.ProgressBar ();
 			this.CompileProgressBar.Name = "CompileProgressBar";
 			this.hbox2.Add (this.CompileProgressBar);
-			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.CompileProgressBar]));
-			w21.Position = 2;
+			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.CompileProgressBar]));
+			w7.Position = 2;
 			this.vbox1.Add (this.hbox2);
-			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
-			w22.Position = 1;
-			w22.Expand = false;
-			w22.Fill = false;
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
+			w8.Position = 1;
+			w8.Expand = false;
+			w8.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
 			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -122,9 +98,9 @@ namespace Translators
 			this.ConsoleTextView.WrapMode = ((global::Gtk.WrapMode)(2));
 			this.GtkScrolledWindow.Add (this.ConsoleTextView);
 			this.vbox1.Add (this.GtkScrolledWindow);
-			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
-			w24.PackType = ((global::Gtk.PackType)(1));
-			w24.Position = 2;
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+			w10.PackType = ((global::Gtk.PackType)(1));
+			w10.Position = 2;
 			this.Add (this.vbox1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

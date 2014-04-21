@@ -9,7 +9,7 @@ namespace Translators
 	{
 		public Gtk.TextView Console { get { return ConsoleTextView; } }
 		public Gtk.ProgressBar ProgressBar { get { return CompileProgressBar; } }
-		private string FileName = "/home/abodnya/.translatorfile";
+		private string FileName = ".translatorfile";
 
 		private string sourceName = null;
 		public string ChoosedFileName { get { return sourceName; } }
@@ -36,7 +36,7 @@ namespace Translators
 		{
 			if (LexemList.Instance.Lexems.Count > 0)
 			{
-				System.Diagnostics.Process.Start("/usr/bin/google-chrome",Constants.HTMLTablePath);
+				System.Diagnostics.Process.Start("/usr/bin/open","-a Safari "+Constants.HTMLTablePath);
 			}
 			else
 			{

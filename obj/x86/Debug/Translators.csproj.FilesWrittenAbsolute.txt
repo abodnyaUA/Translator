@@ -1,0 +1,7 @@
+/Users/alekseybodnya/Developer/Translator/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/alekseybodnya/Developer/Translator/obj/x86/Debug/Translators.gtk-gui.gui.stetic
+/Users/alekseybodnya/Developer/Translator/obj/x86/Debug/Translators.Resources.Icons.Puzzle-grey.png
+/Users/alekseybodnya/Developer/Translator/bin/Debug/Translators.exe.mdb
+/Users/alekseybodnya/Developer/Translator/bin/Debug/Translators.exe
+/Users/alekseybodnya/Developer/Translator/obj/x86/Debug/Translators.exe
+/Users/alekseybodnya/Developer/Translator/obj/x86/Debug/Translators.exe.mdb
